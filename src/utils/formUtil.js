@@ -47,6 +47,8 @@ export const validateInput = (name, value) => {
     error = "";
   switch (name) {
     case "isbn":
+    case "isbn_10":
+    case "isbn_13":
       if (value.trim() === "") {
         hasError = true;
         error = "ISBN number cannot be empty";
@@ -58,10 +60,75 @@ export const validateInput = (name, value) => {
         error = "";
       }
       break;
+    case "title":
+      if (value.trim() === "") {
+        hasError = true;
+        error = "Title cannot be empty";
+      } else {
+        hasError = false;
+        error = "";
+      }
+      break;
+    case "author":
+      if (value.trim() === "") {
+        hasError = true;
+        error = "Author cannot be empty";
+      } else {
+        hasError = false;
+        error = "";
+      }
+      break;
     default:
       break;
   }
   return { hasError, error };
+};
+
+export const isValidForm = (formState, dispatcher) => {
+  let isFormValid = true;
+  for (const name in formState) {
+    const item = formState[name];
+    const { value } = item;
+    const { hasError, error } = validateInput(name, value);
+    if (hasError) {
+      isFormValid = false;
+    }
+    if (name) {
+      dispatcher({
+        type: UPDATE_FORM,
+        data: {
+          name,
+          value,
+          hasError,
+          error,
+          touched: true,
+          isFormValid,
+        },
+      });
+    }
+  }
+  return isFormValid;
+};
+
+export const formsReducer = (state, action) => {
+  switch (action.type) {
+    case UPDATE_FORM:
+      const {
+        name,
+        value,
+        hasError,
+        error,
+        touched,
+        isFormValid,
+      } = action.data;
+      return {
+        ...state,
+        [name]: { ...state[name], value, hasError, error, touched },
+        isFormValid,
+      };
+    default:
+      return state;
+  }
 };
 
 const isValidIsbn = (str) => {
@@ -88,9 +155,11 @@ const isValidIsbn = (str) => {
   }
 
   if (str.length === 10) {
+    let lastChar = str[str.length - 1];
+    lastChar = lastChar.toUpperCase() === "X" ? "X" : +lastChar;
     weight = 10;
     sum = 0;
-    for (i = 0; i < 9; i++) {
+    for (let i = 0; i < 9; i++) {
       digit = parseInt(str[i]);
       sum += weight * digit;
       weight--;
@@ -99,6 +168,6 @@ const isValidIsbn = (str) => {
     if (check === 10) {
       check = "X";
     }
-    return check === str[str.length - 1].toUpperCase();
+    return check === lastChar;
   }
 };

@@ -3,17 +3,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 
 import {
+  formsReducer,
+  isValidForm,
   onFocusOut,
   onInputChange,
-  UPDATE_FORM,
-  validateInput,
 } from "../../utils/formUtil";
 import BookContext from "../../Store/book-store";
+import { createBook, prepareBookData } from "../../utils/bookUtils";
+import ErrorAlert from "../Alert/ErrorAlert";
+import SuccessAlert from "../Alert/SuccessAlert";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -41,28 +41,6 @@ const initialState = {
   isbn: { value: "", touched: false, hasError: true, error: "" },
   isFormValid: false,
 };
-
-const formsReducer = (state, action) => {
-  switch (action.type) {
-    case UPDATE_FORM:
-      const {
-        name,
-        value,
-        hasError,
-        error,
-        touched,
-        isFormValid,
-      } = action.data;
-      return {
-        ...state,
-        [name]: { ...state[name], value, hasError, error, touched },
-        isFormValid,
-      };
-    default:
-      return state;
-  }
-};
-
 const AddBookBySearch = () => {
   const classes = useStyles();
   const bookContext = useContext(BookContext);
@@ -77,44 +55,16 @@ const AddBookBySearch = () => {
   const formSubmitHandler = async (event) => {
     event.preventDefault();
 
-    let isFormValid = true;
-    for (const name in formState) {
-      const item = formState[name];
-      const { value } = item;
-      const { hasError, error } = validateInput(name, value);
-      if (hasError) {
-        isFormValid = false;
-      }
-      if (name) {
-        dispatch({
-          type: UPDATE_FORM,
-          data: {
-            name,
-            value,
-            hasError,
-            error,
-            touched: true,
-            isFormValid,
-          },
-        });
-      }
-    }
-    if (!isFormValid) {
+    if (!isValidForm(formState, dispatch)) {
       setShowError(true);
-      setError("Please address all the shown errors.");
+      setError("Please address all the highlighted errors.");
     } else {
-      await handleAddBook();
+      await handleAddBook(prepareBookData(formState));
     }
   };
 
-  const handleAddBook = async () => {
-    let response = await fetch("http://localhost:4000/api/books", {
-      method: "POST",
-      body: JSON.stringify({ isbn: formState.isbn.value }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const handleAddBook = async (bookDataObject) => {
+    let response = await createBook(bookDataObject);
 
     response = await response;
     if (response.status === 200) {
@@ -149,41 +99,19 @@ const AddBookBySearch = () => {
       alignItems="flex-start"
     >
       {showError && (!formState.isFormValid || error.length > 0) && (
-        <Alert
-          severity="error"
+        <ErrorAlert
           className={classes.formMessage}
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={handleErrorAlertClose}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >
-          {error}
-        </Alert>
+          onClose={handleErrorAlertClose}
+          message={error}
+        />
       )}
 
       {showSuccess && (
-        <Alert
-          severity="success"
+        <SuccessAlert
           className={classes.formMessage}
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={handleSuccessAlertClose}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >
-          {success}
-        </Alert>
+          onClose={handleSuccessAlertClose}
+          message={success}
+        />
       )}
 
       <form
@@ -196,6 +124,7 @@ const AddBookBySearch = () => {
             variant="outlined"
             fullWidth
             autoFocus
+            margin="dense"
             type="text"
             name="isbn"
             id="isbn"
