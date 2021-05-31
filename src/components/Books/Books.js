@@ -6,12 +6,12 @@ const Books = (props) => {
     <div>
       {props.books.map((book) => (
         <BookTile
-          key={book.id}
+          key={book.book_id}
           title={book.title}
-          thumbnailUrl={book.thumbnailUrl}
-          isbn10={book.isbn10}
-          isbn13={book.isbn13}
-          pageCount={book.pageCount}
+          thumbnailUrl={book.thumbnail_url}
+          isbn10={book.isbn_10}
+          isbn13={book.isbn_13}
+          pageCount={book.page_count}
           author={book.author}
           description={book.description}
         />

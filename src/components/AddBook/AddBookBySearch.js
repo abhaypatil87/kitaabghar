@@ -74,7 +74,7 @@ const AddBookBySearch = () => {
   );
   const [success, setSuccess] = useState("");
 
-  const formSubmitHandler = (event) => {
+  const formSubmitHandler = async (event) => {
     event.preventDefault();
 
     let isFormValid = true;
@@ -103,7 +103,7 @@ const AddBookBySearch = () => {
       setShowError(true);
       setError("Please address all the shown errors.");
     } else {
-      handleAddBook();
+      await handleAddBook();
     }
   };
 
