@@ -18,8 +18,8 @@ const AuthorsView = () => {
   return (
     <React.Fragment>
       {authors.map((author) => (
-        <li key={author.id}>
-          {author.firstName} {author.lastName}
+        <li key={author.author_id}>
+          {author.first_name} {author.last_name}
         </li>
       ))}
     </React.Fragment>
