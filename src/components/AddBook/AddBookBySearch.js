@@ -51,6 +51,7 @@ const AddBookBySearch = () => {
     "Please enter a 10 or 13 digit ISBN value"
   );
   const [success, setSuccess] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
@@ -64,19 +65,27 @@ const AddBookBySearch = () => {
   };
 
   const handleAddBook = async (bookDataObject) => {
-    let response = await createBook(bookDataObject);
+    try {
+      setIsCreating(true);
+      let response = await createBook(bookDataObject);
 
-    response = await response;
-    if (response.status === 200) {
-      const responseText = await response.text();
-      const book = JSON.parse(responseText).data.book;
-      bookContext.books = [...bookContext.books, book];
-      setShowSuccess(true);
-      setSuccess(`The book '${book.title}' was added into the library`);
-    } else {
-      const responseText = await response.text();
+      response = await response;
+      if (response.status === 200) {
+        const responseText = await response.json();
+        const book = responseText.data.book;
+        bookContext.books = [...bookContext.books, book];
+        setShowSuccess(true);
+        setSuccess(`The book '${book.title}' was added into the library`);
+      } else {
+        const responseText = await response.text();
+        setShowError(true);
+        setError(responseText);
+      }
+    } catch (error) {
       setShowError(true);
-      setError(responseText);
+      setError(error.message);
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -143,6 +152,8 @@ const AddBookBySearch = () => {
         <Button
           variant="contained"
           color="primary"
+          disabled={isCreating}
+          aria-disabled={isCreating}
           disableElevation
           className={classes.submitButton}
           type="submit"
