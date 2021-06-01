@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
+  m2: {
+    marginTop: "12px",
+  },
 }));
 
 const AddBookByManualEntry = () => {
@@ -53,6 +56,7 @@ const AddBookByManualEntry = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState("Please enter all the required fields");
   const [success, setSuccess] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
@@ -65,18 +69,26 @@ const AddBookByManualEntry = () => {
   };
 
   const handleAddBook = async (bookDataObject) => {
-    let response = await createBook(bookDataObject);
+    try {
+      setIsCreating(true);
+      let response = await createBook(bookDataObject);
 
-    response = await response;
-    if (response.status === 200) {
-      const responseText = await response.text();
-      const book = JSON.parse(responseText).data.book;
-      setShowSuccess(true);
-      setSuccess(`The book '${book.title}' was added into the library`);
-    } else {
-      const responseText = await response.text();
+      response = await response;
+      if (response.status === 200) {
+        const responseText = await response.json();
+        const book = responseText.data.book;
+        setShowSuccess(true);
+        setSuccess(`The book '${book.title}' was added into the library`);
+      } else {
+        const responseText = await response.text();
+        setShowError(true);
+        setError(responseText);
+      }
+    } catch (error) {
       setShowError(true);
-      setError(responseText);
+      setError(error.message);
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -117,7 +129,7 @@ const AddBookByManualEntry = () => {
         className={classes.form}
         onSubmit={(event) => formSubmitHandler(event)}
       >
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
             autoFocus={true}
             margin="dense"
@@ -139,7 +151,7 @@ const AddBookByManualEntry = () => {
             <div className={classes.error}>{formState.title.error}</div>
           )}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
             margin="dense"
             label="Subtitle"
@@ -165,7 +177,7 @@ const AddBookByManualEntry = () => {
             <div className={classes.error}>{formState.subtitle.error}</div>
           )}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
             margin="dense"
             label="Author"
@@ -187,7 +199,7 @@ const AddBookByManualEntry = () => {
             <div className={classes.error}>{formState.author.error}</div>
           )}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
             margin="dense"
             label="Description"
@@ -220,7 +232,7 @@ const AddBookByManualEntry = () => {
             <div className={classes.error}>{formState.description.error}</div>
           )}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
             margin="dense"
             label="ISBN 10"
@@ -241,7 +253,7 @@ const AddBookByManualEntry = () => {
             <div className={classes.error}>{formState.isbn_10.error}</div>
           )}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
             margin="dense"
             label="ISBN 13"
@@ -262,7 +274,7 @@ const AddBookByManualEntry = () => {
             <div className={classes.error}>{formState.isbn_13.error}</div>
           )}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
             margin="dense"
             label="Pages"
@@ -288,9 +300,8 @@ const AddBookByManualEntry = () => {
             <div className={classes.error}>{formState.page_count.error}</div>
           )}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} className={classes.m2}>
           <TextField
-            autoFocus={true}
             margin="dense"
             label="Thumbnail URL"
             variant="outlined"
@@ -327,6 +338,8 @@ const AddBookByManualEntry = () => {
           variant="contained"
           color="primary"
           disableElevation
+          disabled={isCreating}
+          aria-disabled={isCreating}
           className={classes.submitButton}
           type="submit"
           value="Add"

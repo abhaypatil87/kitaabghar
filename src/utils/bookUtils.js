@@ -1,7 +1,7 @@
 export const prepareBookData = (state) => {
   const booksDataObject = {};
   if (state.hasOwnProperty("isbn")) {
-    booksDataObject.isbn = state.isbn;
+    booksDataObject.isbn = state.isbn.value;
   } else if (
     state.hasOwnProperty("isbn_10") ||
     state.hasOwnProperty("isbn_13")
