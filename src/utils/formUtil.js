@@ -1,4 +1,18 @@
 export const UPDATE_FORM = "UPDATE_FORM";
+export const CLEAR_FORM = "CLEAR_FORM";
+
+export const initialState = {
+  title: { value: "", touched: false, hasError: true, error: "" },
+  subtitle: { value: "", touched: false, hasError: false, error: "" },
+  description: { value: "", touched: false, hasError: false, error: "" },
+  isbn_10: { value: "", touched: false, hasError: true, error: "" },
+  isbn_13: { value: "", touched: false, hasError: true, error: "" },
+  author: { value: "", touched: false, hasError: true, error: "" },
+  page_count: { value: "", touched: false, hasError: true, error: "" },
+  thumbnail_url: { value: "", touched: false, hasError: true, error: "" },
+  isFormValid: false,
+};
+
 /**
  * Triggered every time the value of the form changes
  */
@@ -126,6 +140,8 @@ export const formsReducer = (state, action) => {
         [name]: { ...state[name], value, hasError, error, touched },
         isFormValid,
       };
+    case CLEAR_FORM:
+      return initialState;
     default:
       return state;
   }

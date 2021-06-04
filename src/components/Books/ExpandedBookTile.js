@@ -1,7 +1,7 @@
 import bookTitleStyles from "./BookTile.module.css";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import {
   formsReducer,
   isValidForm,
@@ -72,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ExpandedBookTile = (props) => {
+  const [bookState, setBookState] = useState({});
   const classes = useStyles();
   const [formState, dispatch] = useReducer(
     formsReducer,
@@ -84,15 +85,18 @@ const ExpandedBookTile = (props) => {
   const [success, setSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
+  useEffect(() => {
+    setBookState({ ...props });
+  }, []);
+
   const enableEdit = () => {
     setEditMode(true);
   };
-  const confirmDeleteBook = () => {};
-  const deleteBook = () => {};
-
   const cancelEdit = () => {
     setEditMode(false);
   };
+
+  const confirmDeleteBook = () => {};
 
   const editClickHandler = async (event) => {
     event.preventDefault();
@@ -101,12 +105,12 @@ const ExpandedBookTile = (props) => {
       setError("Please address all the highlighted errors.");
     } else {
       await handleEditBook({
-        book_id: props.book_id,
-        subtitle: props.subtitle,
-        isbn_10: props.isbn_10,
-        isbn_13: props.isbn_13,
-        page_count: props.page_count,
-        thumbnail_url: props.thumbnail_url,
+        book_id: bookState.book_id,
+        subtitle: bookState.subtitle,
+        isbn_10: bookState.isbn_10,
+        isbn_13: bookState.isbn_13,
+        page_count: bookState.page_count,
+        thumbnail_url: bookState.thumbnail_url,
         title: formState.title.value,
         description: formState.description.value,
       });
@@ -122,6 +126,7 @@ const ExpandedBookTile = (props) => {
       if (response.status === 200) {
         const responseText = await response.json();
         const book = responseText.data.book;
+        setBookState({ ...book });
         setShowSuccess(true);
         setSuccess(`The book '${book.title}' has been updated successfully.`);
       } else {
@@ -168,7 +173,7 @@ const ExpandedBookTile = (props) => {
         )}
         <Grid container spacing={2}>
           <Grid item>
-            <img src={props.thumbnail_url} alt="" />
+            <img src={bookState.thumbnail_url} alt="" />
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs>
@@ -179,7 +184,7 @@ const ExpandedBookTile = (props) => {
                   variant="h5"
                   onClick={props.onClick}
                 >
-                  {props.title}
+                  {bookState.title}
                 </Typography>
               )}
               <Fade in={editMode} timeout={300} unmountOnExit>
@@ -216,18 +221,18 @@ const ExpandedBookTile = (props) => {
                 </>
               </Fade>
               <Typography variant="h6" gutterBottom>
-                {props.subtitle}
+                {bookState.subtitle}
               </Typography>
               <Typography variant="subtitle1" gutterBottom>
-                {props.author}
+                {bookState.author}
               </Typography>
 
               <Typography variant="body2" color="textSecondary">
-                {props.page_count} Pages
+                {bookState.page_count} Pages
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                <strong>ISBN 13:</strong> {props.isbn_13}{" "}
-                <strong>ISBN 10:</strong> {props.isbn_10}
+                <strong>ISBN 13:</strong> {bookState.isbn_13}{" "}
+                <strong>ISBN 10:</strong> {bookState.isbn_10}
               </Typography>
 
               <Box component="div" marginTop={2}>
@@ -236,7 +241,7 @@ const ExpandedBookTile = (props) => {
                     variant="body1"
                     className={bookTitleStyles.bookDescription}
                   >
-                    {props.description}
+                    {bookState.description}
                   </Typography>
                 )}
                 <Fade in={editMode} timeout={300} unmountOnExit>
