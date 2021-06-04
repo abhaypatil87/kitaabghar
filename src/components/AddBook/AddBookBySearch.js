@@ -11,7 +11,7 @@ import {
   onInputChange,
 } from "../../utils/formUtil";
 import BookContext from "../../Store/book-store";
-import { createBook, prepareBookData } from "../../utils/bookUtils";
+import { createBook } from "../../utils/bookUtils";
 import ErrorAlert from "../Alert/ErrorAlert";
 import SuccessAlert from "../Alert/SuccessAlert";
 
@@ -60,7 +60,7 @@ const AddBookBySearch = () => {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
-      await handleAddBook(prepareBookData(formState));
+      await handleAddBook({ isbn: formState.isbn.value });
     }
   };
 

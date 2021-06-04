@@ -19,7 +19,7 @@ const BookTile = (props) => {
       ) : (
         <div className={bookTitleStyles.cover} onClick={handleTitleClick}>
           <img
-            src={props.thumbnailUrl}
+            src={props.thumbnail_url}
             alt={props.title}
             className={bookTitleStyles.coverImage}
           />

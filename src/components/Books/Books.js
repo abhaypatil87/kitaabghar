@@ -7,12 +7,13 @@ const Books = (props) => {
       {props.books.map((book) => (
         <BookTile
           key={book.book_id}
+          book_id={book.book_id}
           title={book.title}
           subtitle={book.subtitle}
-          thumbnailUrl={book.thumbnail_url}
-          isbn10={book.isbn_10}
-          isbn13={book.isbn_13}
-          pageCount={book.page_count}
+          thumbnail_url={book.thumbnail_url}
+          isbn_10={book.isbn_10}
+          isbn_13={book.isbn_13}
+          page_count={book.page_count}
           author={book.author}
           description={book.description}
         />

@@ -8,7 +8,7 @@ import {
   onFocusOut,
   onInputChange,
 } from "../../utils/formUtil";
-import { createBook, prepareBookData } from "../../utils/bookUtils";
+import { createBook } from "../../utils/bookUtils";
 import ErrorAlert from "../Alert/ErrorAlert";
 import SuccessAlert from "../Alert/SuccessAlert";
 
@@ -64,7 +64,16 @@ const AddBookByManualEntry = () => {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
-      await handleAddBook(prepareBookData(formState));
+      await handleAddBook({
+        title: formState.title.value,
+        description: formState.description.value,
+        subtitle: formState.subtitle.value,
+        isbn_10: formState.isbn_10.value,
+        isbn_13: formState.isbn_13.value,
+        page_count: formState.page_count.value,
+        thumbnail_url: formState.thumbnail_url.value,
+        author: formState.author.value,
+      });
     }
   };
 
