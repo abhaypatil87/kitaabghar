@@ -152,6 +152,20 @@ const ExpandedBookTile = (props) => {
     }
   };
 
+  const updateContext = (book) => {
+    const updatedBooks = [
+      ...books.filter((item) => item.book_id !== props.book_id),
+      book,
+    ];
+    updatedBooks.sort(function (a, b) {
+      const nameA = a.title.toUpperCase();
+      const nameB = b.title.toUpperCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+    setBooks(updatedBooks);
+  };
   const handleEditBook = async (bookDataObject) => {
     try {
       setIsEditing(true);
@@ -161,6 +175,8 @@ const ExpandedBookTile = (props) => {
       if (response.status === 200) {
         const responseText = await response.json();
         const book = responseText.data.book;
+        updateContext(book);
+
         setBookState({ ...book });
         setShowSuccess(true);
         setSuccess(`The book '${book.title}' has been updated successfully.`);
