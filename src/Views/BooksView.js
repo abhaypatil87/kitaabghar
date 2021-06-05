@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Books from "../components/Books/Books";
 import SearchBar from "../components/SearchBar/SearchBar";
 import BookContext from "../Store/book-store";
+import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
 
 const BooksView = () => {
   const [books, setBooks] = useState([]);
@@ -10,7 +11,9 @@ const BooksView = () => {
 
   useEffect(() => {
     const fetchAllBooks = async () => {
-      let response = await fetch("http://localhost:4000/api/books");
+      let response = await fetch(
+        `http://${SERVER_URL}:${SERVER_PORT}/api/books`
+      );
       response = await response.json();
       setBooks(response.data.books);
     };

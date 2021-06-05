@@ -15,7 +15,11 @@ const BookTile = (props) => {
   return (
     <React.Fragment>
       {expanded ? (
-        <ExpandedBookTile {...props} onClick={handleTitleClick} />
+        <ExpandedBookTile
+          {...props}
+          onDelete={props.onDelete}
+          onClick={handleTitleClick}
+        />
       ) : (
         <div className={bookTitleStyles.cover} onClick={handleTitleClick}>
           <img
