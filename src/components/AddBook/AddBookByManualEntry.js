@@ -3,26 +3,16 @@ import TextField from "@material-ui/core/TextField";
 import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {
+  CLEAR_FORM,
+  initialState,
   formsReducer,
   isValidForm,
   onFocusOut,
   onInputChange,
 } from "../../utils/formUtil";
-import { createBook, prepareBookData } from "../../utils/bookUtils";
+import { createBook } from "../../utils/bookUtils";
 import ErrorAlert from "../Alert/ErrorAlert";
 import SuccessAlert from "../Alert/SuccessAlert";
-
-const initialState = {
-  title: { value: "", touched: false, hasError: true, error: "" },
-  subtitle: { value: "", touched: false, hasError: false, error: "" },
-  description: { value: "", touched: false, hasError: false, error: "" },
-  isbn_10: { value: "", touched: false, hasError: true, error: "" },
-  isbn_13: { value: "", touched: false, hasError: true, error: "" },
-  author: { value: "", touched: false, hasError: true, error: "" },
-  page_count: { value: "", touched: false, hasError: true, error: "" },
-  thumbnail_url: { value: "", touched: false, hasError: true, error: "" },
-  isFormValid: false,
-};
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -64,7 +54,16 @@ const AddBookByManualEntry = () => {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
-      await handleAddBook(prepareBookData(formState));
+      await handleAddBook({
+        title: formState.title.value,
+        description: formState.description.value,
+        subtitle: formState.subtitle.value,
+        isbn_10: formState.isbn_10.value,
+        isbn_13: formState.isbn_13.value,
+        page_count: formState.page_count.value,
+        thumbnail_url: formState.thumbnail_url.value,
+        author: formState.author.value,
+      });
     }
   };
 
@@ -79,6 +78,10 @@ const AddBookByManualEntry = () => {
         const book = responseText.data.book;
         setShowSuccess(true);
         setSuccess(`The book '${book.title}' was added into the library`);
+        dispatch({
+          type: CLEAR_FORM,
+          data: formState,
+        });
       } else {
         const responseText = await response.text();
         setShowError(true);
