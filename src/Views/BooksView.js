@@ -18,6 +18,7 @@ const BooksView = () => {
   }, []);
 
   useEffect(() => {
+    //TODO: issues/4
     setFilteredBooks(books);
   }, [books]);
 
@@ -35,9 +36,16 @@ const BooksView = () => {
   };
 
   return (
-    <BookContext.Provider value={{ books: filteredBooks }}>
+    <BookContext.Provider
+      value={{
+        books: books,
+        filteredBooks: filteredBooks,
+        setBooks: setBooks,
+        setFilteredBooks: setFilteredBooks,
+      }}
+    >
       <SearchBar onSearch={searchChangeHandler} />
-      <Books books={filteredBooks} />
+      <Books />
     </BookContext.Provider>
   );
 };

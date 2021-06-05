@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useContext } from "react";
+import React, { useReducer, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -10,7 +10,6 @@ import {
   onFocusOut,
   onInputChange,
 } from "../../utils/formUtil";
-import BookContext from "../../Store/book-store";
 import { createBook } from "../../utils/bookUtils";
 import ErrorAlert from "../Alert/ErrorAlert";
 import SuccessAlert from "../Alert/SuccessAlert";
@@ -43,7 +42,6 @@ const initialState = {
 };
 const AddBookBySearch = () => {
   const classes = useStyles();
-  const bookContext = useContext(BookContext);
   const [formState, dispatch] = useReducer(formsReducer, initialState);
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -73,7 +71,6 @@ const AddBookBySearch = () => {
       if (response.status === 200) {
         const responseText = await response.json();
         const book = responseText.data.book;
-        bookContext.books = [...bookContext.books, book];
         setShowSuccess(true);
         setSuccess(`The book '${book.title}' was added into the library`);
       } else {

@@ -1,7 +1,9 @@
-import bookTitleStyles from "./BookTile.module.css";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
-import React, { useEffect, useReducer, useState } from "react";
+import bookTitleStyles from "./BookTile.module.css";
+import BookContext from "../../Store/book-store";
+
 import {
   formsReducer,
   isValidForm,
@@ -9,10 +11,20 @@ import {
   onInputChange,
 } from "../../utils/formUtil";
 import TextField from "@material-ui/core/TextField";
-import { Button, Fade, Grid, makeStyles, Paper } from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Fade,
+  Grid,
+  makeStyles,
+  Paper,
+} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { updateBook } from "../../utils/bookUtils";
+import { deleteBook, updateBook } from "../../utils/bookUtils";
 import ErrorAlert from "../Alert/ErrorAlert";
 import SuccessAlert from "../Alert/SuccessAlert";
 
@@ -72,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ExpandedBookTile = (props) => {
+  const { books, setBooks } = useContext(BookContext);
   const [bookState, setBookState] = useState({});
   const classes = useStyles();
   const [formState, dispatch] = useReducer(
@@ -84,6 +97,7 @@ const ExpandedBookTile = (props) => {
   const [error, setError] = useState("Please enter all the required fields");
   const [success, setSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setBookState({ ...props });
@@ -96,7 +110,28 @@ const ExpandedBookTile = (props) => {
     setEditMode(false);
   };
 
-  const confirmDeleteBook = () => {};
+  const confirmDeleteBook = () => {
+    setIsOpen(true);
+  };
+
+  const cancelDelete = () => {
+    setIsOpen(false);
+  };
+
+  const removeBook = async () => {
+    try {
+      const response = await deleteBook(props.book_id);
+      const result = await response.json();
+      if (result.success) {
+        setBooks(books.filter((item) => item.book_id !== props.book_id));
+      }
+    } catch (error) {
+      setError(error.message);
+      setShowError(true);
+    } finally {
+      setIsOpen(false);
+    }
+  };
 
   const editClickHandler = async (event) => {
     event.preventDefault();
@@ -316,8 +351,54 @@ const ExpandedBookTile = (props) => {
           </Grid>
         </Grid>
       </Paper>
+      <Confirm
+        classes={{
+          paper: classes.paper,
+        }}
+        keepMounted
+        open={isOpen}
+        onClose={cancelDelete}
+        onOkay={removeBook}
+      />
     </div>
   );
 };
 
+function Confirm(props) {
+  const { onClose, onOkay, open, ...other } = props;
+
+  const handleCancel = () => {
+    onClose();
+  };
+
+  const handleOk = () => {
+    onOkay();
+  };
+
+  return (
+    <Dialog
+      disableBackdropClick
+      disableEscapeKeyDown
+      maxWidth="xs"
+      aria-labelledby="book-delete-confirmation-dialog"
+      open={open}
+      {...other}
+    >
+      <DialogTitle>Confirm</DialogTitle>
+      <DialogContent dividers>
+        <Typography>
+          This will permanently remove the book from the library. Are you sure?
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={handleCancel} color="secondary">
+          Cancel
+        </Button>
+        <Button onClick={handleOk} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 export default ExpandedBookTile;

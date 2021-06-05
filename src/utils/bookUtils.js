@@ -20,3 +20,12 @@ export const updateBook = async (bookDataObject) => {
     }
   );
 };
+
+export const deleteBook = async (bookId) => {
+  return await fetch(`http://localhost:4000/api/books/${bookId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};

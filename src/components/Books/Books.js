@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import BookTile from "./BookTile";
+import BookContext from "../../Store/book-store";
 
-const Books = (props) => {
+const Books = () => {
+  const { filteredBooks } = useContext(BookContext);
+
+  useEffect(() => {
+    // This hook has been kept here for educational purpose
+    // This hook will be called whenever a book is edited or updated
+  }, [filteredBooks]);
+
   return (
     <div>
-      {props.books.map((book) => (
+      {filteredBooks.map((book) => (
         <BookTile
           key={book.book_id}
           book_id={book.book_id}
