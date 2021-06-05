@@ -1,5 +1,7 @@
+export const SERVER_URL = "192.168.1.67";
+export const SERVER_PORT = 4000;
 export const createBook = async (bookDataObject) => {
-  return await fetch("http://localhost:4000/api/books", {
+  return await fetch(`http://${SERVER_URL}:${SERVER_PORT}/api/books`, {
     method: "POST",
     body: JSON.stringify(bookDataObject),
     headers: {
@@ -10,7 +12,7 @@ export const createBook = async (bookDataObject) => {
 
 export const updateBook = async (bookDataObject) => {
   return await fetch(
-    `http://localhost:4000/api/books/${bookDataObject.book_id}`,
+    `http://${SERVER_URL}:${SERVER_PORT}/api/books/${bookDataObject.book_id}`,
     {
       method: "PUT",
       body: JSON.stringify(bookDataObject),
@@ -22,10 +24,13 @@ export const updateBook = async (bookDataObject) => {
 };
 
 export const deleteBook = async (bookId) => {
-  return await fetch(`http://localhost:4000/api/books/${bookId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return await fetch(
+    `http://${SERVER_URL}:${SERVER_PORT}/api/books/${bookId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 };

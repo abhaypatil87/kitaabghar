@@ -123,6 +123,9 @@ const ExpandedBookTile = (props) => {
       const response = await deleteBook(props.book_id);
       const result = await response.json();
       if (result.success) {
+        props.onDelete(
+          `The book '${props.title}' was removed from the library.`
+        );
         setBooks(books.filter((item) => item.book_id !== props.book_id));
       }
     } catch (error) {
@@ -166,6 +169,7 @@ const ExpandedBookTile = (props) => {
     });
     setBooks(updatedBooks);
   };
+
   const handleEditBook = async (bookDataObject) => {
     try {
       setIsEditing(true);
