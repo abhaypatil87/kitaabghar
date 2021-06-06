@@ -30,11 +30,7 @@ const SearchBar = (props) => {
         inputProps={{ "aria-label": "search books" }}
         onChange={props.onSearch}
       />
-      <IconButton
-        type="submit"
-        className={classes.iconButton}
-        aria-label="search"
-      >
+      <IconButton type="submit" className={classes.iconButton} disabled>
         <SearchIcon />
       </IconButton>
     </Paper>
