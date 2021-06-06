@@ -57,6 +57,7 @@ const Sidebar = (props) => {
             <Link to="/timeline" className={sideBarStyles.link}>
               <MenuItem
                 title="Timeline"
+                testid="sidebar-menu-item"
                 icon={TimelineIcon}
                 onClick={() => onItemClicked("Timeline")}
                 active={props.selectedItem === "Timeline"}
@@ -65,6 +66,7 @@ const Sidebar = (props) => {
             <Link to="/books" className={sideBarStyles.link}>
               <MenuItem
                 title="Books"
+                testid="sidebar-menu-item"
                 icon={LocalLibraryIcon}
                 onClick={() => onItemClicked("Books")}
                 active={props.selectedItem === "Books"}
@@ -73,6 +75,7 @@ const Sidebar = (props) => {
             <Link to="/add-books" className={sideBarStyles.link}>
               <MenuItem
                 title="Add Books"
+                testid="sidebar-menu-item"
                 icon={QueueOutlinedIcon}
                 onClick={() => onItemClicked("Add Books")}
                 active={props.selectedItem === "Add Books"}
@@ -81,6 +84,7 @@ const Sidebar = (props) => {
             <Link to="/authors" className={sideBarStyles.link}>
               <MenuItem
                 title="Authors"
+                testid="sidebar-menu-item"
                 icon={PeopleAltIcon}
                 onClick={() => onItemClicked("Authors")}
                 active={props.selectedItem === "Authors"}

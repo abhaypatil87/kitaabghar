@@ -13,7 +13,10 @@ const MenuItem = (props) => {
     >
       {active && <div className={styles.activeBar} />}
       <Icon />
-      <span className={`${styles.title} ${active && styles.activeTitle}`}>
+      <span
+        data-testid={props.testid}
+        className={`${styles.title} ${active && styles.activeTitle}`}
+      >
         {title}
       </span>
     </Row>
