@@ -1,5 +1,6 @@
 {
   "name": "library_ui",
+  "description": "A clone of Goodreads, except only personal, and re-imagined and re-designed.",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,18 +8,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "jest": "jest"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
-  },
-  "jest": {
-    "transform": {
-      "\\.js$": "./node_modules/babel-jest"
-    }
   },
   "browserslist": {
     "production": [
