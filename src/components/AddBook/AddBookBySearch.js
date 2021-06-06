@@ -1,8 +1,6 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { Grid } from "@material-ui/core";
+import { Grid, Box, Button, TextField } from "@material-ui/core";
 
 import {
   formsReducer,
@@ -124,7 +122,7 @@ const AddBookBySearch = () => {
         className={classes.form}
         onSubmit={(event) => formSubmitHandler(event)}
       >
-        <div className="input_wrapper">
+        <Box component="div">
           <TextField
             label="ISBN Number"
             variant="outlined"
@@ -145,7 +143,7 @@ const AddBookBySearch = () => {
           {formState.isbn.touched && formState.isbn.hasError && (
             <div className={classes.error}>{formState.isbn.error}</div>
           )}
-        </div>
+        </Box>
         <Button
           variant="contained"
           color="primary"
