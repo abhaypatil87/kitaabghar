@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import bookTitleStyles from "./BookTile.module.css";
 import ExpandedBookTile from "./ExpandedBookTile";
+import BookContext from "../../Store/book-store";
 
 const BookTile = (props) => {
+  const { viewAs } = useContext(BookContext);
   const [expanded, setExpanded] = useState(false);
 
   const handleTitleClick = (event) => {

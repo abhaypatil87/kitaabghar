@@ -355,13 +355,13 @@ const ExpandedBookTile = (props) => {
               </Grid>
             </Grid>
             <Grid item>
-              <Typography variant="subtitle1">
+              <Typography>
                 <EditRoundedIcon
                   onClick={enableEdit}
                   className={`${classes.iconButton} ${classes.hover}`}
                 />
               </Typography>
-              <Typography variant="subtitle1">
+              <Typography>
                 <DeleteOutlineRoundedIcon
                   className={`${classes.iconButton} ${classes.hover}`}
                   onClick={confirmDeleteBook}

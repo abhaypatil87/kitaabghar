@@ -5,6 +5,8 @@ const BookContext = React.createContext({
   filteredBooks: [],
   setBooks: () => {},
   setFilteredBooks: () => {},
+  viewAs: "grid",
+  setViewAs: () => {},
 });
 
 export default BookContext;

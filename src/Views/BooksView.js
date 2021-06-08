@@ -3,6 +3,7 @@ import Books from "../components/Books/Books";
 import SearchBar from "../components/SearchBar/SearchBar";
 import BookContext from "../Store/book-store";
 import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
+import ViewAsContainer from "../components/ViewAs/ViewAsContainer";
 
 const BooksView = () => {
   const [books, setBooks] = useState([]);
@@ -48,6 +49,7 @@ const BooksView = () => {
       }}
     >
       <SearchBar onSearch={searchChangeHandler} />
+      <ViewAsContainer />
       <Books />
     </BookContext.Provider>
   );

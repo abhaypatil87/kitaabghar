@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 const Books = () => {
   const classes = useStyles();
 
-  const { filteredBooks } = useContext(BookContext);
+  const { filteredBooks, viewAs } = useContext(BookContext);
   const [message, setMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -39,6 +39,7 @@ const Books = () => {
 
   return (
     <Box component="div">
+      <span>{viewAs}</span>
       {showSuccess && (
         <SuccessAlert
           className={classes.formMessage}
