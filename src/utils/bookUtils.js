@@ -28,9 +28,6 @@ export const deleteBook = async (bookId) => {
     `http://${SERVER_URL}:${SERVER_PORT}/api/books/${bookId}`,
     {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
     }
   );
 };
