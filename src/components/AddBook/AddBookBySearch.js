@@ -9,28 +9,16 @@ import {
   onInputChange,
 } from "../../utils/formUtil";
 import { createBook } from "../../utils/bookUtils";
-import ErrorAlert from "../Alert/ErrorAlert";
-import SuccessAlert from "../Alert/SuccessAlert";
+import ErrorAlert from "../common/Alert/ErrorAlert";
+import SuccessAlert from "../common/Alert/SuccessAlert";
+import FormError from "../common/FormError/FormError";
 
 const useStyles = makeStyles((theme) => ({
-  grid: {
+  m1: {
     marginTop: theme.spacing(1),
   },
-  form: {
-    width: "50%",
-    marginTop: theme.spacing(1),
-  },
-  error: {
-    marginTop: theme.spacing(1),
-    color: "#f65157",
-  },
-  submitButton: {
+  m2: {
     marginTop: theme.spacing(2),
-  },
-  formMessage: {
-    width: "50%",
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -96,67 +84,68 @@ const AddBookBySearch = () => {
 
   return (
     <Grid
-      className={classes.grid}
+      className={classes.m1}
       container
       direction="column"
       justify="flex-start"
       alignItems="flex-start"
     >
-      {showError && (!formState.isFormValid || error.length > 0) && (
-        <ErrorAlert
-          className={classes.formMessage}
-          onClose={handleErrorAlertClose}
-          message={error}
-        />
-      )}
-
-      {showSuccess && (
-        <SuccessAlert
-          className={classes.formMessage}
-          onClose={handleSuccessAlertClose}
-          message={success}
-        />
-      )}
-
-      <form
-        className={classes.form}
-        onSubmit={(event) => formSubmitHandler(event)}
-      >
-        <Box component="div">
-          <TextField
-            label="ISBN Number"
-            variant="outlined"
-            fullWidth
-            autoFocus
-            margin="dense"
-            type="text"
-            name="isbn"
-            id="isbn"
-            value={formState.isbn.value}
-            onChange={(event) => {
-              onInputChange("isbn", event.target.value, dispatch, formState);
-            }}
-            onBlur={(event) => {
-              onFocusOut("isbn", event.target.value, dispatch, formState);
-            }}
+      <Grid item xs={12} sm={12} md={8} lg={6}>
+        {showError && (!formState.isFormValid || error.length > 0) && (
+          <ErrorAlert
+            className={classes.m1}
+            onClose={handleErrorAlertClose}
+            message={error}
           />
-          {formState.isbn.touched && formState.isbn.hasError && (
-            <div className={classes.error}>{formState.isbn.error}</div>
-          )}
-        </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={isCreating}
-          aria-disabled={isCreating}
-          disableElevation
-          className={classes.submitButton}
-          type="submit"
-          value="Add"
+        )}
+
+        {showSuccess && (
+          <SuccessAlert
+            className={classes.m1}
+            onClose={handleSuccessAlertClose}
+            message={success}
+          />
+        )}
+        <form
+          className={classes.m1}
+          onSubmit={(event) => formSubmitHandler(event)}
         >
-          Add
-        </Button>
-      </form>
+          <Box component="div">
+            <TextField
+              label="ISBN Number"
+              variant="outlined"
+              fullWidth
+              autoFocus
+              margin="dense"
+              type="text"
+              name="isbn"
+              id="isbn"
+              value={formState.isbn.value}
+              onChange={(event) => {
+                onInputChange("isbn", event.target.value, dispatch, formState);
+              }}
+              onBlur={(event) => {
+                onFocusOut("isbn", event.target.value, dispatch, formState);
+              }}
+            />
+            {formState.isbn.touched && formState.isbn.hasError && (
+              <FormError error={formState.isbn.error} />
+            )}
+          </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={isCreating}
+            aria-disabled={isCreating}
+            disableElevation
+            className={classes.m2}
+            type="submit"
+            value="Add"
+          >
+            Add
+          </Button>
+        </form>
+      </Grid>
     </Grid>
   );
 };

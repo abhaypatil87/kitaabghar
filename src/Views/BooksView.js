@@ -3,7 +3,7 @@ import Books from "../components/Books/Books";
 import SearchBar from "../components/SearchBar/SearchBar";
 import BookContext from "../Store/book-store";
 import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
-import ViewAsContainer from "../components/ViewAs/ViewAsContainer";
+import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import { viewState as view } from "../utils/bookUtils";
 
 const BooksView = () => {

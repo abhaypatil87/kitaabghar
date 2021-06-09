@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import { Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Box
+      component="div"
       role="tabpanel"
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
@@ -15,7 +16,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && <>{children}</>}
-    </div>
+    </Box>
   );
 }
 
@@ -42,7 +43,7 @@ const FullWidthTabs = (props) => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box component="div" className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -61,7 +62,7 @@ const FullWidthTabs = (props) => {
           {tab.body}
         </TabPanel>
       ))}
-    </div>
+    </Box>
   );
 };
 

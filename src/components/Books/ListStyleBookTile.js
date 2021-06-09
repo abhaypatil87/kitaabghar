@@ -24,8 +24,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { deleteBook, updateBook } from "../../utils/bookUtils";
-import ErrorAlert from "../Alert/ErrorAlert";
-import SuccessAlert from "../Alert/SuccessAlert";
+import ErrorAlert from "../common/Alert/ErrorAlert";
+import SuccessAlert from "../common/Alert/SuccessAlert";
+import FormError from "../common/FormError/FormError";
 
 const getInitialState = (props) => {
   return {
@@ -269,7 +270,7 @@ const ListStyleBookTile = (props) => {
                     }}
                   />
                   {formState.title.touched && formState.title.hasError && (
-                    <div className={classes.error}>{formState.title.error}</div>
+                    <FormError error={formState.title.error} />
                   )}
                 </>
               </Fade>

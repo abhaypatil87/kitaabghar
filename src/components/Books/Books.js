@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import BookTile from "./BookTile";
 import BookContext from "../../Store/book-store";
 import Box from "@material-ui/core/Box";
-import SuccessAlert from "../Alert/SuccessAlert";
+import SuccessAlert from "../common/Alert/SuccessAlert";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({

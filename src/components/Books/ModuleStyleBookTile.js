@@ -10,7 +10,9 @@ const ModuleStyleBookTile = (props) => {
         alt={props.title}
         className={bookTitleStyles.coverImage}
       />
-      <div className={bookTitleStyles.coverTitle}>{props.title}</div>
+      <Box component="div" className={bookTitleStyles.coverTitle}>
+        {props.title}
+      </Box>
     </Box>
   );
 };

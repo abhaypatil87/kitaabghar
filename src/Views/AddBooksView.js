@@ -1,7 +1,7 @@
 import React from "react";
 import AddBookBySearch from "../components/AddBook/AddBookBySearch";
 import AddBookByManualEntry from "../components/AddBook/AddBookByManualEntry";
-import FullWidthTabs from "../components/FullWidthTabs/FullWidthTabs";
+import FullWidthTabs from "../components/common/FullWidthTabs/FullWidthTabs";
 
 const AddBooksView = () => {
   const tabs = [
