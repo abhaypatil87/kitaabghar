@@ -11,12 +11,15 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
+  root: {
+    padding: "10px 10px 10px 10px",
+  },
 }));
 
 const Books = () => {
   const classes = useStyles();
 
-  const { filteredBooks, viewAs } = useContext(BookContext);
+  const { filteredBooks } = useContext(BookContext);
   const [message, setMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -38,8 +41,7 @@ const Books = () => {
   };
 
   return (
-    <Box component="div">
-      <span>{viewAs}</span>
+    <Box component="div" className={classes.root}>
       {showSuccess && (
         <SuccessAlert
           className={classes.formMessage}

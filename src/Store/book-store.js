@@ -1,11 +1,12 @@
 import React from "react";
+import { viewState } from "../utils/bookUtils";
 
 const BookContext = React.createContext({
   books: [],
   filteredBooks: [],
   setBooks: () => {},
   setFilteredBooks: () => {},
-  viewAs: "grid",
+  viewAs: viewState.MODULE,
   setViewAs: () => {},
 });
 

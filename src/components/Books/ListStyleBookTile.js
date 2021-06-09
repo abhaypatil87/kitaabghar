@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
+import BookContext from "../../Store/book-store";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import bookTitleStyles from "./BookTile.module.css";
-import BookContext from "../../Store/book-store";
-
 import {
   formsReducer,
   isValidForm,
   onFocusOut,
   onInputChange,
 } from "../../utils/formUtil";
-import TextField from "@material-ui/core/TextField";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -21,9 +20,9 @@ import {
   Grid,
   makeStyles,
   Paper,
+  TextField,
+  Typography,
 } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import { deleteBook, updateBook } from "../../utils/bookUtils";
 import ErrorAlert from "../Alert/ErrorAlert";
 import SuccessAlert from "../Alert/SuccessAlert";
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    margin: "10px",
+    marginBottom: "10px",
     maxWidth: "100%",
   },
   image: {
@@ -83,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedBookTile = (props) => {
+const ListStyleBookTile = (props) => {
   const { books, setBooks } = useContext(BookContext);
   const [bookState, setBookState] = useState({});
   const classes = useStyles();
@@ -209,7 +208,7 @@ const ExpandedBookTile = (props) => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box component="div" className={classes.root}>
       <Paper elevation={3} className={classes.paper}>
         {showError && (!formState.isFormValid || error.length > 0) && (
           <ErrorAlert
@@ -237,7 +236,6 @@ const ExpandedBookTile = (props) => {
                   className={`${classes.bookTitle} ${classes.hover}`}
                   gutterBottom
                   variant="h5"
-                  onClick={props.onClick}
                 >
                   {bookState.title}
                 </Typography>
@@ -278,7 +276,11 @@ const ExpandedBookTile = (props) => {
               <Typography variant="h6" gutterBottom>
                 {bookState.subtitle}
               </Typography>
-              <Typography variant="subtitle1" gutterBottom>
+              <Typography
+                variant="subtitle1"
+                className={bookTitleStyles.secondaryDetail}
+                gutterBottom
+              >
                 {bookState.author}
               </Typography>
 
@@ -380,7 +382,7 @@ const ExpandedBookTile = (props) => {
         onClose={cancelDelete}
         onOkay={removeBook}
       />
-    </div>
+    </Box>
   );
 };
 
@@ -421,4 +423,4 @@ function Confirm(props) {
     </Dialog>
   );
 }
-export default ExpandedBookTile;
+export default ListStyleBookTile;

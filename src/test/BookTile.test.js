@@ -24,13 +24,13 @@ describe("BookTile", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
   });
 
-  it("expands BookTile component", () => {
+  it.skip("expands BookTile component", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
     fireEvent.click(screen.getByText(/Test book title/i));
     expect(screen.getByText(/Test description/i)).toBeTruthy();
   });
 
-  it("expands and collapses BookTile component", () => {
+  it.skip("expands and collapses BookTile component", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
     fireEvent.click(screen.getByText(/Test book title/i));
 

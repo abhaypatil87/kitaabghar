@@ -18,6 +18,7 @@ const ViewAsIcon = (props) => {
     <Typography
       className={`${classes.iconButton} ${classes.hover}`}
       onClick={props.onClick}
+      aria-label={props.ariaLabel}
     >
       {props.children}
     </Typography>

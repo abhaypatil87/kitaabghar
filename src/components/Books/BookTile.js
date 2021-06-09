@@ -1,39 +1,23 @@
-import React, { useContext, useState } from "react";
-import bookTitleStyles from "./BookTile.module.css";
-import ExpandedBookTile from "./ExpandedBookTile";
+import React, { useContext } from "react";
 import BookContext from "../../Store/book-store";
+import ListStyleBookTile from "./ListStyleBookTile";
+import ModuleStyleBookTile from "./ModuleStyleBookTile";
+import HeadlineStyleBookTile from "./HeadlineStyleBookTile";
+import { viewState } from "../../utils/bookUtils";
 
 const BookTile = (props) => {
   const { viewAs } = useContext(BookContext);
-  const [expanded, setExpanded] = useState(false);
 
-  const handleTitleClick = (event) => {
-    event.preventDefault();
-    setExpanded((prevState) => {
-      return !prevState;
-    });
-  };
+  const bookTile =
+    viewAs === viewState.LIST ? (
+      <ListStyleBookTile {...props} onDelete={props.onDelete} />
+    ) : viewAs === viewState.MODULE ? (
+      <ModuleStyleBookTile {...props} />
+    ) : (
+      <HeadlineStyleBookTile {...props} />
+    );
 
-  return (
-    <React.Fragment>
-      {expanded ? (
-        <ExpandedBookTile
-          {...props}
-          onDelete={props.onDelete}
-          onClick={handleTitleClick}
-        />
-      ) : (
-        <div className={bookTitleStyles.cover} onClick={handleTitleClick}>
-          <img
-            src={props.thumbnail_url}
-            alt={props.title}
-            className={bookTitleStyles.coverImage}
-          />
-          <div className={bookTitleStyles.coverTitle}>{props.title}</div>
-        </div>
-      )}
-    </React.Fragment>
-  );
+  return <React.Fragment>{bookTile}</React.Fragment>;
 };
 
 export default BookTile;

@@ -4,11 +4,13 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import BookContext from "../Store/book-store";
 import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
 import ViewAsContainer from "../components/ViewAs/ViewAsContainer";
+import { viewState as view } from "../utils/bookUtils";
 
 const BooksView = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [viewAs, setViewAs] = useState(view.MODULE);
 
   useEffect(() => {
     const fetchAllBooks = async () => {
@@ -39,6 +41,10 @@ const BooksView = () => {
     setSearchTerm(event.target.value);
   };
 
+  const viewAsChangeHandler = (event) => {
+    setViewAs(event);
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -46,10 +52,12 @@ const BooksView = () => {
         filteredBooks: filteredBooks,
         setBooks: setBooks,
         setFilteredBooks: setFilteredBooks,
+        viewAs: viewAs,
+        setViewAs: setViewAs,
       }}
     >
       <SearchBar onSearch={searchChangeHandler} />
-      <ViewAsContainer />
+      <ViewAsContainer onClick={viewAsChangeHandler} />
       <Books />
     </BookContext.Provider>
   );
