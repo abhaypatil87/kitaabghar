@@ -31,3 +31,8 @@
 .secondaryDetail {
   color: #f28977;
 }
+
+.center {
+  width: 50%;
+  margin: auto;
+}

@@ -1,19 +1,13 @@
-import { useContext } from "react";
-import { Box } from "@material-ui/core";
+import React, { useContext } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewHeadlineIcon from "@material-ui/icons/ViewHeadline";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
-import ViewAsIcon from "./ViewAsIcon";
-import { makeStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
 import BookContext from "../../../Store/book-store";
 import { viewState } from "../../../utils/bookUtils";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: "10px 10px 10px 10px",
-    display: "flex",
-  },
-
   active: {
     color: "rgba(0, 0, 0, 0.54)",
   },
@@ -30,39 +24,34 @@ const ViewAsContainer = (props) => {
   const classes = useStyles();
 
   return (
-    <Box component="div" className={classes.root}>
-      <ViewAsIcon
-        onClick={props.onClick.bind(null, viewState.HEADLINE)}
-        ariaLabel={"View as grid"}
+    <>
+      <IconButton
+        onClick={props.onViewAs.bind(null, viewState.MODULE)}
+        aria-label={"View as grid"}
+        className={viewAs === viewState.MODULE ? classes.active : classes.icon}
+        color="primary"
       >
-        <ViewHeadlineIcon
-          fontSize="large"
-          className={
-            viewAs === viewState.HEADLINE ? classes.active : classes.icon
-          }
-        />
-      </ViewAsIcon>
-      <ViewAsIcon
-        onClick={props.onClick.bind(null, viewState.LIST)}
-        ariaLabel={"View as list"}
+        <ViewModuleIcon />
+      </IconButton>
+      <IconButton
+        onClick={props.onViewAs.bind(null, viewState.HEADLINE)}
+        aria-label={"View as headlines"}
+        className={
+          viewAs === viewState.HEADLINE ? classes.active : classes.icon
+        }
+        color="primary"
       >
-        <ViewListIcon
-          fontSize="large"
-          className={viewAs === viewState.LIST ? classes.active : classes.icon}
-        />
-      </ViewAsIcon>
-      <ViewAsIcon
-        onClick={props.onClick.bind(null, viewState.MODULE)}
-        ariaLabel={"View as card"}
+        <ViewHeadlineIcon />
+      </IconButton>
+      <IconButton
+        onClick={props.onViewAs.bind(null, viewState.LIST)}
+        aria-label={"View as list"}
+        className={viewAs === viewState.LIST ? classes.active : classes.icon}
+        color="primary"
       >
-        <ViewModuleIcon
-          fontSize="large"
-          className={
-            viewAs === viewState.MODULE ? classes.active : classes.icon
-          }
-        />
-      </ViewAsIcon>
-    </Box>
+        <ViewListIcon />
+      </IconButton>
+    </>
   );
 };
 

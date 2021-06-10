@@ -12,12 +12,9 @@ import {
 import {
   Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Fade,
   Grid,
+  IconButton,
   makeStyles,
   Paper,
   TextField,
@@ -27,6 +24,7 @@ import { deleteBook, updateBook } from "../../utils/bookUtils";
 import ErrorAlert from "../common/Alert/ErrorAlert";
 import SuccessAlert from "../common/Alert/SuccessAlert";
 import FormError from "../common/FormError/FormError";
+import Confirm from "../common/Confirm";
 
 const getInitialState = (props) => {
   return {
@@ -40,18 +38,12 @@ const getInitialState = (props) => {
     isFormValid: false,
   };
 };
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   paper: {
     padding: theme.spacing(2),
     marginBottom: "10px",
     maxWidth: "100%",
-  },
-  image: {
-    width: 128,
-    height: 128,
   },
   hover: {
     cursor: "pointer",
@@ -61,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     maxWidth: "100%",
     maxHeight: "100%",
+    width: 128,
+    height: 128,
   },
   error: {
     marginTop: theme.spacing(1),
@@ -209,7 +203,7 @@ const ListStyleBookTile = (props) => {
   };
 
   return (
-    <Box component="div" className={classes.root}>
+    <Box component="div">
       <Paper elevation={3} className={classes.paper}>
         {showError && (!formState.isFormValid || error.length > 0) && (
           <ErrorAlert
@@ -228,7 +222,23 @@ const ListStyleBookTile = (props) => {
         )}
         <Grid container spacing={2}>
           <Grid item>
-            <img src={bookState.thumbnail_url} alt="" />
+            <img src={bookState.thumbnail_url} alt={props.title} />
+            <div>
+              <IconButton
+                onClick={enableEdit}
+                className={`${classes.iconButton} ${classes.hover}`}
+                aria-label={"Edit"}
+              >
+                <EditRoundedIcon />
+              </IconButton>
+              <IconButton
+                className={`${classes.iconButton} ${classes.hover}`}
+                onClick={confirmDeleteBook}
+                aria-label={"Delete"}
+              >
+                <DeleteOutlineRoundedIcon />
+              </IconButton>
+            </div>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs>
@@ -241,7 +251,7 @@ const ListStyleBookTile = (props) => {
                   {bookState.title}
                 </Typography>
               )}
-              <Fade in={editMode} timeout={300} unmountOnExit>
+              <Fade in={editMode} timeout={100} unmountOnExit>
                 <>
                   <TextField
                     autoFocus={true}
@@ -302,7 +312,7 @@ const ListStyleBookTile = (props) => {
                     {bookState.description}
                   </Typography>
                 )}
-                <Fade in={editMode} timeout={300} unmountOnExit>
+                <Fade in={editMode} timeout={100} unmountOnExit>
                   <TextField
                     style={{ width: "80%" }}
                     autoFocus={true}
@@ -357,20 +367,6 @@ const ListStyleBookTile = (props) => {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item>
-              <Typography>
-                <EditRoundedIcon
-                  onClick={enableEdit}
-                  className={`${classes.iconButton} ${classes.hover}`}
-                />
-              </Typography>
-              <Typography>
-                <DeleteOutlineRoundedIcon
-                  className={`${classes.iconButton} ${classes.hover}`}
-                  onClick={confirmDeleteBook}
-                />
-              </Typography>
-            </Grid>
           </Grid>
         </Grid>
       </Paper>
@@ -378,6 +374,9 @@ const ListStyleBookTile = (props) => {
         classes={{
           paper: classes.paper,
         }}
+        message={
+          "This will permanently remove the book from the library. Are you sure?"
+        }
         keepMounted
         open={isOpen}
         onClose={cancelDelete}
@@ -387,41 +386,4 @@ const ListStyleBookTile = (props) => {
   );
 };
 
-function Confirm(props) {
-  const { onClose, onOkay, open, ...other } = props;
-
-  const handleCancel = () => {
-    onClose();
-  };
-
-  const handleOk = () => {
-    onOkay();
-  };
-
-  return (
-    <Dialog
-      disableBackdropClick
-      disableEscapeKeyDown
-      maxWidth="xs"
-      aria-labelledby="book-delete-confirmation-dialog"
-      open={open}
-      {...other}
-    >
-      <DialogTitle>Confirm</DialogTitle>
-      <DialogContent dividers>
-        <Typography>
-          This will permanently remove the book from the library. Are you sure?
-        </Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="secondary">
-          Cancel
-        </Button>
-        <Button onClick={handleOk} color="primary">
-          Ok
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
 export default ListStyleBookTile;

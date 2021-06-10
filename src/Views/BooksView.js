@@ -5,6 +5,7 @@ import BookContext from "../Store/book-store";
 import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import { viewState as view } from "../utils/bookUtils";
+import { Button } from "@material-ui/core";
 
 const BooksView = () => {
   const [books, setBooks] = useState([]);
@@ -57,7 +58,7 @@ const BooksView = () => {
       }}
     >
       <SearchBar onSearch={searchChangeHandler} />
-      <ViewAsContainer onClick={viewAsChangeHandler} />
+      <ViewAsContainer onViewAs={viewAsChangeHandler} />
       <Books />
     </BookContext.Provider>
   );
