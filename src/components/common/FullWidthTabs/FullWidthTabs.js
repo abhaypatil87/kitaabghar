@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import { Box, Tab, Tabs } from "@material-ui/core";
 
@@ -27,15 +26,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    margin: "10px",
-  },
-}));
-
 const FullWidthTabs = (props) => {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -43,7 +34,7 @@ const FullWidthTabs = (props) => {
   };
 
   return (
-    <Box component="div" className={classes.root}>
+    <Box component="div">
       <AppBar position="static" color="default">
         <Tabs
           value={value}

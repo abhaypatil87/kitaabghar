@@ -11,9 +11,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
-  root: {
-    padding: "10px 10px 10px 10px",
-  },
 }));
 
 const Books = () => {
@@ -41,7 +38,7 @@ const Books = () => {
   };
 
   return (
-    <Box component="div" className={classes.root}>
+    <Box component="div">
       {showSuccess && (
         <SuccessAlert
           className={classes.formMessage}
