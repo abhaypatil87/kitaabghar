@@ -5,13 +5,20 @@ import BookContext from "../Store/book-store";
 import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import { viewState as view } from "../utils/bookUtils";
-import { Button } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: "10px 10px 10px 10px",
+  },
+}));
 
 const BooksView = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewAs, setViewAs] = useState(view.MODULE);
+  const classes = useStyles();
 
   useEffect(() => {
     const fetchAllBooks = async () => {
@@ -57,9 +64,11 @@ const BooksView = () => {
         setViewAs: setViewAs,
       }}
     >
-      <SearchBar onSearch={searchChangeHandler} />
-      <ViewAsContainer onViewAs={viewAsChangeHandler} />
-      <Books />
+      <Box component="div" className={classes.root}>
+        <SearchBar onSearch={searchChangeHandler} />
+        <ViewAsContainer onViewAs={viewAsChangeHandler} />
+        <Books />
+      </Box>
     </BookContext.Provider>
   );
 };

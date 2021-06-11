@@ -1,14 +1,17 @@
 import React from "react";
+import Box from "@material-ui/core/Box";
+import Author from "./Author";
 
 const Authors = (props) => {
   return (
-    <div>
+    <Box component="div">
       {props.authors.map((author) => (
-        <li key={author.id}>
-          {author.firstName} {author.lastName}
-        </li>
+        <Author
+          key={author.id}
+          author={`${author.first_name} ${author.last_name}`}
+        />
       ))}
-    </div>
+    </Box>
   );
 };
 

@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
+import Authors from "../components/Authors/Authors";
+import { Box, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: "10px 10px 10px 10px",
+  },
+}));
 
 const AuthorsView = () => {
   const [authors, setAuthors] = useState([]);
+
+  const classes = useStyles();
+
   useEffect(() => {
     const fetchAllAuthors = async () => {
       let response = await fetch(
@@ -19,13 +30,9 @@ const AuthorsView = () => {
   }, []);
 
   return (
-    <React.Fragment>
-      {authors.map((author) => (
-        <li key={author.author_id}>
-          {author.first_name} {author.last_name}
-        </li>
-      ))}
-    </React.Fragment>
+    <Box component="div" className={classes.root}>
+      <Authors authors={authors} />
+    </Box>
   );
 };
 
