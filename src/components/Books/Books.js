@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import BookTile from "./BookTile";
 import BookContext from "../../Store/book-store";
 import Box from "@material-ui/core/Box";
-import SuccessAlert from "../Alert/SuccessAlert";
+import SuccessAlert from "../common/Alert/SuccessAlert";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
     width: "98%",
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+  },
+  root: {
+    padding: "10px 10px 10px 10px",
   },
 }));
 
@@ -38,7 +41,7 @@ const Books = () => {
   };
 
   return (
-    <Box component="div">
+    <Box component="div" className={classes.root}>
       {showSuccess && (
         <SuccessAlert
           className={classes.formMessage}

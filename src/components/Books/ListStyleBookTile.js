@@ -1,32 +1,30 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
+import BookContext from "../../Store/book-store";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import bookTitleStyles from "./BookTile.module.css";
-import BookContext from "../../Store/book-store";
-
 import {
   formsReducer,
   isValidForm,
   onFocusOut,
   onInputChange,
 } from "../../utils/formUtil";
-import TextField from "@material-ui/core/TextField";
 import {
+  Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Fade,
   Grid,
+  IconButton,
   makeStyles,
   Paper,
+  TextField,
+  Typography,
 } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import { deleteBook, updateBook } from "../../utils/bookUtils";
-import ErrorAlert from "../Alert/ErrorAlert";
-import SuccessAlert from "../Alert/SuccessAlert";
+import ErrorAlert from "../common/Alert/ErrorAlert";
+import SuccessAlert from "../common/Alert/SuccessAlert";
+import FormError from "../common/FormError/FormError";
+import Confirm from "../common/Confirm";
 
 const getInitialState = (props) => {
   return {
@@ -40,18 +38,12 @@ const getInitialState = (props) => {
     isFormValid: false,
   };
 };
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   paper: {
     padding: theme.spacing(2),
-    margin: "10px",
+    marginBottom: "10px",
     maxWidth: "100%",
-  },
-  image: {
-    width: 128,
-    height: 128,
   },
   hover: {
     cursor: "pointer",
@@ -61,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     maxWidth: "100%",
     maxHeight: "100%",
+    width: 128,
+    height: 128,
   },
   error: {
     marginTop: theme.spacing(1),
@@ -83,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedBookTile = (props) => {
+const ListStyleBookTile = (props) => {
   const { books, setBooks } = useContext(BookContext);
   const [bookState, setBookState] = useState({});
   const classes = useStyles();
@@ -209,7 +203,7 @@ const ExpandedBookTile = (props) => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box component="div">
       <Paper elevation={3} className={classes.paper}>
         {showError && (!formState.isFormValid || error.length > 0) && (
           <ErrorAlert
@@ -228,7 +222,23 @@ const ExpandedBookTile = (props) => {
         )}
         <Grid container spacing={2}>
           <Grid item>
-            <img src={bookState.thumbnail_url} alt="" />
+            <img src={bookState.thumbnail_url} alt={props.title} />
+            <div>
+              <IconButton
+                onClick={enableEdit}
+                className={`${classes.iconButton} ${classes.hover}`}
+                aria-label={"Edit"}
+              >
+                <EditRoundedIcon />
+              </IconButton>
+              <IconButton
+                className={`${classes.iconButton} ${classes.hover}`}
+                onClick={confirmDeleteBook}
+                aria-label={"Delete"}
+              >
+                <DeleteOutlineRoundedIcon />
+              </IconButton>
+            </div>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs>
@@ -237,12 +247,11 @@ const ExpandedBookTile = (props) => {
                   className={`${classes.bookTitle} ${classes.hover}`}
                   gutterBottom
                   variant="h5"
-                  onClick={props.onClick}
                 >
                   {bookState.title}
                 </Typography>
               )}
-              <Fade in={editMode} timeout={300} unmountOnExit>
+              <Fade in={editMode} timeout={100} unmountOnExit>
                 <>
                   <TextField
                     autoFocus={true}
@@ -271,14 +280,18 @@ const ExpandedBookTile = (props) => {
                     }}
                   />
                   {formState.title.touched && formState.title.hasError && (
-                    <div className={classes.error}>{formState.title.error}</div>
+                    <FormError error={formState.title.error} />
                   )}
                 </>
               </Fade>
               <Typography variant="h6" gutterBottom>
                 {bookState.subtitle}
               </Typography>
-              <Typography variant="subtitle1" gutterBottom>
+              <Typography
+                variant="subtitle1"
+                className={bookTitleStyles.secondaryDetail}
+                gutterBottom
+              >
                 {bookState.author}
               </Typography>
 
@@ -299,7 +312,7 @@ const ExpandedBookTile = (props) => {
                     {bookState.description}
                   </Typography>
                 )}
-                <Fade in={editMode} timeout={300} unmountOnExit>
+                <Fade in={editMode} timeout={100} unmountOnExit>
                   <TextField
                     style={{ width: "80%" }}
                     autoFocus={true}
@@ -354,20 +367,6 @@ const ExpandedBookTile = (props) => {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">
-                <EditRoundedIcon
-                  onClick={enableEdit}
-                  className={`${classes.iconButton} ${classes.hover}`}
-                />
-              </Typography>
-              <Typography variant="subtitle1">
-                <DeleteOutlineRoundedIcon
-                  className={`${classes.iconButton} ${classes.hover}`}
-                  onClick={confirmDeleteBook}
-                />
-              </Typography>
-            </Grid>
           </Grid>
         </Grid>
       </Paper>
@@ -375,50 +374,16 @@ const ExpandedBookTile = (props) => {
         classes={{
           paper: classes.paper,
         }}
+        message={
+          "This will permanently remove the book from the library. Are you sure?"
+        }
         keepMounted
         open={isOpen}
         onClose={cancelDelete}
         onOkay={removeBook}
       />
-    </div>
+    </Box>
   );
 };
 
-function Confirm(props) {
-  const { onClose, onOkay, open, ...other } = props;
-
-  const handleCancel = () => {
-    onClose();
-  };
-
-  const handleOk = () => {
-    onOkay();
-  };
-
-  return (
-    <Dialog
-      disableBackdropClick
-      disableEscapeKeyDown
-      maxWidth="xs"
-      aria-labelledby="book-delete-confirmation-dialog"
-      open={open}
-      {...other}
-    >
-      <DialogTitle>Confirm</DialogTitle>
-      <DialogContent dividers>
-        <Typography>
-          This will permanently remove the book from the library. Are you sure?
-        </Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="secondary">
-          Cancel
-        </Button>
-        <Button onClick={handleOk} color="primary">
-          Ok
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
-export default ExpandedBookTile;
+export default ListStyleBookTile;

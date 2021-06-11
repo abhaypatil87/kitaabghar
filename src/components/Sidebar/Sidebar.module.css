@@ -1,8 +1,8 @@
 .burgerIcon {
   cursor: pointer;
   position: absolute;
-  left: 24px;
-  top: 34px;
+  left: 10px;
+  top: 18px;
 }
 .container {
   background-color: #363740;

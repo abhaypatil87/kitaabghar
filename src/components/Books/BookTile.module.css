@@ -27,3 +27,12 @@
   border-top: 1px solid #dedede;
   overflow-x: hidden;
 }
+
+.secondaryDetail {
+  color: #f28977;
+}
+
+.center {
+  width: 50%;
+  margin: auto;
+}
