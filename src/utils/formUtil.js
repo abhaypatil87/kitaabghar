@@ -84,6 +84,8 @@ export const validateInput = (name, value) => {
       }
       break;
     case "author":
+    case "first-name":
+    case "last_name":
       if (value.trim() === "") {
         hasError = true;
         error = "Author cannot be empty";

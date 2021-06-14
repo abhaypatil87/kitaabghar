@@ -7,8 +7,10 @@ const Authors = (props) => {
     <Box component="div">
       {props.authors.map((author) => (
         <Author
-          key={author.id}
-          author={`${author.first_name} ${author.last_name}`}
+          key={author.author_id}
+          author_id={author.author_id}
+          first_name={author.first_name}
+          last_name={author.last_name}
         />
       ))}
     </Box>

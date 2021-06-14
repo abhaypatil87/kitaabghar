@@ -38,3 +38,16 @@ export const deleteBook = async (bookId) => {
     }
   );
 };
+
+export const updateAuthor = async (authorDataObject) => {
+  return await fetch(
+    `http://${SERVER_URL}:${SERVER_PORT}/api/authors/${authorDataObject.author_id}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(authorDataObject),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};

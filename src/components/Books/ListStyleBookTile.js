@@ -20,7 +20,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { deleteBook, updateBook } from "../../utils/bookUtils";
+import { deleteBook, updateBook } from "../../utils/crud";
 import ErrorAlert from "../common/Alert/ErrorAlert";
 import SuccessAlert from "../common/Alert/SuccessAlert";
 import FormError from "../common/FormError/FormError";

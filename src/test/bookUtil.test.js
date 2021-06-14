@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createBook, deleteBook, updateBook } from "../utils/bookUtils";
+import { createBook, deleteBook, updateBook } from "../utils/crud";
 
 beforeEach(() => {
   fetch.resetMocks();
