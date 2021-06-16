@@ -87,7 +87,7 @@ export const validateInput = (name, value) => {
     case "author":
       if (value.trim() === "") {
         hasError = true;
-        error = "Author cannot be empty";
+        error = "Author name cannot be empty";
       } else {
         hasError = false;
         error = "";
@@ -97,7 +97,7 @@ export const validateInput = (name, value) => {
     case "last_name":
       if (value.trim() === "") {
         hasError = true;
-        error = "Author cannot be empty";
+        error = "Author name cannot be empty";
       } else if (value.trim().length > 50) {
         hasError = true;
         error = "Name cannot have more than 50 characters";
