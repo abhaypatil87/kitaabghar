@@ -38,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
       color: "#2158d0",
     },
   },
+  nameBox: {
+    alignItems: "center",
+    display: "inherit",
+  },
 }));
 
 const getInitialState = (props) => {
@@ -148,111 +152,131 @@ const Author = (props) => {
   };
 
   return (
-    <Box component="div" marginTop={2}>
-      <Grid item xs={12} sm container className={classes.container}>
-        {showError && (!formState.isFormValid || error.length > 0) && (
-          <LibAlert
-            severity="error"
-            onClose={handleErrorAlertClose}
-            message={error}
-          />
-        )}
+    <Box marginTop={2}>
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+        container
+        className={classes.container}
+      >
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            {showError && (!formState.isFormValid || error.length > 0) && (
+              <LibAlert
+                severity="error"
+                onClose={handleErrorAlertClose}
+                message={error}
+              />
+            )}
 
-        {showSuccess && (
-          <LibAlert
-            severity="success"
-            onClose={handleSuccessAlertClose}
-            message={success}
-          />
-        )}
-        {!editMode && (
-          <Typography variant="body1" tabIndex={0} aria-label={fullName}>
-            {fullName}
-          </Typography>
-        )}
+            {showSuccess && (
+              <LibAlert
+                severity="success"
+                onClose={handleSuccessAlertClose}
+                message={success}
+              />
+            )}
+          </Grid>
+          {!editMode && (
+            <Box hidden={editMode} className={classes.nameBox}>
+              <Typography variant="body1" tabIndex={0}>
+                {fullName}
+              </Typography>
+              <IconButton
+                size="medium"
+                onClick={enableEdit}
+                className={`${classes.iconButton} ${classes.hover}`}
+                aria-label={"Edit"}
+              >
+                <EditRoundedIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          )}
+        </Grid>
         <Fade in={editMode} timeout={1} unmountOnExit>
           <>
-            <TextField
-              autoFocus={true}
-              margin="dense"
-              variant="outlined"
-              type="text"
-              title="First Name"
-              name="firstname"
-              id="firstname"
-              value={formState.first_name.value}
-              onChange={(event) => {
-                onInputChange(
-                  "first_name",
-                  event.target.value,
-                  dispatch,
-                  formState
-                );
-              }}
-              onBlur={(event) => {
-                onFocusOut(
-                  "first_name",
-                  event.target.value,
-                  dispatch,
-                  formState
-                );
-              }}
-            />
-            {formState.first_name.touched && formState.first_name.hasError && (
-              <FormError error={formState.first_name.error} />
-            )}
-            <TextField
-              margin="dense"
-              variant="outlined"
-              type="text"
-              title="Last Name"
-              name="lastname"
-              id="lastname"
-              value={formState.last_name.value}
-              onChange={(event) => {
-                onInputChange(
-                  "last_name",
-                  event.target.value,
-                  dispatch,
-                  formState
-                );
-              }}
-              onBlur={(event) => {
-                onFocusOut(
-                  "last_name",
-                  event.target.value,
-                  dispatch,
-                  formState
-                );
-              }}
-            />
-            {formState.last_name.touched && formState.last_name.hasError && (
-              <FormError error={formState.last_name.error} />
-            )}
+            <Grid container spacing={1}>
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <TextField
+                  autoFocus={true}
+                  margin="dense"
+                  variant="standard"
+                  type="text"
+                  data-testid="firstname"
+                  title="First Name"
+                  name="firstname"
+                  value={formState.first_name.value}
+                  onChange={(event) => {
+                    onInputChange(
+                      "first_name",
+                      event.target.value,
+                      dispatch,
+                      formState
+                    );
+                  }}
+                  onBlur={(event) => {
+                    onFocusOut(
+                      "first_name",
+                      event.target.value,
+                      dispatch,
+                      formState
+                    );
+                  }}
+                />
+                {formState.first_name.touched &&
+                  formState.first_name.hasError && (
+                    <FormError error={formState.first_name.error} />
+                  )}
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <TextField
+                  margin="normal"
+                  variant="standard"
+                  type="text"
+                  title="Last Name"
+                  name="lastname"
+                  value={formState.last_name.value}
+                  onChange={(event) => {
+                    onInputChange(
+                      "last_name",
+                      event.target.value,
+                      dispatch,
+                      formState
+                    );
+                  }}
+                  onBlur={(event) => {
+                    onFocusOut(
+                      "last_name",
+                      event.target.value,
+                      dispatch,
+                      formState
+                    );
+                  }}
+                />
+                {formState.last_name.touched &&
+                  formState.last_name.hasError && (
+                    <FormError error={formState.last_name.error} />
+                  )}
+              </Grid>
+            </Grid>
           </>
         </Fade>
-        <Grid component="span" hidden={editMode}>
-          <IconButton
-            size="medium"
-            onClick={enableEdit}
-            className={`${classes.iconButton} ${classes.hover}`}
-            aria-label={"Edit"}
-          >
-            <EditRoundedIcon fontSize="small" />
-          </IconButton>
-        </Grid>
-        <Grid component="div" hidden={!editMode}>
+        <Grid item xs={12} sm={12} md={12} lg={12} hidden={!editMode}>
           <Button
-            style={{ marginLeft: "6px" }}
             variant="contained"
             color="primary"
             disableElevation
+            disabled={isEditing}
+            aria-disabled={isEditing}
             type="button"
             value="Edit"
             size="small"
             onClick={editClickHandler}
           >
-            Save
+            Edit
           </Button>
           <Button
             style={{ marginLeft: "6px" }}
