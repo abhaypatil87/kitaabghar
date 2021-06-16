@@ -15,11 +15,11 @@ import {
   isValidForm,
   onFocusOut,
   onInputChange,
+  RESET_FORM,
 } from "../../utils/formUtil";
-import FormError from "../common/FormError/FormError";
 import { updateAuthor } from "../../utils/crud";
-import ErrorAlert from "../common/Alert/ErrorAlert";
-import SuccessAlert from "../common/Alert/SuccessAlert";
+import LibAlert from "../common/Alert/LibAlert";
+import FormError from "../common/FormError/FormError";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -66,24 +66,32 @@ const Author = (props) => {
   const [success, setSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [authorState, setAuthorState] = useState({});
+  const [fullName, setFullName] = useState(
+    `${props.first_name} ${props.last_name}`
+  );
   const [formState, dispatch] = useReducer(
     formsReducer,
     getInitialState(props)
   );
+  const classes = useStyles();
 
   useEffect(() => {
     setAuthorState({ ...props });
   }, []);
 
+  const resetForm = () => {
+    dispatch({
+      type: RESET_FORM,
+      data: getInitialState(props),
+    });
+  };
   const enableEdit = () => {
     setEditMode(true);
   };
   const cancelEdit = () => {
     setEditMode(false);
+    resetForm();
   };
-  const classes = useStyles();
-
-  let fullName = `${props.first_name} ${props.last_name}`;
 
   const editClickHandler = async (event) => {
     event.preventDefault();
@@ -103,19 +111,26 @@ const Author = (props) => {
     try {
       setIsEditing(true);
       let response = await updateAuthor(authorDataObject);
-
       response = await response;
       if (response.status === 200) {
-        setShowSuccess(true);
-        setSuccess(`The author record has been updated successfully.`);
+        const result = await response.json();
+        if (result.data !== undefined) {
+          setShowSuccess(true);
+          setSuccess(`The author name has been updated successfully.`);
+          setFullName(
+            `${authorDataObject.first_name} ${authorDataObject.last_name}`
+          );
+        }
       } else {
         const responseText = await response.text();
         setShowError(true);
         setError(responseText);
+        resetForm();
       }
     } catch (error) {
       setShowError(true);
       setError(error.message);
+      resetForm();
     } finally {
       setIsEditing(false);
       setEditMode(false);
@@ -136,22 +151,22 @@ const Author = (props) => {
     <Box component="div" marginTop={2}>
       <Grid item xs={12} sm container className={classes.container}>
         {showError && (!formState.isFormValid || error.length > 0) && (
-          <ErrorAlert
-            className={classes.m2}
+          <LibAlert
+            severity="error"
             onClose={handleErrorAlertClose}
             message={error}
           />
         )}
 
         {showSuccess && (
-          <SuccessAlert
-            className={classes.m2}
+          <LibAlert
+            severity="success"
             onClose={handleSuccessAlertClose}
             message={success}
           />
         )}
         {!editMode && (
-          <Typography variant="subtitle1" tabIndex={0} aria-label={fullName}>
+          <Typography variant="body1" tabIndex={0} aria-label={fullName}>
             {fullName}
           </Typography>
         )}
@@ -183,6 +198,9 @@ const Author = (props) => {
                 );
               }}
             />
+            {formState.first_name.touched && formState.first_name.hasError && (
+              <FormError error={formState.first_name.error} />
+            )}
             <TextField
               margin="dense"
               variant="outlined"
@@ -208,6 +226,9 @@ const Author = (props) => {
                 );
               }}
             />
+            {formState.last_name.touched && formState.last_name.hasError && (
+              <FormError error={formState.last_name.error} />
+            )}
           </>
         </Fade>
         <Grid component="span" hidden={editMode}>
