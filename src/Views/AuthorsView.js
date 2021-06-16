@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { SERVER_PORT, SERVER_URL } from "../utils/crud";
-import Authors from "../components/Authors/Authors";
 import { Box, makeStyles } from "@material-ui/core";
+import { SERVER_PORT, SERVER_URL } from "../utils/crud";
+import { Authors } from "../components/Authors";
 
 const useStyles = makeStyles((theme) => ({
   root: {

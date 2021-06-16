@@ -2,13 +2,6 @@ import React, { useContext, useEffect, useReducer, useState } from "react";
 import BookContext from "../../Store/book-store";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
-import bookTitleStyles from "./BookTile.module.css";
-import {
-  formsReducer,
-  isValidForm,
-  onFocusOut,
-  onInputChange,
-} from "../../utils/formUtil";
 import {
   Box,
   Button,
@@ -20,10 +13,16 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+
+import bookTitleStyles from "./BookTile.module.css";
+import {
+  formsReducer,
+  isValidForm,
+  onFocusOut,
+  onInputChange,
+} from "../../utils/formUtil";
 import { deleteBook, updateBook } from "../../utils/crud";
-import LibAlert from "../common/Alert/LibAlert";
-import FormError from "../common/FormError/FormError";
-import Confirm from "../common/Confirm";
+import { LibAlert, FormError, Confirm } from "../common";
 
 const getInitialState = (props) => {
   return {
