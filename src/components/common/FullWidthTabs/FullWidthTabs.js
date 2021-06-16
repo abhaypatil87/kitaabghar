@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import { Box, Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs, AppBar } from "@material-ui/core";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

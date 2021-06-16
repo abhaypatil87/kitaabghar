@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Column, Row } from "simple-flexbox";
-import sideBarStyles from "./Sidebar.module.css";
-import Logo from "../Logo/Logo";
-import MenuItem from "../MenuItem/MenuItem";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import LocalLibraryIcon from "@material-ui/icons/LocalLibrary";
 import QueueOutlinedIcon from "@material-ui/icons/QueueOutlined";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
+
+import Logo from "./Logo";
+import MenuItem from "./MenuItem";
+import { Column, Row } from "simple-flexbox";
+import sideBarStyles from "./Sidebar.module.css";
 
 const Sidebar = (props) => {
   const [expanded, setExpanded] = useState(true);

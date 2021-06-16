@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+
 import BookContext from "../../Store/book-store";
 import ListStyleBookTile from "./ListStyleBookTile";
 import ModuleStyleBookTile from "./ModuleStyleBookTile";
@@ -17,7 +18,7 @@ const BookTile = (props) => {
       <HeadlineStyleBookTile {...props} />
     );
 
-  return <React.Fragment>{bookTile}</React.Fragment>;
+  return <>{bookTile}</>;
 };
 
 export default BookTile;

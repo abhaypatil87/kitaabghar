@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
+
 import {
   formsReducer,
   isValidForm,
@@ -18,8 +19,7 @@ import {
   RESET_FORM,
 } from "../../utils/formUtil";
 import { updateAuthor } from "../../utils/crud";
-import LibAlert from "../common/Alert/LibAlert";
-import FormError from "../common/FormError/FormError";
+import { LibAlert, FormError } from "../common";
 
 const useStyles = makeStyles((theme) => ({
   container: {

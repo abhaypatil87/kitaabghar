@@ -1,7 +1,6 @@
 import React, { useReducer, useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import { Box, Button, Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box, Button, Grid, TextField, makeStyles } from "@material-ui/core";
+
 import {
   CLEAR_FORM,
   initialState,
@@ -11,8 +10,7 @@ import {
   onInputChange,
 } from "../../utils/formUtil";
 import { createBook } from "../../utils/crud";
-import LibAlert from "../common/Alert/LibAlert";
-import FormError from "../common/FormError/FormError";
+import { LibAlert, FormError } from "../common";
 
 const useStyles = makeStyles((theme) => ({
   m1: {

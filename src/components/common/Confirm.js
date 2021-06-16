@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Dialog,
@@ -5,7 +6,6 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import React from "react";
 
 function Confirm(props) {
   const { onClose, onOkay, open, ...other } = props;

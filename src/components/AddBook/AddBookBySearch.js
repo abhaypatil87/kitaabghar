@@ -9,8 +9,7 @@ import {
   onInputChange,
 } from "../../utils/formUtil";
 import { createBook } from "../../utils/crud";
-import LibAlert from "../common/Alert/LibAlert";
-import FormError from "../common/FormError/FormError";
+import { LibAlert, FormError } from "../common";
 
 const useStyles = makeStyles((theme) => ({
   m1: {

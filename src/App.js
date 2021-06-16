@@ -1,7 +1,7 @@
 import React from "react";
 import { Column, Row } from "simple-flexbox";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Header from "./components/Header/Header";
+import { Header } from "./components/Header";
 import styles from "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AuthorsView from "./Views/AuthorsView";

@@ -1,8 +1,7 @@
 import React from "react";
-import AddBookBySearch from "../components/AddBook/AddBookBySearch";
-import AddBookByManualEntry from "../components/AddBook/AddBookByManualEntry";
-import FullWidthTabs from "../components/common/FullWidthTabs/FullWidthTabs";
 import { Box, makeStyles } from "@material-ui/core";
+import { AddBookByManualEntry, AddBookBySearch } from "../components/AddBook/";
+import { FullWidthTabs } from "../components/common/";
 
 const useStyles = makeStyles((theme) => ({
   root: {
