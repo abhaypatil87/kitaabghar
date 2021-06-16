@@ -20,9 +20,8 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { deleteBook, updateBook } from "../../utils/bookUtils";
-import ErrorAlert from "../common/Alert/ErrorAlert";
-import SuccessAlert from "../common/Alert/SuccessAlert";
+import { deleteBook, updateBook } from "../../utils/crud";
+import LibAlert from "../common/Alert/LibAlert";
 import FormError from "../common/FormError/FormError";
 import Confirm from "../common/Confirm";
 
@@ -206,7 +205,8 @@ const ListStyleBookTile = (props) => {
     <Box component="div">
       <Paper elevation={3} className={classes.paper}>
         {showError && (!formState.isFormValid || error.length > 0) && (
-          <ErrorAlert
+          <LibAlert
+            severity="error"
             className={classes.formMessage}
             onClose={handleErrorAlertClose}
             message={error}
@@ -214,7 +214,8 @@ const ListStyleBookTile = (props) => {
         )}
 
         {showSuccess && (
-          <SuccessAlert
+          <LibAlert
+            severity="success"
             className={classes.formMessage}
             onClose={handleSuccessAlertClose}
             message={success}

@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import BookTile from "./BookTile";
 import BookContext from "../../Store/book-store";
-import Box from "@material-ui/core/Box";
-import SuccessAlert from "../common/Alert/SuccessAlert";
-import { makeStyles } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
+import LibAlert from "../common/Alert/LibAlert";
 
 const useStyles = makeStyles((theme) => ({
   formMessage: {
@@ -40,7 +39,8 @@ const Books = () => {
   return (
     <Box component="div">
       {showSuccess && (
-        <SuccessAlert
+        <LibAlert
+          severity="success"
           className={classes.formMessage}
           onClose={handleSuccessAlertClose}
           message={message}

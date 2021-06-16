@@ -1,5 +1,6 @@
 export const UPDATE_FORM = "UPDATE_FORM";
 export const CLEAR_FORM = "CLEAR_FORM";
+export const RESET_FORM = "RESET_FORM";
 
 export const initialState = {
   title: { value: "", touched: false, hasError: true, error: "" },
@@ -92,6 +93,19 @@ export const validateInput = (name, value) => {
         error = "";
       }
       break;
+    case "first_name":
+    case "last_name":
+      if (value.trim() === "") {
+        hasError = true;
+        error = "Author cannot be empty";
+      } else if (value.trim().length > 50) {
+        hasError = true;
+        error = "Name cannot have more than 50 characters";
+      } else {
+        hasError = false;
+        error = "";
+      }
+      break;
     default:
       break;
   }
@@ -142,6 +156,8 @@ export const formsReducer = (state, action) => {
       };
     case CLEAR_FORM:
       return initialState;
+    case RESET_FORM:
+      return action.data;
     default:
       return state;
   }

@@ -10,9 +10,8 @@ import {
   onFocusOut,
   onInputChange,
 } from "../../utils/formUtil";
-import { createBook } from "../../utils/bookUtils";
-import ErrorAlert from "../common/Alert/ErrorAlert";
-import SuccessAlert from "../common/Alert/SuccessAlert";
+import { createBook } from "../../utils/crud";
+import LibAlert from "../common/Alert/LibAlert";
 import FormError from "../common/FormError/FormError";
 
 const useStyles = makeStyles((theme) => ({
@@ -100,7 +99,8 @@ const AddBookByManualEntry = () => {
     >
       <Grid item xs={12} sm={12} md={8} lg={6}>
         {showError && (!formState.isFormValid || error.length > 0) && (
-          <ErrorAlert
+          <LibAlert
+            severity="error"
             className={classes.m2}
             onClose={handleErrorAlertClose}
             message={error}
@@ -108,7 +108,8 @@ const AddBookByManualEntry = () => {
         )}
 
         {showSuccess && (
-          <SuccessAlert
+          <LibAlert
+            severity="success"
             className={classes.m2}
             onClose={handleSuccessAlertClose}
             message={success}

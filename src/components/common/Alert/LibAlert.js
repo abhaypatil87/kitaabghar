@@ -3,11 +3,10 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Alert } from "@material-ui/lab";
 import React from "react";
 
-const ErrorAlert = (props) => {
+const LibAlert = (props) => {
   return (
     <Alert
-      severity="error"
-      className={props.className}
+      {...props}
       action={
         <IconButton
           aria-label="close"
@@ -24,4 +23,4 @@ const ErrorAlert = (props) => {
   );
 };
 
-export default ErrorAlert;
+export default LibAlert;

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Books from "../components/Books/Books";
 import SearchBar from "../components/SearchBar/SearchBar";
 import BookContext from "../Store/book-store";
-import { SERVER_PORT, SERVER_URL } from "../utils/bookUtils";
+import { SERVER_PORT, SERVER_URL } from "../utils/crud";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
-import { viewState as view } from "../utils/bookUtils";
+import { viewState as view } from "../utils/crud";
 import { Box, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
