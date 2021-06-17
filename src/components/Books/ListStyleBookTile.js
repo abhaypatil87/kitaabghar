@@ -21,8 +21,9 @@ import {
   onFocusOut,
   onInputChange,
 } from "../../utils/formUtil";
-import { deleteBook, updateBook } from "../../utils/crud";
+import { deleteBook, updateBook, viewState } from "../../utils/crud";
 import { LibAlert, FormError, Confirm } from "../common";
+import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 
 const getInitialState = (props) => {
   return {
@@ -76,8 +77,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListStyleBookTile = (props) => {
-  const { books, setBooks } = useContext(BookContext);
+  const { books, setBooks, viewAs } = useContext(BookContext);
   const [bookState, setBookState] = useState({});
+  const [globalDisplayMode, setGlobalDisplayMode] = useState("");
   const classes = useStyles();
   const [formState, dispatch] = useReducer(
     formsReducer,
@@ -200,8 +202,15 @@ const ListStyleBookTile = (props) => {
     setSuccess("");
   };
 
-  return (
-    <Box component="div">
+  const titleClickHandler = () => {
+    setGlobalDisplayMode(viewAs);
+  };
+  return globalDisplayMode === viewState.MODULE ? (
+    <ModuleStyleBookTile {...props} />
+  ) : globalDisplayMode === viewState.HEADLINE ? (
+    <HeadlineStyleBookTile {...props} />
+  ) : (
+    <Box component="article" role={"article"} marginTop={2}>
       <Paper elevation={3} className={classes.paper}>
         {showError && (!formState.isFormValid || error.length > 0) && (
           <LibAlert
@@ -245,8 +254,8 @@ const ListStyleBookTile = (props) => {
               {!editMode && (
                 <Typography
                   className={`${classes.bookTitle} ${classes.hover}`}
-                  gutterBottom
                   variant="h5"
+                  onClick={titleClickHandler}
                 >
                   {bookState.title}
                 </Typography>
