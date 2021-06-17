@@ -24,6 +24,7 @@ import {
 import { deleteBook, updateBook, viewState } from "../../utils/crud";
 import { LibAlert, FormError, Confirm } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
+import useAlert from "../../utils/hooks/useAlert";
 
 const getInitialState = (props) => {
   return {
@@ -86,12 +87,18 @@ const ListStyleBookTile = (props) => {
     getInitialState(props)
   );
   const [editMode, setEditMode] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [error, setError] = useState("Please enter all the required fields");
-  const [success, setSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const {
+    success,
+    setSuccess,
+    error,
+    setError,
+    showError,
+    setShowError,
+    showSuccess,
+    setShowSuccess,
+  } = useAlert();
 
   useEffect(() => {
     setBookState({ ...props });
@@ -260,7 +267,7 @@ const ListStyleBookTile = (props) => {
                   {bookState.title}
                 </Typography>
               )}
-              <Fade in={editMode} timeout={100} unmountOnExit>
+              <Fade in={editMode} timeout={1} unmountOnExit>
                 <>
                   <TextField
                     autoFocus={true}
@@ -269,7 +276,6 @@ const ListStyleBookTile = (props) => {
                     variant="outlined"
                     type="text"
                     name="title"
-                    id="title"
                     value={formState.title.value}
                     onChange={(event) => {
                       onInputChange(
@@ -331,7 +337,6 @@ const ListStyleBookTile = (props) => {
                     type="text"
                     multiline={true}
                     name="description"
-                    id="description"
                     value={formState.description.value}
                     onChange={(event) => {
                       onInputChange(

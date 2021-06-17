@@ -20,6 +20,7 @@ import {
 } from "../../utils/formUtil";
 import { updateAuthor } from "../../utils/crud";
 import { LibAlert, FormError } from "../common";
+import useAlert from "../../utils/hooks/useAlert";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,11 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
   hover: {
     cursor: "pointer",
-  },
-  bookTitle: {
-    "&:hover": {
-      color: "#2158d0",
-    },
   },
   iconButton: {
     "&:hover": {
@@ -64,10 +60,16 @@ const getInitialState = (props) => {
 
 const Author = (props) => {
   const [editMode, setEditMode] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [error, setError] = useState("Please enter all the required fields");
-  const [success, setSuccess] = useState("");
+  const {
+    success,
+    setSuccess,
+    error,
+    setError,
+    showError,
+    setShowError,
+    showSuccess,
+    setShowSuccess,
+  } = useAlert();
   const [isEditing, setIsEditing] = useState(false);
   const [authorState, setAuthorState] = useState({});
   const [fullName, setFullName] = useState(

@@ -11,6 +11,7 @@ import {
 } from "../../utils/formUtil";
 import { createBook } from "../../utils/crud";
 import { LibAlert, FormError } from "../common";
+import useAlert from "../../utils/hooks/useAlert";
 
 const useStyles = makeStyles((theme) => ({
   m1: {
@@ -24,11 +25,17 @@ const useStyles = makeStyles((theme) => ({
 const AddBookByManualEntry = () => {
   const classes = useStyles();
   const [formState, dispatch] = useReducer(formsReducer, initialState);
-  const [showError, setShowError] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [error, setError] = useState("Please enter all the required fields");
-  const [success, setSuccess] = useState("");
   const [isCreating, setIsCreating] = useState(false);
+  const {
+    success,
+    setSuccess,
+    error,
+    setError,
+    showError,
+    setShowError,
+    showSuccess,
+    setShowSuccess,
+  } = useAlert();
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
