@@ -6,8 +6,13 @@ import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import IconButton from "@material-ui/core/IconButton";
 import BookContext from "../../../Store/book-store";
 import { viewState } from "../../../utils/crud";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "10%",
+    margin: "10px 0px 0px 0px",
+  },
   active: {
     color: "rgba(0, 0, 0, 0.54)",
   },
@@ -24,7 +29,13 @@ const ViewAsContainer = (props) => {
   const classes = useStyles();
 
   return (
-    <>
+    <Grid
+      container
+      direction="row"
+      justify="space-between"
+      alignItems="center"
+      className={classes.root}
+    >
       <IconButton
         onClick={props.onViewAs.bind(null, viewState.MODULE)}
         aria-label={"View as grid"}
@@ -51,7 +62,7 @@ const ViewAsContainer = (props) => {
       >
         <ViewListIcon />
       </IconButton>
-    </>
+    </Grid>
   );
 };
 

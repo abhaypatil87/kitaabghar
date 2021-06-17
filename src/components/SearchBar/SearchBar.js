@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: "10px 10px 10px 10px",
     display: "flex",
-    margin: "10px",
   },
   input: {
     flex: 1,

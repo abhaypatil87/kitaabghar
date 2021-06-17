@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 
+import { ListStyleBookTile } from "./index";
 import bookTitleStyles from "./BookTile.module.css";
 
 const ModuleStyleBookTile = (props) => {
-  return (
-    <Box component="div" className={bookTitleStyles.cover}>
+  const [listStyleMode, setListStyleMode] = useState(false);
+  const onClickHandler = () => {
+    setListStyleMode((oldValue) => !oldValue);
+  };
+
+  return listStyleMode ? (
+    <ListStyleBookTile {...props} onDelete={props.onDelete} />
+  ) : (
+    <Box
+      component="div"
+      marginTop={2}
+      className={bookTitleStyles.cover}
+      onClick={onClickHandler}
+    >
       <img
         src={props.thumbnail_url}
         alt={props.title}

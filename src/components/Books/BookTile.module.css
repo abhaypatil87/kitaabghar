@@ -1,4 +1,5 @@
 .cover {
+  cursor: pointer;
   display: inline-block;
   margin: 20px 12px;
   max-width: 120px;
@@ -7,7 +8,6 @@
 }
 
 .coverImage {
-  cursor: pointer;
   box-shadow: -2px 2px 4px rgb(0, 0, 0);
   max-width: 100%;
 }
@@ -30,9 +30,4 @@
 
 .secondaryDetail {
   color: #f28977;
-}
-
-.center {
-  width: 50%;
-  margin: auto;
 }
