@@ -156,19 +156,14 @@ const ListStyleBookTile = (props) => {
     }
   };
 
-  const updateContext = (book) => {
-    const updatedBooks = [
-      ...books.filter((item) => item.book_id !== props.book_id),
-      book,
-    ];
-    updatedBooks.sort(function (a, b) {
-      const nameA = a.title.toUpperCase();
-      const nameB = b.title.toUpperCase();
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-      return 0;
-    });
-    setBooks(updatedBooks);
+  const updateContext = (updatedBook) => {
+    const index = books.findIndex(
+      (book) => book.book_id === updatedBook.book_id
+    );
+
+    updatedBook = { ...books[index], ...updatedBook };
+    books[index] = updatedBook;
+    setBooks(books);
   };
 
   const handleEditBook = async (bookDataObject) => {
@@ -182,7 +177,9 @@ const ListStyleBookTile = (props) => {
         const book = responseText.data.book;
         updateContext(book);
 
-        setBookState({ ...book });
+        const index = books.findIndex((b) => b.book_id === book.book_id);
+
+        setBookState({ ...books[index] });
         setShowSuccess(true);
         setSuccess(`The book '${book.title}' has been updated successfully.`);
       } else {
