@@ -19,7 +19,7 @@ import {
   RESET_FORM,
 } from "../../utils/formUtil";
 import { updateAuthor } from "../../utils/crud";
-import { LibAlert, FormError } from "../common";
+import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
 
 const useStyles = makeStyles((theme) => ({
@@ -143,18 +143,36 @@ const Author = (props) => {
     }
   };
 
-  const handleErrorAlertClose = () => {
+  const handleErrorAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
     setShowError(false);
     setError("");
   };
 
-  const handleSuccessAlertClose = () => {
+  const handleSuccessAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
     setShowSuccess(false);
     setSuccess("");
   };
 
   return (
     <Box marginTop={2}>
+      <SnackBar
+        message={error}
+        open={showError}
+        severity={"error"}
+        onClose={handleErrorAlertClose}
+      />
+      <SnackBar
+        message={success}
+        open={showSuccess}
+        severity={"success"}
+        onClose={handleSuccessAlertClose}
+      />
       <Grid
         item
         xs={12}
@@ -165,23 +183,6 @@ const Author = (props) => {
         className={classes.container}
       >
         <Grid container spacing={1}>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            {showError && (!formState.isFormValid || error.length > 0) && (
-              <LibAlert
-                severity="error"
-                onClose={handleErrorAlertClose}
-                message={error}
-              />
-            )}
-
-            {showSuccess && (
-              <LibAlert
-                severity="success"
-                onClose={handleSuccessAlertClose}
-                message={success}
-              />
-            )}
-          </Grid>
           {!editMode && (
             <Box hidden={editMode} className={classes.nameBox}>
               <Typography variant="body1" tabIndex={0}>

@@ -1,6 +1,6 @@
 import React from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import BookTile from "../components/Books/BookTile";
+import { BookTile } from "../components/Books/";
 
 beforeEach(() => {
   render(
@@ -24,13 +24,13 @@ describe("BookTile", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
   });
 
-  it.skip("expands BookTile component", () => {
+  it("expands BookTile component", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
     fireEvent.click(screen.getByText(/Test book title/i));
     expect(screen.getByText(/Test description/i)).toBeTruthy();
   });
 
-  it.skip("expands and collapses BookTile component", () => {
+  it("expands and collapses BookTile component", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
     fireEvent.click(screen.getByText(/Test book title/i));
 

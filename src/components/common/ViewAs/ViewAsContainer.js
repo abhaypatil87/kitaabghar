@@ -10,7 +10,6 @@ import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "10%",
     margin: "10px 0px 0px 0px",
   },
   active: {
@@ -32,7 +31,7 @@ const ViewAsContainer = (props) => {
     <Grid
       container
       direction="row"
-      justify="space-between"
+      justify="flex-start"
       alignItems="center"
       className={classes.root}
     >

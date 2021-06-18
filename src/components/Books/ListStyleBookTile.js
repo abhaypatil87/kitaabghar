@@ -22,7 +22,7 @@ import {
   onInputChange,
 } from "../../utils/formUtil";
 import { deleteBook, updateBook, viewState } from "../../utils/crud";
-import { LibAlert, FormError, Confirm } from "../common";
+import { LibAlert, FormError, Confirm, SnackBar } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
 
@@ -218,24 +218,19 @@ const ListStyleBookTile = (props) => {
     <HeadlineStyleBookTile {...props} />
   ) : (
     <Box component="article" role={"article"} marginTop={2}>
+      <SnackBar
+        message={error}
+        open={showError}
+        severity={"error"}
+        onClose={handleErrorAlertClose}
+      />
+      <SnackBar
+        message={success}
+        open={showSuccess}
+        severity={"success"}
+        onClose={handleSuccessAlertClose}
+      />
       <Paper elevation={3} className={classes.paper}>
-        {showError && (!formState.isFormValid || error.length > 0) && (
-          <LibAlert
-            severity="error"
-            className={classes.formMessage}
-            onClose={handleErrorAlertClose}
-            message={error}
-          />
-        )}
-
-        {showSuccess && (
-          <LibAlert
-            severity="success"
-            className={classes.formMessage}
-            onClose={handleSuccessAlertClose}
-            message={success}
-          />
-        )}
         <Grid container spacing={2}>
           <Grid item>
             <img src={bookState.thumbnail_url} alt={props.title} />
