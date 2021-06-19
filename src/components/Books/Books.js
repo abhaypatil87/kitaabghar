@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, makeStyles } from "@material-ui/core";
 
-import BookContext from "../../Store/book-store";
 import BookTile from "./BookTile";
 import { LibAlert } from "../common";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   formMessage: {
@@ -14,16 +14,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Books = () => {
-  const classes = useStyles();
-
-  const { filteredBooks } = useContext(BookContext);
   const [message, setMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
-
-  useEffect(() => {
-    // This hook has been kept here intentionally
-    // This hook will be called whenever a book is edited or deleted
-  }, [filteredBooks]);
+  const books = useSelector((state) => state.books.books);
+  const classes = useStyles();
 
   const deleteBookHandler = (response) => {
     if (response) {
@@ -47,7 +41,7 @@ const Books = () => {
           message={message}
         />
       )}
-      {filteredBooks.map((book) => (
+      {books.map((book) => (
         <BookTile
           key={book.book_id}
           book_id={book.book_id}

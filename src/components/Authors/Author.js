@@ -18,9 +18,10 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { updateAuthor } from "../../utils/crud";
 import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
+import { useDispatch } from "react-redux";
+import { editAuthor } from "../../Store/actions/authors-actions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -60,6 +61,16 @@ const getInitialState = (props) => {
 
 const Author = (props) => {
   const [editMode, setEditMode] = useState(false);
+  const [authorState, setAuthorState] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [fullName, setFullName] = useState(
+    `${props.first_name} ${props.last_name}`
+  );
+  const [formState, dispatchForm] = useReducer(
+    formsReducer,
+    getInitialState(props)
+  );
+  const dispatch = useDispatch();
   const {
     success,
     setSuccess,
@@ -70,15 +81,6 @@ const Author = (props) => {
     showSuccess,
     setShowSuccess,
   } = useAlert();
-  const [isEditing, setIsEditing] = useState(false);
-  const [authorState, setAuthorState] = useState({});
-  const [fullName, setFullName] = useState(
-    `${props.first_name} ${props.last_name}`
-  );
-  const [formState, dispatch] = useReducer(
-    formsReducer,
-    getInitialState(props)
-  );
   const classes = useStyles();
 
   useEffect(() => {
@@ -86,11 +88,12 @@ const Author = (props) => {
   }, []);
 
   const resetForm = () => {
-    dispatch({
+    dispatchForm({
       type: RESET_FORM,
       data: getInitialState(props),
     });
   };
+
   const enableEdit = () => {
     setEditMode(true);
   };
@@ -101,45 +104,17 @@ const Author = (props) => {
 
   const editClickHandler = async (event) => {
     event.preventDefault();
-    if (!isValidForm(formState, dispatch)) {
+    if (!isValidForm(formState, dispatchForm)) {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
-      await handleEditAuthor({
-        author_id: authorState.author_id,
-        first_name: formState.first_name.value,
-        last_name: formState.last_name.value,
-      });
-    }
-  };
-
-  const handleEditAuthor = async (authorDataObject) => {
-    try {
-      setIsEditing(true);
-      let response = await updateAuthor(authorDataObject);
-      response = await response;
-      if (response.status === 200) {
-        const result = await response.json();
-        if (result.data !== undefined) {
-          setShowSuccess(true);
-          setSuccess(`The author name has been updated successfully.`);
-          setFullName(
-            `${authorDataObject.first_name} ${authorDataObject.last_name}`
-          );
-        }
-      } else {
-        const responseText = await response.text();
-        setShowError(true);
-        setError(responseText);
-        resetForm();
-      }
-    } catch (error) {
-      setShowError(true);
-      setError(error.message);
-      resetForm();
-    } finally {
-      setIsEditing(false);
-      setEditMode(false);
+      dispatch(
+        editAuthor({
+          author_id: authorState.author_id,
+          first_name: formState.first_name.value,
+          last_name: formState.last_name.value,
+        })
+      );
     }
   };
 
@@ -216,7 +191,7 @@ const Author = (props) => {
                     onInputChange(
                       "first_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}
@@ -224,7 +199,7 @@ const Author = (props) => {
                     onFocusOut(
                       "first_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}
@@ -246,7 +221,7 @@ const Author = (props) => {
                     onInputChange(
                       "last_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}
@@ -254,7 +229,7 @@ const Author = (props) => {
                     onFocusOut(
                       "last_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}

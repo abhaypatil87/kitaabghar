@@ -1,6 +1,8 @@
 export const SERVER_URL = "192.168.1.67";
 export const SERVER_PORT = 4000;
 
+export const OKAY = "okay";
+export const ERROR = "error";
 export const viewState = {
   MODULE: "module",
   LIST: "list",
@@ -35,19 +37,6 @@ export const deleteBook = async (bookId) => {
     `http://${SERVER_URL}:${SERVER_PORT}/api/books/${bookId}`,
     {
       method: "DELETE",
-    }
-  );
-};
-
-export const updateAuthor = async (authorDataObject) => {
-  return await fetch(
-    `http://${SERVER_URL}:${SERVER_PORT}/api/authors/${authorDataObject.author_id}`,
-    {
-      method: "PUT",
-      body: JSON.stringify(authorDataObject),
-      headers: {
-        "Content-Type": "application/json",
-      },
     }
   );
 };

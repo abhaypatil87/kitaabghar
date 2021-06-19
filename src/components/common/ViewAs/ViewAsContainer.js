@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewHeadlineIcon from "@material-ui/icons/ViewHeadline";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import IconButton from "@material-ui/core/IconButton";
-import BookContext from "../../../Store/book-store";
-import { viewState } from "../../../utils/crud";
 import { Grid } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+
+import { viewState } from "../../../utils/crud";
+import { viewModeActions } from "../../../Store/store";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,9 +25,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViewAsContainer = (props) => {
-  const { viewAs } = useContext(BookContext);
+const ViewAsContainer = () => {
+  const viewMode = useSelector((state) => state.viewMode.viewMode);
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  const onViewChangeHandler = (viewMode) => {
+    dispatch(viewModeActions.changeViewMode(viewMode));
+  };
 
   return (
     <Grid
@@ -36,27 +43,29 @@ const ViewAsContainer = (props) => {
       className={classes.root}
     >
       <IconButton
-        onClick={props.onViewAs.bind(null, viewState.MODULE)}
+        onClick={onViewChangeHandler.bind(null, viewState.MODULE)}
         aria-label={"View as grid"}
-        className={viewAs === viewState.MODULE ? classes.active : classes.icon}
+        className={
+          viewMode === viewState.MODULE ? classes.active : classes.icon
+        }
         color="primary"
       >
         <ViewModuleIcon />
       </IconButton>
       <IconButton
-        onClick={props.onViewAs.bind(null, viewState.HEADLINE)}
+        onClick={onViewChangeHandler.bind(null, viewState.HEADLINE)}
         aria-label={"View as headlines"}
         className={
-          viewAs === viewState.HEADLINE ? classes.active : classes.icon
+          viewMode === viewState.HEADLINE ? classes.active : classes.icon
         }
         color="primary"
       >
         <ViewHeadlineIcon />
       </IconButton>
       <IconButton
-        onClick={props.onViewAs.bind(null, viewState.LIST)}
+        onClick={onViewChangeHandler.bind(null, viewState.LIST)}
         aria-label={"View as list"}
-        className={viewAs === viewState.LIST ? classes.active : classes.icon}
+        className={viewMode === viewState.LIST ? classes.active : classes.icon}
         color="primary"
       >
         <ViewListIcon />

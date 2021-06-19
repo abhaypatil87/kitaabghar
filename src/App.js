@@ -8,7 +8,6 @@ import AuthorsView from "./Views/AuthorsView";
 import BooksView from "./Views/BooksView";
 import TimelineView from "./Views/TimelineView";
 import AddBooksView from "./Views/AddBooksView";
-import BookContext from "./Store/book-store";
 
 const routes = [
   {
@@ -42,22 +41,20 @@ class App extends React.Component {
     const { selectedItem } = this.state;
     return (
       <Router>
-        <BookContext.Provider value={{ books: [] }}>
-          <Row className={styles.container}>
-            <Sidebar
-              selectedItem={selectedItem}
-              onChange={(selectedItem) => this.setState({ selectedItem })}
-            />
-            <Column flexGrow={1} className={styles.mainBlock}>
-              <Header title={selectedItem} />
-              <div className={styles.content}>
-                {routes.map(({ path, Component }) => (
-                  <Route key={path} path={path} children={<Component />} />
-                ))}
-              </div>
-            </Column>
-          </Row>
-        </BookContext.Provider>
+        <Row className={styles.container}>
+          <Sidebar
+            selectedItem={selectedItem}
+            onChange={(selectedItem) => this.setState({ selectedItem })}
+          />
+          <Column flexGrow={1} className={styles.mainBlock}>
+            <Header title={selectedItem} />
+            <div className={styles.content}>
+              {routes.map(({ path, Component }) => (
+                <Route key={path} path={path} children={<Component />} />
+              ))}
+            </div>
+          </Column>
+        </Row>
       </Router>
     );
   }

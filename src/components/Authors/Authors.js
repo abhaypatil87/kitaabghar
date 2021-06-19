@@ -1,11 +1,13 @@
 import React from "react";
 import { Box } from "@material-ui/core";
+import { useSelector } from "react-redux";
 import Author from "./Author";
 
-const Authors = (props) => {
+const Authors = () => {
+  const authorsStore = useSelector((state) => state.authors.authors);
   return (
     <Box component="div">
-      {props.authors.map((author) => (
+      {authorsStore.map((author) => (
         <Author
           key={author.author_id}
           author_id={author.author_id}

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import BookContext from "../../Store/book-store";
+import React, { useEffect, useReducer, useState } from "react";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import {
@@ -13,6 +12,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
 import bookTitleStyles from "./BookTile.module.css";
 import {
@@ -22,7 +22,7 @@ import {
   onInputChange,
 } from "../../utils/formUtil";
 import { deleteBook, updateBook, viewState } from "../../utils/crud";
-import { LibAlert, FormError, Confirm, SnackBar } from "../common";
+import { FormError, Confirm, SnackBar } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
 
@@ -78,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListStyleBookTile = (props) => {
-  const { books, setBooks, viewAs } = useContext(BookContext);
   const [bookState, setBookState] = useState({});
   const [globalDisplayMode, setGlobalDisplayMode] = useState("");
   const classes = useStyles();
@@ -89,6 +88,9 @@ const ListStyleBookTile = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const viewMode = useSelector((state) => state.viewMode.viewMode);
+  const books = useSelector((state) => state.books.books);
+
   const {
     success,
     setSuccess,
@@ -127,7 +129,7 @@ const ListStyleBookTile = (props) => {
         props.onDelete(
           `The book '${props.title}' was removed from the library.`
         );
-        setBooks(books.filter((item) => item.book_id !== props.book_id));
+        // setBooks(books.filter((item) => item.book_id !== props.book_id));
       }
     } catch (error) {
       setError(error.message);
@@ -157,13 +159,13 @@ const ListStyleBookTile = (props) => {
   };
 
   const updateContext = (updatedBook) => {
-    const index = books.findIndex(
-      (book) => book.book_id === updatedBook.book_id
-    );
-
-    updatedBook = { ...books[index], ...updatedBook };
-    books[index] = updatedBook;
-    setBooks(books);
+    // const index = books.findIndex(
+    //   (book) => book.book_id === updatedBook.book_id
+    // );
+    //
+    // updatedBook = { ...books[index], ...updatedBook };
+    // books[index] = updatedBook;
+    // setBooks(books);
   };
 
   const handleEditBook = async (bookDataObject) => {
@@ -207,7 +209,7 @@ const ListStyleBookTile = (props) => {
   };
 
   const titleClickHandler = () => {
-    setGlobalDisplayMode(viewAs);
+    setGlobalDisplayMode(viewMode);
   };
   return globalDisplayMode === viewState.MODULE ? (
     <ModuleStyleBookTile {...props} />
