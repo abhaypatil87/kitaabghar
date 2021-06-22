@@ -14,46 +14,54 @@ export const initialState = {
   isFormValid: false,
 };
 
+const getFormValidityDataForFocus = (name, value, formState) => {
+  const data = isFormValid(name, value, formState);
+  data.touched = true;
+  return data;
+};
+
+const getFromValidityDataForInputChange = (name, value, formState) => {
+  const data = isFormValid(name, value, formState);
+  data.touched = false;
+  return data;
+};
+
+const isFormValid = (name, value, formState) => {
+  const { hasError, error } = validateInput(name, value);
+  let isFormValid = true;
+  for (const key in formState) {
+    const item = formState[key];
+    if (key === name && hasError) {
+      isFormValid = false;
+      break;
+    } else if (key !== name && item.hasError) {
+      isFormValid = false;
+      break;
+    }
+  }
+  return { name, value, hasError, error, touched: true, isFormValid };
+};
+
 /**
  * Triggered every time the value of the form changes
  */
 export const onInputChange = (name, value, dispatch, formState) => {
-  const { hasError, error } = validateInput(name, value);
-  let isFormValid = true;
-  for (const key in formState) {
-    const item = formState[key];
-    // Check if the current field has error
-    if (key === name && hasError) {
-      isFormValid = false;
-      break;
-    } else if (key !== name && item.hasError) {
-      // Check if any other field has error
-      isFormValid = false;
-      break;
-    }
-  }
+  const formValidityData = getFromValidityDataForInputChange(
+    name,
+    value,
+    formState
+  );
   dispatch({
     type: UPDATE_FORM,
-    data: { name, value, hasError, error, touched: false, isFormValid },
+    data: formValidityData,
   });
 };
 
 export const onFocusOut = (name, value, dispatch, formState) => {
-  const { hasError, error } = validateInput(name, value);
-  let isFormValid = true;
-  for (const key in formState) {
-    const item = formState[key];
-    if (key === name && hasError) {
-      isFormValid = false;
-      break;
-    } else if (key !== name && item.hasError) {
-      isFormValid = false;
-      break;
-    }
-  }
+  const formValidityData = getFormValidityDataForFocus(name, value, formState);
   dispatch({
     type: UPDATE_FORM,
-    data: { name, value, hasError, error, touched: true, isFormValid },
+    data: formValidityData,
   });
 };
 
