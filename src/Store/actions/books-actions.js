@@ -1,8 +1,11 @@
-import { OKAY, SERVER_PORT, SERVER_URL } from "../../utils/crud";
+import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
 import { booksActions } from "../store";
+import { notificationsActions } from "../slices/notifications-slice";
+import { dispatchError, dispatchSuccess } from "./actionUtils";
 
 export const fetchBooks = () => {
   return async (dispatch) => {
+    dispatch(notificationsActions.clearNotifications());
     const fetchData = async () => {
       const response = await fetch(
         `http://${SERVER_URL}:${SERVER_PORT}/api/books`
@@ -12,13 +15,79 @@ export const fetchBooks = () => {
 
     try {
       const response = await fetchData();
-      if (response.status === OKAY) {
-        dispatch(booksActions.initiate(response.data.books));
-      } else {
-        // dispatch error
+      if (response.status !== SUCCESS) {
+        dispatchError(dispatch, "GET_BOOKS", response.message);
+        return;
       }
+      dispatch(booksActions.initiate(response.data.books));
     } catch (error) {
-      //dispatch an error
+      dispatchError(dispatch, "GET_BOOKS", error.message);
+    }
+  };
+};
+
+export const editBook = (book) => {
+  return async (dispatch) => {
+    dispatch(notificationsActions.clearNotifications());
+    const updateData = async () => {
+      const response = await fetch(
+        `http://${SERVER_URL}:${SERVER_PORT}/api/books/${book.book_id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(book),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error occurred while updating the book details");
+      }
+      return await response.json();
+    };
+
+    try {
+      const response = await updateData();
+      if (response.status !== SUCCESS) {
+        dispatchError(dispatch, "EDIT_BOOK", response.message);
+        return;
+      }
+      dispatch(booksActions.update(response.data.book));
+      dispatchSuccess(dispatch, "EDIT_BOOK", response.message);
+    } catch (error) {
+      dispatchError(dispatch, "EDIT_BOOK", error.message);
+    }
+  };
+};
+
+export const removeBook = (bookId) => {
+  return async (dispatch) => {
+    dispatch(notificationsActions.clearNotifications());
+    const removeData = async () => {
+      const response = await fetch(
+        `http://${SERVER_URL}:${SERVER_PORT}/api/books/${bookId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error occurred while deleting the book");
+      }
+      return await response.json();
+    };
+
+    try {
+      const response = await removeData();
+      if (response.status !== SUCCESS) {
+        dispatchError(dispatch, "REMOVE_BOOK", response.message);
+        return;
+      }
+      dispatch(booksActions.remove(bookId));
+      dispatchSuccess(dispatch, "REMOVE_BOOK", response.message);
+    } catch (error) {
+      dispatchError(dispatch, "REMOVE_BOOK", error.message);
     }
   };
 };

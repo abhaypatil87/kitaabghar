@@ -1,16 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authorsSlice, booksSlice, viewModeSlice } from "./slices";
+import { authors, books, notifications, viewMode } from "./slices";
 
 const store = configureStore({
   reducer: {
-    authors: authorsSlice.reducer,
-    books: booksSlice.reducer,
-    viewMode: viewModeSlice.reducer,
+    authors: authors.reducer,
+    books: books.reducer,
+    viewMode: viewMode.reducer,
+    notifications: notifications.reducer,
   },
 });
 
-export const authorsActions = authorsSlice.actions;
-export const booksActions = booksSlice.actions;
-export const viewModeActions = viewModeSlice.actions;
+export const notificationActions = notifications.actions;
+export const authorsActions = authors.actions;
+export const booksActions = books.actions;
+export const viewModeActions = viewMode.actions;
 
 export default store;

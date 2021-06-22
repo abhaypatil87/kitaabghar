@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -20,8 +21,8 @@ import {
 } from "../../utils/formUtil";
 import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
-import { useDispatch } from "react-redux";
-import { editAuthor } from "../../Store/actions/authors-actions";
+import { editAuthor } from "../../Store/actions";
+import { ERROR, SUCCESS } from "../../utils/crud";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -61,7 +62,6 @@ const getInitialState = (props) => {
 
 const Author = (props) => {
   const [editMode, setEditMode] = useState(false);
-  const [authorState, setAuthorState] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [fullName, setFullName] = useState(
     `${props.first_name} ${props.last_name}`
@@ -71,36 +71,24 @@ const Author = (props) => {
     getInitialState(props)
   );
   const dispatch = useDispatch();
-  const {
-    success,
-    setSuccess,
-    error,
-    setError,
-    showError,
-    setShowError,
-    showSuccess,
-    setShowSuccess,
-  } = useAlert();
+  const notification = useSelector((state) => state.notifications.notification);
+  const { error, setError, showError, setShowError } = useAlert();
   const classes = useStyles();
 
   useEffect(() => {
-    setAuthorState({ ...props });
-  }, []);
-
-  const resetForm = () => {
-    dispatchForm({
-      type: RESET_FORM,
-      data: getInitialState(props),
-    });
-  };
-
-  const enableEdit = () => {
-    setEditMode(true);
-  };
-  const cancelEdit = () => {
     setEditMode(false);
-    resetForm();
-  };
+    setIsEditing(false);
+    if (notification !== null) {
+      if (notification.status === ERROR) {
+        resetForm();
+        setFullName(`${props.first_name} ${props.last_name}`);
+      } else if (notification.status === SUCCESS) {
+        setFullName(
+          `${formState.first_name.value} ${formState.last_name.value}`
+        );
+      }
+    }
+  }, [notification]);
 
   const editClickHandler = async (event) => {
     event.preventDefault();
@@ -108,9 +96,10 @@ const Author = (props) => {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
+      setIsEditing(true);
       dispatch(
         editAuthor({
-          author_id: authorState.author_id,
+          author_id: props.author_id,
           first_name: formState.first_name.value,
           last_name: formState.last_name.value,
         })
@@ -118,20 +107,26 @@ const Author = (props) => {
     }
   };
 
+  /*
+   * Utility methods
+   */
+  const resetForm = () => {
+    dispatchForm({
+      type: RESET_FORM,
+      data: getInitialState(props),
+    });
+  };
+  const enableEdit = () => setEditMode(true);
+  const cancelEdit = () => {
+    setEditMode(false);
+    resetForm();
+  };
   const handleErrorAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setShowError(false);
     setError("");
-  };
-
-  const handleSuccessAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowSuccess(false);
-    setSuccess("");
   };
 
   return (
@@ -141,12 +136,6 @@ const Author = (props) => {
         open={showError}
         severity={"error"}
         onClose={handleErrorAlertClose}
-      />
-      <SnackBar
-        message={success}
-        open={showSuccess}
-        severity={"success"}
-        onClose={handleSuccessAlertClose}
       />
       <Grid
         item

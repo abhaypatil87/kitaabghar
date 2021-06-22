@@ -10,7 +10,7 @@ const BookTile = (props) => {
   const viewMode = useSelector((state) => state.viewMode.viewMode);
   const bookTile =
     viewMode === viewState.LIST ? (
-      <ListStyleBookTile {...props} onDelete={props.onDelete} />
+      <ListStyleBookTile {...props} />
     ) : viewMode === viewState.MODULE ? (
       <ModuleStyleBookTile {...props} />
     ) : (

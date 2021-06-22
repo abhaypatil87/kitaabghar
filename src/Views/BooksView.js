@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, makeStyles } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 
 import { Books } from "../components/Books";
 import { SearchBar } from "../components/SearchBar";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
-import { useDispatch } from "react-redux";
-import { fetchBooks } from "../Store/actions/books-actions";
+import { fetchBooks } from "../Store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,11 +24,6 @@ const BooksView = () => {
       console.log("BooksView is being unmounted");
     };
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   //TODO: issues/4
-  //   setFilteredBooks(books);
-  // }, [books]);
 
   useEffect(() => {}, [searchTerm]);
 
