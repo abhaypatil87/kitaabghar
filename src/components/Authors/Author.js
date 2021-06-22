@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -18,9 +19,10 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { updateAuthor } from "../../utils/crud";
 import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
+import { editAuthor } from "../../Store/actions";
+import { ERROR, SUCCESS } from "../../utils/crud";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -60,103 +62,71 @@ const getInitialState = (props) => {
 
 const Author = (props) => {
   const [editMode, setEditMode] = useState(false);
-  const {
-    success,
-    setSuccess,
-    error,
-    setError,
-    showError,
-    setShowError,
-    showSuccess,
-    setShowSuccess,
-  } = useAlert();
   const [isEditing, setIsEditing] = useState(false);
-  const [authorState, setAuthorState] = useState({});
   const [fullName, setFullName] = useState(
     `${props.first_name} ${props.last_name}`
   );
-  const [formState, dispatch] = useReducer(
+  const [formState, dispatchForm] = useReducer(
     formsReducer,
     getInitialState(props)
   );
+  const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notifications.notification);
+  const { error, setError, showError, setShowError } = useAlert();
   const classes = useStyles();
 
   useEffect(() => {
-    setAuthorState({ ...props });
-  }, []);
+    setEditMode(false);
+    setIsEditing(false);
+    if (notification !== null) {
+      if (notification.status === ERROR) {
+        resetForm();
+        setFullName(`${props.first_name} ${props.last_name}`);
+      } else if (notification.status === SUCCESS) {
+        setFullName(
+          `${formState.first_name.value} ${formState.last_name.value}`
+        );
+      }
+    }
+  }, [notification]);
 
+  const editClickHandler = async (event) => {
+    event.preventDefault();
+    if (!isValidForm(formState, dispatchForm)) {
+      setShowError(true);
+      setError("Please address all the highlighted errors.");
+    } else {
+      setIsEditing(true);
+      dispatch(
+        editAuthor({
+          author_id: props.author_id,
+          first_name: formState.first_name.value,
+          last_name: formState.last_name.value,
+        })
+      );
+    }
+  };
+
+  /*
+   * Utility methods
+   */
   const resetForm = () => {
-    dispatch({
+    dispatchForm({
       type: RESET_FORM,
       data: getInitialState(props),
     });
   };
-  const enableEdit = () => {
-    setEditMode(true);
-  };
+  const enableEdit = () => setEditMode(true);
   const cancelEdit = () => {
     setEditMode(false);
     resetForm();
   };
-
-  const editClickHandler = async (event) => {
-    event.preventDefault();
-    if (!isValidForm(formState, dispatch)) {
-      setShowError(true);
-      setError("Please address all the highlighted errors.");
-    } else {
-      await handleEditAuthor({
-        author_id: authorState.author_id,
-        first_name: formState.first_name.value,
-        last_name: formState.last_name.value,
-      });
-    }
-  };
-
-  const handleEditAuthor = async (authorDataObject) => {
-    try {
-      setIsEditing(true);
-      let response = await updateAuthor(authorDataObject);
-      response = await response;
-      if (response.status === 200) {
-        const result = await response.json();
-        if (result.data !== undefined) {
-          setShowSuccess(true);
-          setSuccess(`The author name has been updated successfully.`);
-          setFullName(
-            `${authorDataObject.first_name} ${authorDataObject.last_name}`
-          );
-        }
-      } else {
-        const responseText = await response.text();
-        setShowError(true);
-        setError(responseText);
-        resetForm();
-      }
-    } catch (error) {
-      setShowError(true);
-      setError(error.message);
-      resetForm();
-    } finally {
-      setIsEditing(false);
-      setEditMode(false);
-    }
-  };
-
   const handleErrorAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setShowError(false);
     setError("");
-  };
-
-  const handleSuccessAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowSuccess(false);
-    setSuccess("");
   };
 
   return (
@@ -166,12 +136,6 @@ const Author = (props) => {
         open={showError}
         severity={"error"}
         onClose={handleErrorAlertClose}
-      />
-      <SnackBar
-        message={success}
-        open={showSuccess}
-        severity={"success"}
-        onClose={handleSuccessAlertClose}
       />
       <Grid
         item
@@ -216,7 +180,7 @@ const Author = (props) => {
                     onInputChange(
                       "first_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}
@@ -224,7 +188,7 @@ const Author = (props) => {
                     onFocusOut(
                       "first_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}
@@ -246,7 +210,7 @@ const Author = (props) => {
                     onInputChange(
                       "last_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}
@@ -254,7 +218,7 @@ const Author = (props) => {
                     onFocusOut(
                       "last_name",
                       event.target.value,
-                      dispatch,
+                      dispatchForm,
                       formState
                     );
                   }}

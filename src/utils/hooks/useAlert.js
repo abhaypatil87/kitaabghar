@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const useAlert = () => {
   const [showError, setShowError] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState("Please enter all the required fields");
   const [success, setSuccess] = useState("");
@@ -15,6 +16,8 @@ const useAlert = () => {
     setError,
     success,
     setSuccess,
+    showNotification,
+    setShowNotification,
   };
 };
 export default useAlert;

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import BookContext from "../../Store/book-store";
+import React, { useEffect, useReducer, useState } from "react";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import {
@@ -13,6 +12,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 
 import bookTitleStyles from "./BookTile.module.css";
 import {
@@ -20,11 +20,13 @@ import {
   isValidForm,
   onFocusOut,
   onInputChange,
+  RESET_FORM,
 } from "../../utils/formUtil";
-import { deleteBook, updateBook, viewState } from "../../utils/crud";
-import { LibAlert, FormError, Confirm, SnackBar } from "../common";
+import { ERROR, SUCCESS, viewState } from "../../utils/crud";
+import { FormError, Confirm, SnackBar } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
+import { editBook, removeBook } from "../../Store/actions";
 
 const getInitialState = (props) => {
   return {
@@ -78,137 +80,95 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListStyleBookTile = (props) => {
-  const { books, setBooks, viewAs } = useContext(BookContext);
   const [bookState, setBookState] = useState({});
   const [globalDisplayMode, setGlobalDisplayMode] = useState("");
   const classes = useStyles();
-  const [formState, dispatch] = useReducer(
+  const [formState, dispatchForm] = useReducer(
     formsReducer,
     getInitialState(props)
   );
   const [editMode, setEditMode] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    success,
-    setSuccess,
-    error,
-    setError,
-    showError,
-    setShowError,
-    showSuccess,
-    setShowSuccess,
-  } = useAlert();
+  const dispatch = useDispatch();
+  const books = useSelector((state) => state.books.books);
+  const viewMode = useSelector((state) => state.viewMode.viewMode);
+  const notification = useSelector((state) => state.notifications.notification);
+  const { error, setError, showError, setShowError } = useAlert();
+
+  useEffect(() => {
+    if (notification !== null) {
+      if (notification.lastOp === "EDIT_BOOK") {
+        if (notification.status === ERROR) {
+          setBookState({ ...props });
+          cancelEdit();
+        } else if (notification.status === SUCCESS) {
+          setIsEditing(false);
+          setEditMode(false);
+          const index = books.findIndex((b) => b.book_id === props.book_id);
+          setBookState({ ...books[index] });
+        }
+      }
+
+      if (notification.lastOp === "REMOVE_BOOK") {
+        setIsOpen(false);
+      }
+    }
+  }, [notification]);
 
   useEffect(() => {
     setBookState({ ...props });
   }, []);
 
-  const enableEdit = () => {
-    setEditMode(true);
-  };
-  const cancelEdit = () => {
-    setEditMode(false);
-  };
-
-  const confirmDeleteBook = () => {
-    setIsOpen(true);
-  };
-
-  const cancelDelete = () => {
-    setIsOpen(false);
-  };
-
-  const removeBook = async () => {
-    try {
-      const response = await deleteBook(props.book_id);
-      const result = await response.json();
-      if (result.success) {
-        props.onDelete(
-          `The book '${props.title}' was removed from the library.`
-        );
-        setBooks(books.filter((item) => item.book_id !== props.book_id));
-      }
-    } catch (error) {
-      setError(error.message);
-      setShowError(true);
-    } finally {
-      setIsOpen(false);
-    }
-  };
+  const removeBookHandler = () => dispatch(removeBook(props.book_id));
 
   const editClickHandler = async (event) => {
     event.preventDefault();
-    if (!isValidForm(formState, dispatch)) {
+    if (!isValidForm(formState, dispatchForm)) {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
-      await handleEditBook({
-        book_id: bookState.book_id,
-        subtitle: bookState.subtitle,
-        isbn_10: bookState.isbn_10,
-        isbn_13: bookState.isbn_13,
-        page_count: bookState.page_count,
-        thumbnail_url: bookState.thumbnail_url,
-        title: formState.title.value,
-        description: formState.description.value,
-      });
-    }
-  };
-
-  const updateContext = (updatedBook) => {
-    const index = books.findIndex(
-      (book) => book.book_id === updatedBook.book_id
-    );
-
-    updatedBook = { ...books[index], ...updatedBook };
-    books[index] = updatedBook;
-    setBooks(books);
-  };
-
-  const handleEditBook = async (bookDataObject) => {
-    try {
       setIsEditing(true);
-      let response = await updateBook(bookDataObject);
-
-      response = await response;
-      if (response.status === 200) {
-        const responseText = await response.json();
-        const book = responseText.data.book;
-        updateContext(book);
-
-        const index = books.findIndex((b) => b.book_id === book.book_id);
-
-        setBookState({ ...books[index] });
-        setShowSuccess(true);
-        setSuccess(`The book '${book.title}' has been updated successfully.`);
-      } else {
-        const responseText = await response.text();
-        setShowError(true);
-        setError(responseText);
-      }
-    } catch (error) {
-      setShowError(true);
-      setError(error.message);
-    } finally {
-      setIsEditing(false);
-      setEditMode(false);
+      dispatch(
+        editBook({
+          book_id: bookState.book_id,
+          subtitle: bookState.subtitle,
+          isbn_10: bookState.isbn_10,
+          isbn_13: bookState.isbn_13,
+          page_count: bookState.page_count,
+          thumbnail_url: bookState.thumbnail_url,
+          title: formState.title.value,
+          description: formState.description.value,
+        })
+      );
     }
   };
 
-  const handleErrorAlertClose = () => {
+  /*
+   * Utility methods
+   */
+  const enableEdit = () => setEditMode(true);
+  const confirmDeleteBook = () => setIsOpen(true);
+  const cancelDelete = () => setIsOpen(false);
+  const titleClickHandler = () => setGlobalDisplayMode(viewMode);
+  const cancelEdit = () => {
+    setEditMode(false);
+    setIsEditing(false);
+    resetForm();
+  };
+  const resetForm = () =>
+    dispatchForm({
+      type: RESET_FORM,
+      data: getInitialState(props),
+    });
+  const handleErrorAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
     setShowError(false);
     setError("");
   };
 
-  const handleSuccessAlertClose = () => {
-    setShowSuccess(false);
-    setSuccess("");
-  };
-
-  const titleClickHandler = () => {
-    setGlobalDisplayMode(viewAs);
-  };
   return globalDisplayMode === viewState.MODULE ? (
     <ModuleStyleBookTile {...props} />
   ) : globalDisplayMode === viewState.HEADLINE ? (
@@ -221,16 +181,10 @@ const ListStyleBookTile = (props) => {
         severity={"error"}
         onClose={handleErrorAlertClose}
       />
-      <SnackBar
-        message={success}
-        open={showSuccess}
-        severity={"success"}
-        onClose={handleSuccessAlertClose}
-      />
       <Paper elevation={3} className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item>
-            <img src={bookState.thumbnail_url} alt={props.title} />
+            <img src={bookState.thumbnail_url} alt={bookState.title} />
             <div>
               <IconButton
                 onClick={enableEdit}
@@ -273,7 +227,7 @@ const ListStyleBookTile = (props) => {
                       onInputChange(
                         "title",
                         event.target.value,
-                        dispatch,
+                        dispatchForm,
                         formState
                       );
                     }}
@@ -281,7 +235,7 @@ const ListStyleBookTile = (props) => {
                       onFocusOut(
                         "title",
                         event.target.value,
-                        dispatch,
+                        dispatchForm,
                         formState
                       );
                     }}
@@ -334,7 +288,7 @@ const ListStyleBookTile = (props) => {
                       onInputChange(
                         "description",
                         event.target.value,
-                        dispatch,
+                        dispatchForm,
                         formState
                       );
                     }}
@@ -342,7 +296,7 @@ const ListStyleBookTile = (props) => {
                       onFocusOut(
                         "description",
                         event.target.value,
-                        dispatch,
+                        dispatchForm,
                         formState
                       );
                     }}
@@ -386,7 +340,7 @@ const ListStyleBookTile = (props) => {
         keepMounted
         open={isOpen}
         onClose={cancelDelete}
-        onOkay={removeBook}
+        onOkay={removeBookHandler}
       />
     </Box>
   );

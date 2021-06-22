@@ -1,53 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Box, makeStyles } from "@material-ui/core";
+import React from "react";
+import { Box } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
-import BookContext from "../../Store/book-store";
 import BookTile from "./BookTile";
-import { LibAlert } from "../common";
-
-const useStyles = makeStyles((theme) => ({
-  formMessage: {
-    width: "98%",
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-}));
 
 const Books = () => {
-  const classes = useStyles();
-
-  const { filteredBooks } = useContext(BookContext);
-  const [message, setMessage] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  useEffect(() => {
-    // This hook has been kept here intentionally
-    // This hook will be called whenever a book is edited or deleted
-  }, [filteredBooks]);
-
-  const deleteBookHandler = (response) => {
-    if (response) {
-      setMessage(response);
-      setShowSuccess(true);
-    }
-  };
-
-  const handleSuccessAlertClose = () => {
-    setShowSuccess(false);
-    setMessage("");
-  };
+  const books = useSelector((state) => state.books.books);
 
   return (
     <Box component="div">
-      {showSuccess && (
-        <LibAlert
-          severity="success"
-          className={classes.formMessage}
-          onClose={handleSuccessAlertClose}
-          message={message}
-        />
-      )}
-      {filteredBooks.map((book) => (
+      {books.map((book) => (
         <BookTile
           key={book.book_id}
           book_id={book.book_id}
@@ -59,7 +21,6 @@ const Books = () => {
           page_count={book.page_count}
           author={book.author}
           description={book.description}
-          onDelete={deleteBookHandler}
         />
       ))}
     </Box>

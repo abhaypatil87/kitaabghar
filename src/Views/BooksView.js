@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, makeStyles } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 
 import { Books } from "../components/Books";
 import { SearchBar } from "../components/SearchBar";
-import BookContext from "../Store/book-store";
-import { SERVER_PORT, SERVER_URL } from "../utils/crud";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
-import { viewState as view } from "../utils/crud";
+import { fetchBooks } from "../Store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,62 +14,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BooksView = () => {
-  const [books, setBooks] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [viewAs, setViewAs] = useState(view.MODULE);
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
-    const fetchAllBooks = async () => {
-      let response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books`
-      );
-      response = await response.json();
-      setBooks(response.data.books);
+    dispatch(fetchBooks());
+    return () => {
+      console.log("BooksView is being unmounted");
     };
-    fetchAllBooks();
-  }, []);
+  }, [dispatch]);
 
-  useEffect(() => {
-    //TODO: issues/4
-    setFilteredBooks(books);
-  }, [books]);
-
-  useEffect(() => {
-    setFilteredBooks(
-      books.filter((book) =>
-        book.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [searchTerm]);
+  useEffect(() => {}, [searchTerm]);
 
   const searchChangeHandler = (event) => {
     event.preventDefault();
     setSearchTerm(event.target.value);
   };
 
-  const viewAsChangeHandler = (event) => {
-    setViewAs(event);
-  };
-
   return (
-    <BookContext.Provider
-      value={{
-        books: books,
-        filteredBooks: filteredBooks,
-        setBooks: setBooks,
-        setFilteredBooks: setFilteredBooks,
-        viewAs: viewAs,
-        setViewAs: setViewAs,
-      }}
-    >
-      <Box component="div" className={classes.root}>
-        <SearchBar onSearch={searchChangeHandler} />
-        <ViewAsContainer onViewAs={viewAsChangeHandler} />
-        <Books />
-      </Box>
-    </BookContext.Provider>
+    <Box component="div" className={classes.root}>
+      <SearchBar onSearch={searchChangeHandler} />
+      <ViewAsContainer />
+      <Books />
+    </Box>
   );
 };
 

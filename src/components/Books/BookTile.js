@@ -1,18 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 
-import BookContext from "../../Store/book-store";
 import ListStyleBookTile from "./ListStyleBookTile";
 import ModuleStyleBookTile from "./ModuleStyleBookTile";
 import HeadlineStyleBookTile from "./HeadlineStyleBookTile";
 import { viewState } from "../../utils/crud";
 
 const BookTile = (props) => {
-  const { viewAs } = useContext(BookContext);
-
+  const viewMode = useSelector((state) => state.viewMode.viewMode);
   const bookTile =
-    viewAs === viewState.LIST ? (
-      <ListStyleBookTile {...props} onDelete={props.onDelete} />
-    ) : viewAs === viewState.MODULE ? (
+    viewMode === viewState.LIST ? (
+      <ListStyleBookTile {...props} />
+    ) : viewMode === viewState.MODULE ? (
       <ModuleStyleBookTile {...props} />
     ) : (
       <HeadlineStyleBookTile {...props} />

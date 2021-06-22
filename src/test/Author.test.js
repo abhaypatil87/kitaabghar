@@ -3,12 +3,25 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Author } from "../components/Authors";
 import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import thunk from "redux-thunk";
 
 beforeEach(() => {
+  const initialState = {
+    notifications: {
+      notification: null,
+    },
+  };
+  const middlewares = [thunk];
+  const mockStore = configureStore(middlewares);
+  const store = mockStore(initialState);
   fetch.resetMocks();
   jest.clearAllMocks();
   render(
-    <Author key={1} author_id={1} first_name={"Alice"} last_name={"Walker"} />
+    <Provider store={store}>
+      <Author key={1} author_id={1} first_name={"Alice"} last_name={"Walker"} />
+    </Provider>
   );
 });
 
@@ -38,7 +51,7 @@ describe("Author", () => {
     ).toBeInTheDocument();
   });
 
-  it("should create edit the author successfully when entered correct values", async () => {
+  it("should edit the author successfully when entered correct values", async () => {
     userEvent.click(screen.getByRole("button", { name: /edit/i }));
     const validFirstName = "Patrick";
     userEvent.type(screen.getAllByRole("textbox")[0], validFirstName);

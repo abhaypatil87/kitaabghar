@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Box, makeStyles } from "@material-ui/core";
-import { SERVER_PORT, SERVER_URL } from "../utils/crud";
 import { Authors } from "../components/Authors";
+import { useDispatch } from "react-redux";
+import { fetchAuthors } from "../Store/actions/authors-actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,28 +11,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AuthorsView = () => {
-  const [authors, setAuthors] = useState([]);
-
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
-    const fetchAllAuthors = async () => {
-      let response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/authors`
-      );
-      response = await response.json();
-      setAuthors(response.data.authors);
-    };
-    fetchAllAuthors();
-
+    dispatch(fetchAuthors());
     return () => {
       console.log("AuthorsView is being unmounted");
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box component="div" className={classes.root}>
-      <Authors authors={authors} />
+      <Authors />
     </Box>
   );
 };
