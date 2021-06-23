@@ -91,3 +91,38 @@ export const removeBook = (bookId) => {
     }
   };
 };
+
+export const createBook = (isbn) => {
+  return async (dispatch) => {
+    dispatch(notificationsActions.clearNotifications());
+    const createData = async () => {
+      const response = await fetch(
+        `http://${SERVER_URL}:${SERVER_PORT}/api/books`,
+        {
+          method: "POST",
+          body: JSON.stringify(isbn),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error occurred while creating the book");
+      }
+      return await response.json();
+    };
+
+    try {
+      const response = await createData();
+      if (response.status !== SUCCESS) {
+        dispatchError(dispatch, "ADD_BOOK", response.message);
+        return;
+      }
+      dispatch(booksActions.create(response.data.book));
+      dispatchSuccess(dispatch, "ADD_BOOK", response.message);
+    } catch (error) {
+      dispatchSuccess(dispatch, "ADD_BOOK", error.message);
+    }
+  };
+};

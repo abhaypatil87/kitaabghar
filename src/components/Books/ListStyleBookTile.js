@@ -22,7 +22,7 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { ERROR, SUCCESS, viewState } from "../../utils/crud";
+import { SUCCESS, viewState } from "../../utils/crud";
 import { FormError, Confirm, SnackBar } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
@@ -80,7 +80,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListStyleBookTile = (props) => {
-  const [bookState, setBookState] = useState({});
   const [globalDisplayMode, setGlobalDisplayMode] = useState("");
   const classes = useStyles();
   const [formState, dispatchForm] = useReducer(
@@ -99,14 +98,9 @@ const ListStyleBookTile = (props) => {
   useEffect(() => {
     if (notification !== null) {
       if (notification.lastOp === "EDIT_BOOK") {
-        if (notification.status === ERROR) {
-          setBookState({ ...props });
-          cancelEdit();
-        } else if (notification.status === SUCCESS) {
-          setIsEditing(false);
+        setIsEditing(false);
+        if (notification.status === SUCCESS) {
           setEditMode(false);
-          const index = books.findIndex((b) => b.book_id === props.book_id);
-          setBookState({ ...books[index] });
         }
       }
 
@@ -114,11 +108,7 @@ const ListStyleBookTile = (props) => {
         setIsOpen(false);
       }
     }
-  }, [notification]);
-
-  useEffect(() => {
-    setBookState({ ...props });
-  }, []);
+  }, [notification, books, props]);
 
   const removeBookHandler = () => dispatch(removeBook(props.book_id));
 
@@ -131,12 +121,12 @@ const ListStyleBookTile = (props) => {
       setIsEditing(true);
       dispatch(
         editBook({
-          book_id: bookState.book_id,
-          subtitle: bookState.subtitle,
-          isbn_10: bookState.isbn_10,
-          isbn_13: bookState.isbn_13,
-          page_count: bookState.page_count,
-          thumbnail_url: bookState.thumbnail_url,
+          book_id: props.book_id,
+          subtitle: props.subtitle,
+          isbn_10: props.isbn_10,
+          isbn_13: props.isbn_13,
+          page_count: props.page_count,
+          thumbnail_url: props.thumbnail_url,
           title: formState.title.value,
           description: formState.description.value,
         })
@@ -184,7 +174,7 @@ const ListStyleBookTile = (props) => {
       <Paper elevation={3} className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item>
-            <img src={bookState.thumbnail_url} alt={bookState.title} />
+            <img src={props.thumbnail_url} alt={formState.title.value} />
             <div>
               <IconButton
                 onClick={enableEdit}
@@ -210,13 +200,12 @@ const ListStyleBookTile = (props) => {
                   variant="h5"
                   onClick={titleClickHandler}
                 >
-                  {bookState.title}
+                  {props.title}
                 </Typography>
               )}
               <Fade in={editMode} timeout={1} unmountOnExit>
                 <>
                   <TextField
-                    autoFocus={true}
                     margin="dense"
                     label="Title"
                     variant="outlined"
@@ -246,22 +235,22 @@ const ListStyleBookTile = (props) => {
                 </>
               </Fade>
               <Typography variant="h6" gutterBottom>
-                {bookState.subtitle}
+                {props.subtitle}
               </Typography>
               <Typography
                 variant="subtitle1"
                 className={bookTitleStyles.secondaryDetail}
                 gutterBottom
               >
-                {bookState.author}
+                {props.author}
               </Typography>
 
               <Typography variant="body2" color="textSecondary">
-                {bookState.page_count} Pages
+                {props.page_count} Pages
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                <strong>ISBN 13:</strong> {bookState.isbn_13}{" "}
-                <strong>ISBN 10:</strong> {bookState.isbn_10}
+                <strong>ISBN 13:</strong> {props.isbn_13}{" "}
+                <strong>ISBN 10:</strong> {props.isbn_10}
               </Typography>
 
               <Box component="div" marginTop={2}>
@@ -270,13 +259,12 @@ const ListStyleBookTile = (props) => {
                     variant="body1"
                     className={bookTitleStyles.bookDescription}
                   >
-                    {bookState.description}
+                    {props.description}
                   </Typography>
                 )}
                 <Fade in={editMode} timeout={100} unmountOnExit>
                   <TextField
                     style={{ width: "80%" }}
-                    autoFocus={true}
                     margin="dense"
                     label="Description"
                     variant="outlined"

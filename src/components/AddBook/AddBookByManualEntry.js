@@ -1,17 +1,19 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { Box, Button, Grid, TextField, makeStyles } from "@material-ui/core";
 
 import {
-  CLEAR_FORM,
   initialState,
   formsReducer,
   isValidForm,
   onFocusOut,
   onInputChange,
+  RESET_FORM,
 } from "../../utils/formUtil";
-import { createBook } from "../../utils/crud";
+import { SUCCESS } from "../../utils/crud";
 import { LibAlert, FormError } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
+import { useDispatch, useSelector } from "react-redux";
+import { createBook } from "../../Store/actions";
 
 const useStyles = makeStyles((theme) => ({
   m1: {
@@ -24,74 +26,52 @@ const useStyles = makeStyles((theme) => ({
 
 const AddBookByManualEntry = () => {
   const classes = useStyles();
-  const [formState, dispatch] = useReducer(formsReducer, initialState);
+  const [formState, dispatchForm] = useReducer(formsReducer, initialState);
   const [isCreating, setIsCreating] = useState(false);
-  const {
-    success,
-    setSuccess,
-    error,
-    setError,
-    showError,
-    setShowError,
-    showSuccess,
-    setShowSuccess,
-  } = useAlert();
+  const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notifications.notification);
+
+  const { error, setError, showError, setShowError } = useAlert();
+
+  useEffect(() => {
+    setIsCreating(false);
+    if (notification !== null) {
+      if (notification.lastOp === "ADD_BOOK") {
+        if (notification.status === SUCCESS) {
+          dispatchForm({
+            type: RESET_FORM,
+            data: initialState,
+          });
+        }
+      }
+    }
+  }, [notification]);
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
-    if (!isValidForm(formState, dispatch)) {
+    if (!isValidForm(formState, dispatchForm)) {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
-      await handleAddBook({
-        title: formState.title.value,
-        description: formState.description.value,
-        subtitle: formState.subtitle.value,
-        isbn_10: formState.isbn_10.value,
-        isbn_13: formState.isbn_13.value,
-        page_count: formState.page_count.value,
-        thumbnail_url: formState.thumbnail_url.value,
-        author: formState.author.value,
-      });
-    }
-  };
-
-  const handleAddBook = async (bookDataObject) => {
-    try {
       setIsCreating(true);
-      let response = await createBook(bookDataObject);
-
-      response = await response;
-      if (response.status === 200) {
-        const responseText = await response.json();
-        const book = responseText.data.book;
-        setShowSuccess(true);
-        setSuccess(`The book '${book.title}' was added into the library`);
-        dispatch({
-          type: CLEAR_FORM,
-          data: formState,
-        });
-      } else {
-        const responseText = await response.text();
-        setShowError(true);
-        setError(responseText);
-      }
-    } catch (error) {
-      setShowError(true);
-      setError(error.message);
-    } finally {
-      setIsCreating(false);
+      dispatch(
+        createBook({
+          title: formState.title.value,
+          description: formState.description.value,
+          subtitle: formState.subtitle.value,
+          isbn_10: formState.isbn_10.value,
+          isbn_13: formState.isbn_13.value,
+          page_count: formState.page_count.value,
+          thumbnail_url: formState.thumbnail_url.value,
+          author: formState.author.value,
+        })
+      );
     }
   };
 
   const handleErrorAlertClose = () => {
     setShowError(false);
     setError("");
-  };
-
-  const handleSuccessAlertClose = () => {
-    setShowSuccess(false);
-    setSuccess("");
   };
 
   return (
@@ -111,15 +91,6 @@ const AddBookByManualEntry = () => {
             message={error}
           />
         )}
-
-        {showSuccess && (
-          <LibAlert
-            severity="success"
-            className={classes.m2}
-            onClose={handleSuccessAlertClose}
-            message={success}
-          />
-        )}
         <form
           className={classes.m1}
           onSubmit={(event) => formSubmitHandler(event)}
@@ -136,10 +107,20 @@ const AddBookByManualEntry = () => {
               id="title"
               value={formState.title.value}
               onChange={(event) => {
-                onInputChange("title", event.target.value, dispatch, formState);
+                onInputChange(
+                  "title",
+                  event.target.value,
+                  dispatchForm,
+                  formState
+                );
               }}
               onBlur={(event) => {
-                onFocusOut("title", event.target.value, dispatch, formState);
+                onFocusOut(
+                  "title",
+                  event.target.value,
+                  dispatchForm,
+                  formState
+                );
               }}
             />
             {formState.title.touched && formState.title.hasError && (
@@ -160,12 +141,17 @@ const AddBookByManualEntry = () => {
                 onInputChange(
                   "subtitle",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
               onBlur={(event) => {
-                onFocusOut("subtitle", event.target.value, dispatch, formState);
+                onFocusOut(
+                  "subtitle",
+                  event.target.value,
+                  dispatchForm,
+                  formState
+                );
               }}
             />
             {formState.subtitle.touched && formState.subtitle.hasError && (
@@ -187,12 +173,17 @@ const AddBookByManualEntry = () => {
                 onInputChange(
                   "author",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
               onBlur={(event) => {
-                onFocusOut("author", event.target.value, dispatch, formState);
+                onFocusOut(
+                  "author",
+                  event.target.value,
+                  dispatchForm,
+                  formState
+                );
               }}
             />
             {formState.author.touched && formState.author.hasError && (
@@ -215,7 +206,7 @@ const AddBookByManualEntry = () => {
                 onInputChange(
                   "description",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
@@ -223,7 +214,7 @@ const AddBookByManualEntry = () => {
                 onFocusOut(
                   "description",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
@@ -247,12 +238,17 @@ const AddBookByManualEntry = () => {
                 onInputChange(
                   "isbn_10",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
               onBlur={(event) => {
-                onFocusOut("isbn_10", event.target.value, dispatch, formState);
+                onFocusOut(
+                  "isbn_10",
+                  event.target.value,
+                  dispatchForm,
+                  formState
+                );
               }}
             />
             {formState.isbn_10.touched && formState.isbn_10.hasError && (
@@ -273,12 +269,17 @@ const AddBookByManualEntry = () => {
                 onInputChange(
                   "isbn_13",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
               onBlur={(event) => {
-                onFocusOut("isbn_13", event.target.value, dispatch, formState);
+                onFocusOut(
+                  "isbn_13",
+                  event.target.value,
+                  dispatchForm,
+                  formState
+                );
               }}
             />
             {formState.isbn_13.touched && formState.isbn_13.hasError && (
@@ -299,7 +300,7 @@ const AddBookByManualEntry = () => {
                 onInputChange(
                   "page_count",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
@@ -307,7 +308,7 @@ const AddBookByManualEntry = () => {
                 onFocusOut(
                   "page_count",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
@@ -332,7 +333,7 @@ const AddBookByManualEntry = () => {
                 onInputChange(
                   "thumbnail_url",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}
@@ -340,7 +341,7 @@ const AddBookByManualEntry = () => {
                 onFocusOut(
                   "thumbnail_url",
                   event.target.value,
-                  dispatch,
+                  dispatchForm,
                   formState
                 );
               }}

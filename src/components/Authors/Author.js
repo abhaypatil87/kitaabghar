@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
@@ -22,7 +22,6 @@ import {
 import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
 import { editAuthor } from "../../Store/actions";
-import { ERROR, SUCCESS } from "../../utils/crud";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -63,9 +62,6 @@ const getInitialState = (props) => {
 const Author = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [fullName, setFullName] = useState(
-    `${props.first_name} ${props.last_name}`
-  );
   const [formState, dispatchForm] = useReducer(
     formsReducer,
     getInitialState(props)
@@ -74,20 +70,15 @@ const Author = (props) => {
   const notification = useSelector((state) => state.notifications.notification);
   const { error, setError, showError, setShowError } = useAlert();
   const classes = useStyles();
-
+  const reset = useCallback(() => {
+    dispatchForm({
+      type: RESET_FORM,
+      data: getInitialState(props),
+    });
+  }, [props]);
   useEffect(() => {
     setEditMode(false);
     setIsEditing(false);
-    if (notification !== null) {
-      if (notification.status === ERROR) {
-        resetForm();
-        setFullName(`${props.first_name} ${props.last_name}`);
-      } else if (notification.status === SUCCESS) {
-        setFullName(
-          `${formState.first_name.value} ${formState.last_name.value}`
-        );
-      }
-    }
   }, [notification]);
 
   const editClickHandler = async (event) => {
@@ -110,16 +101,10 @@ const Author = (props) => {
   /*
    * Utility methods
    */
-  const resetForm = () => {
-    dispatchForm({
-      type: RESET_FORM,
-      data: getInitialState(props),
-    });
-  };
   const enableEdit = () => setEditMode(true);
   const cancelEdit = () => {
     setEditMode(false);
-    resetForm();
+    reset();
   };
   const handleErrorAlertClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -150,7 +135,7 @@ const Author = (props) => {
           {!editMode && (
             <Box hidden={editMode} className={classes.nameBox}>
               <Typography variant="body1" tabIndex={0}>
-                {fullName}
+                {props.first_name} {props.last_name}
               </Typography>
               <IconButton
                 size="medium"
