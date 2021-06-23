@@ -1,13 +1,28 @@
 import * as React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import AddBookBySearch from "../components/AddBook/AddBookBySearch";
 import { act } from "react-dom/test-utils";
+import thunk from "redux-thunk";
+import configureStore from "redux-mock-store";
+import { Provider } from "react-redux";
+import AddBookBySearch from "../components/AddBook/AddBookBySearch";
 
 beforeEach(() => {
+  const initialState = {
+    notifications: {
+      notification: null,
+    },
+  };
+  const middlewares = [thunk];
+  const mockStore = configureStore(middlewares);
+  const store = mockStore(initialState);
   fetch.resetMocks();
   jest.clearAllMocks();
-  render(<AddBookBySearch />);
+  render(
+    <Provider store={store}>
+      <AddBookBySearch />
+    </Provider>
+  );
 });
 
 describe("AddBooksBySearch", () => {

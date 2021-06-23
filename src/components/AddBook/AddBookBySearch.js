@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Box, Button, TextField } from "@material-ui/core";
 
@@ -7,10 +7,13 @@ import {
   isValidForm,
   onFocusOut,
   onInputChange,
+  RESET_FORM,
 } from "../../utils/formUtil";
-import { createBook } from "../../utils/crud";
-import { LibAlert, FormError } from "../common";
+import { SUCCESS } from "../../utils/crud";
+import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
+import { useDispatch, useSelector } from "react-redux";
+import { createBook } from "../../Store/actions";
 
 const useStyles = makeStyles((theme) => ({
   m1: {
@@ -26,63 +29,43 @@ const initialState = {
   isFormValid: false,
 };
 const AddBookBySearch = () => {
+  const [formState, dispatchForm] = useReducer(formsReducer, initialState);
+  const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notifications.notification);
   const classes = useStyles();
-  const [formState, dispatch] = useReducer(formsReducer, initialState);
   const [error, setError] = useState(
     "Please enter a 10 or 13 digit ISBN value"
   );
   const [isCreating, setIsCreating] = useState(false);
-  const {
-    success,
-    setSuccess,
-    showError,
-    setShowError,
-    showSuccess,
-    setShowSuccess,
-  } = useAlert();
+  const { showError, setShowError } = useAlert();
+
+  useEffect(() => {
+    setIsCreating(false);
+    if (notification !== null) {
+      if (notification.lastOp === "ADD_BOOK") {
+        if (notification.status === SUCCESS) {
+          dispatchForm({
+            type: RESET_FORM,
+            data: initialState,
+          });
+        }
+      }
+    }
+  }, [notification]);
   const formSubmitHandler = async (event) => {
     event.preventDefault();
-
-    if (!isValidForm(formState, dispatch)) {
+    if (!isValidForm(formState, dispatchForm)) {
       setShowError(true);
       setError("Please address all the highlighted errors.");
     } else {
-      await handleAddBook({ isbn: formState.isbn.value });
-    }
-  };
-
-  const handleAddBook = async (bookDataObject) => {
-    try {
       setIsCreating(true);
-      let response = await createBook(bookDataObject);
-
-      response = await response;
-      if (response.status === 200) {
-        const responseText = await response.json();
-        const book = responseText.data.book;
-        setShowSuccess(true);
-        setSuccess(`The book '${book.title}' was added into the library`);
-      } else {
-        const responseText = await response.text();
-        setShowError(true);
-        setError(responseText);
-      }
-    } catch (error) {
-      setShowError(true);
-      setError(error.message);
-    } finally {
-      setIsCreating(false);
+      dispatch(createBook({ isbn: formState.isbn.value }));
     }
   };
 
   const handleErrorAlertClose = () => {
     setShowError(false);
     setError("");
-  };
-
-  const handleSuccessAlertClose = () => {
-    setShowSuccess(false);
-    setSuccess("");
   };
 
   return (
@@ -94,23 +77,12 @@ const AddBookBySearch = () => {
       alignItems="flex-start"
     >
       <Grid item xs={12} sm={12} md={8} lg={6}>
-        {showError && (!formState.isFormValid || error.length > 0) && (
-          <LibAlert
-            severity="error"
-            className={classes.m1}
-            onClose={handleErrorAlertClose}
-            message={error}
-          />
-        )}
-
-        {showSuccess && (
-          <LibAlert
-            severity="success"
-            className={classes.m1}
-            onClose={handleSuccessAlertClose}
-            message={success}
-          />
-        )}
+        <SnackBar
+          message={error}
+          open={showError}
+          severity={"error"}
+          onClose={handleErrorAlertClose}
+        />
         <form
           className={classes.m1}
           onSubmit={(event) => formSubmitHandler(event)}
@@ -127,10 +99,15 @@ const AddBookBySearch = () => {
               id="isbn"
               value={formState.isbn.value}
               onChange={(event) => {
-                onInputChange("isbn", event.target.value, dispatch, formState);
+                onInputChange(
+                  "isbn",
+                  event.target.value,
+                  dispatchForm,
+                  formState
+                );
               }}
               onBlur={(event) => {
-                onFocusOut("isbn", event.target.value, dispatch, formState);
+                onFocusOut("isbn", event.target.value, dispatchForm, formState);
               }}
             />
             {formState.isbn.touched && formState.isbn.hasError && (

@@ -8,13 +8,3 @@ export const viewState = {
   LIST: "list",
   HEADLINE: "headline",
 };
-
-export const createBook = async (bookDataObject) => {
-  return await fetch(`http://${SERVER_URL}:${SERVER_PORT}/api/books`, {
-    method: "POST",
-    body: JSON.stringify(bookDataObject),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-};
