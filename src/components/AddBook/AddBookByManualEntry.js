@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { createBook } from "../../Store/actions";
 
 const useStyles = makeStyles((theme) => ({
+  form: {
+    width: "40rem",
+  },
   m1: {
     marginTop: theme.spacing(1),
   },
@@ -92,7 +95,7 @@ const AddBookByManualEntry = () => {
           />
         )}
         <form
-          className={classes.m1}
+          className={`${classes.m1} ${classes.form}`}
           onSubmit={(event) => formSubmitHandler(event)}
         >
           <Grid item className={classes.m2}>

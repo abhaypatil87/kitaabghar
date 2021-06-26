@@ -56,12 +56,13 @@ const IsbnSearchCreate = () => {
     }
   }, [notification]);
   const formSubmitHandler = async (event) => {
+    setIsCreating(true);
     event.preventDefault();
     if (!isValidForm(formState, dispatchForm)) {
       setShowError(true);
       setError("Please address all the highlighted errors.");
+      setIsCreating(false);
     } else {
-      setIsCreating(true);
       dispatch(createBook({ isbn: formState.isbn.value }));
     }
   };

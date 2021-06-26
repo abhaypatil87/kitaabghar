@@ -5,7 +5,6 @@ import { act } from "react-dom/test-utils";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import AddBookBySearch from "../components/AddBook/AddBookBySearch";
 import IsbnSearchCreate from "../components/AddBook/IsbnSearchCreate";
 
 beforeEach(() => {
@@ -26,7 +25,7 @@ beforeEach(() => {
   );
 });
 
-describe("AddBooksBySearch", () => {
+describe("IsbnSearchCreate", () => {
   it("should throw error message when entered no ISBN value", async () => {
     act(() => userEvent.click(screen.getByRole("button", { name: /add/i })));
     expect(
