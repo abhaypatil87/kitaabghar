@@ -122,7 +122,7 @@ export const createBook = (isbn) => {
       dispatch(booksActions.create(response.data.book));
       dispatchSuccess(dispatch, "ADD_BOOK", response.message);
     } catch (error) {
-      dispatchSuccess(dispatch, "ADD_BOOK", error.message);
+      dispatchError(dispatch, "ADD_BOOK", error.message);
     }
   };
 };

@@ -5,6 +5,8 @@ import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { viewState } from "../utils/crud";
+import { Router } from "react-router";
+import { createMemoryHistory } from "history";
 
 beforeEach(() => {
   const initialState = {
@@ -21,21 +23,26 @@ beforeEach(() => {
   const middlewares = [thunk];
   const mockStore = configureStore(middlewares);
   const store = mockStore(initialState);
+  const route = "/books";
+  const history = createMemoryHistory();
+  history.push(route);
   render(
-    <Provider store={store}>
-      <BookTile
-        key={1}
-        book_id={1}
-        title={"Test book title"}
-        subtitle={"Test book subtitle"}
-        thumbnail_url={"url"}
-        isbn_10={"isbn10"}
-        isbn_13={"isbn13"}
-        page_count={123}
-        author={"Test Author"}
-        description={"Test description"}
-      />
-    </Provider>
+    <Router history={history}>
+      <Provider store={store}>
+        <BookTile
+          key={1}
+          book_id={1}
+          title={"Test book title"}
+          subtitle={"Test book subtitle"}
+          thumbnail_url={"url"}
+          isbn_10={"isbn10"}
+          isbn_13={"isbn13"}
+          page_count={123}
+          author={"Test Author"}
+          description={"Test description"}
+        />
+      </Provider>
+    </Router>
   );
 });
 

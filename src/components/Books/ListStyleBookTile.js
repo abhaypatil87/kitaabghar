@@ -1,6 +1,8 @@
 import React, { useEffect, useReducer, useState } from "react";
+import { useLocation } from "react-router";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import {
   Box,
   Button,
@@ -26,7 +28,7 @@ import { SUCCESS, viewState } from "../../utils/crud";
 import { FormError, Confirm, SnackBar } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
-import { editBook, removeBook } from "../../Store/actions";
+import { createBook, editBook, removeBook } from "../../Store/actions";
 
 const getInitialState = (props) => {
   return {
@@ -94,6 +96,7 @@ const ListStyleBookTile = (props) => {
   const viewMode = useSelector((state) => state.viewMode.viewMode);
   const notification = useSelector((state) => state.notifications.notification);
   const { error, setError, showError, setShowError } = useAlert();
+  const location = useLocation();
 
   useEffect(() => {
     if (notification !== null) {
@@ -110,7 +113,66 @@ const ListStyleBookTile = (props) => {
     }
   }, [notification, books, props]);
 
-  const removeBookHandler = () => dispatch(removeBook(props.book_id));
+  const renderEditControls = () => {
+    return (
+      <>
+        <IconButton
+          onClick={enableEdit}
+          className={`${classes.iconButton} ${classes.hover}`}
+          aria-label={"Edit"}
+        >
+          <EditRoundedIcon />
+        </IconButton>
+        <IconButton
+          className={`${classes.iconButton} ${classes.hover}`}
+          onClick={confirmDeleteBook}
+          aria-label={"Delete"}
+        >
+          <DeleteOutlineRoundedIcon />
+        </IconButton>
+      </>
+    );
+  };
+
+  const renderCreateControls = () => {
+    return (
+      <>
+        <IconButton
+          onClick={addClickHandler}
+          className={`${classes.iconButton} ${classes.hover}`}
+          aria-label={"Add"}
+        >
+          <AddRoundedIcon />
+        </IconButton>
+      </>
+    );
+  };
+
+  const renderControls = () => {
+    return (
+      <Box component="div">
+        {location.pathname === "/books" && renderEditControls()}
+        {location.pathname === "/add-books" && renderCreateControls()}
+      </Box>
+    );
+  };
+
+  const addClickHandler = () => {
+    dispatch(
+      createBook({
+        title: props.title,
+        description: props.description,
+        subtitle: props.subtitle,
+        isbn_10: props.isbn_10,
+        isbn_13: props.isbn_13,
+        page_count: props.page_count,
+        thumbnail_url: props.thumbnail_url,
+        author: props.author,
+      })
+    );
+  };
+
+  const removeClickHandler = () => dispatch(removeBook(props.book_id));
 
   const editClickHandler = async (event) => {
     event.preventDefault();
@@ -175,22 +237,7 @@ const ListStyleBookTile = (props) => {
         <Grid container spacing={2}>
           <Grid item>
             <img src={props.thumbnail_url} alt={formState.title.value} />
-            <div>
-              <IconButton
-                onClick={enableEdit}
-                className={`${classes.iconButton} ${classes.hover}`}
-                aria-label={"Edit"}
-              >
-                <EditRoundedIcon />
-              </IconButton>
-              <IconButton
-                className={`${classes.iconButton} ${classes.hover}`}
-                onClick={confirmDeleteBook}
-                aria-label={"Delete"}
-              >
-                <DeleteOutlineRoundedIcon />
-              </IconButton>
-            </div>
+            {renderControls()}
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs>
@@ -246,7 +293,8 @@ const ListStyleBookTile = (props) => {
               </Typography>
 
               <Typography variant="body2" color="textSecondary">
-                {props.page_count} Pages
+                {props.page_count === 0 && "Page count unavailable"}
+                {props.page_count > 0 && `${props.page_count} Pages`}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 <strong>ISBN 13:</strong> {props.isbn_13}{" "}
@@ -328,7 +376,7 @@ const ListStyleBookTile = (props) => {
         keepMounted
         open={isOpen}
         onClose={cancelDelete}
-        onOkay={removeBookHandler}
+        onOkay={removeClickHandler}
       />
     </Box>
   );

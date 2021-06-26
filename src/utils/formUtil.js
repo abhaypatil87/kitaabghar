@@ -114,6 +114,15 @@ export const validateInput = (name, value) => {
         error = "";
       }
       break;
+    case "keywords":
+      if (value.trim() === "") {
+        hasError = true;
+        error = "Keywords cannot be empty";
+      } else {
+        hasError = false;
+        error = "";
+      }
+      break;
     default:
       break;
   }

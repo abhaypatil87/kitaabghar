@@ -6,6 +6,7 @@ import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import AddBookBySearch from "../components/AddBook/AddBookBySearch";
+import IsbnSearchCreate from "../components/AddBook/IsbnSearchCreate";
 
 beforeEach(() => {
   const initialState = {
@@ -20,26 +21,26 @@ beforeEach(() => {
   jest.clearAllMocks();
   render(
     <Provider store={store}>
-      <AddBookBySearch />
+      <IsbnSearchCreate />
     </Provider>
   );
 });
 
 describe("AddBooksBySearch", () => {
   it("should throw error message when entered no ISBN value", async () => {
-    userEvent.click(screen.getByRole("button", { name: /add/i }));
+    act(() => userEvent.click(screen.getByRole("button", { name: /add/i })));
     expect(
       await screen.findByText(/ISBN number cannot be empty/i)
     ).toBeInTheDocument();
   });
 
   it("should throw error message and alert when entered no ISBN value", async () => {
-    userEvent.click(screen.getByRole("button", { name: /add/i }));
+    act(() => userEvent.click(screen.getByRole("button", { name: /add/i })));
     expect(
       await screen.findByText(/ISBN number cannot be empty/i)
     ).toBeInTheDocument();
 
-    userEvent.click(screen.getByRole("button", { name: /add/i }));
+    act(() => userEvent.click(screen.getByRole("button", { name: /add/i })));
     expect(
       await screen.findByText(/Please address all the highlighted errors./i)
     ).toBeInTheDocument();
