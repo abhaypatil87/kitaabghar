@@ -1,15 +1,12 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { useSelector } from "react-redux";
 
 import BookTile from "./BookTile";
 
-const Books = () => {
-  const books = useSelector((state) => state.books.books);
-
+const Books = (props) => {
   return (
     <Box component="div">
-      {books.map((book) => (
+      {props.books.map((book) => (
         <BookTile
           key={book.book_id}
           book_id={book.book_id}

@@ -198,6 +198,8 @@ const AddBookByManualEntry = () => {
               margin="dense"
               label="Description"
               multiline={true}
+              rows={4}
+              rowsMax={4}
               helperText="Maximum 2000 words allowed"
               variant="outlined"
               fullWidth

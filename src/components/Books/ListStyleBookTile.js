@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { useLocation } from "react-router";
+import { Route } from "react-router-dom";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -96,7 +96,6 @@ const ListStyleBookTile = (props) => {
   const viewMode = useSelector((state) => state.viewMode.viewMode);
   const notification = useSelector((state) => state.notifications.notification);
   const { error, setError, showError, setShowError } = useAlert();
-  const location = useLocation();
 
   useEffect(() => {
     if (notification !== null) {
@@ -151,8 +150,12 @@ const ListStyleBookTile = (props) => {
   const renderControls = () => {
     return (
       <Box component="div">
-        {location.pathname === "/books" && renderEditControls()}
-        {location.pathname === "/add-books" && renderCreateControls()}
+        <Route path={"/books"} exact>
+          {renderEditControls()}
+        </Route>
+        <Route path={"/add-books"} exact>
+          {renderCreateControls()}
+        </Route>
       </Box>
     );
   };

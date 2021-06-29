@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, makeStyles } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Books } from "../components/Books";
 import { SearchBar } from "../components/SearchBar";
@@ -14,29 +14,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BooksView = () => {
+  const books = useSelector((state) => state.books.books);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState(books);
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
     dispatch(fetchBooks());
-    return () => {
-      console.log("BooksView is being unmounted");
-    };
   }, [dispatch]);
 
-  useEffect(() => {}, [searchTerm]);
+  useEffect(() => {
+    setFilteredBooks(books);
+  }, [books]);
 
-  const searchChangeHandler = (event) => {
-    event.preventDefault();
-    setSearchTerm(event.target.value);
+  useEffect(() => {
+    setFilteredBooks(
+      books.filter(
+        (book) =>
+          book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [books, searchTerm]);
+
+  const searchChangeHandler = (searchTerm) => {
+    setSearchTerm(searchTerm);
   };
 
   return (
     <Box component="div" className={classes.root}>
       <SearchBar onSearch={searchChangeHandler} />
       <ViewAsContainer />
-      <Books />
+      <Books books={filteredBooks} />
     </Box>
   );
 };
