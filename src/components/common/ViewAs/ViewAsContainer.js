@@ -4,7 +4,6 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewHeadlineIcon from "@material-ui/icons/ViewHeadline";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import IconButton from "@material-ui/core/IconButton";
-import { Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { viewState } from "../../../utils/crud";
@@ -35,13 +34,7 @@ const ViewAsContainer = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="row"
-      justify="flex-start"
-      alignItems="center"
-      className={classes.root}
-    >
+    <>
       <IconButton
         onClick={onViewChangeHandler.bind(null, viewState.MODULE)}
         aria-label={"View as grid"}
@@ -70,7 +63,7 @@ const ViewAsContainer = () => {
       >
         <ViewListIcon />
       </IconButton>
-    </Grid>
+    </>
   );
 };
 
