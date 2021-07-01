@@ -11,22 +11,22 @@ const ModuleStyleBookTile = (props) => {
   };
 
   return listStyleMode ? (
-    <ListStyleBookTile {...props} onDelete={props.onDelete} />
+    <ListStyleBookTile {...props} />
   ) : (
     <Box
       component="div"
       marginTop={2}
       className={bookTitleStyles.cover}
       onClick={onClickHandler}
+      tabIndex={0}
+      aria-label={`${props.title} by ${props.author}`}
     >
       <img
         src={props.thumbnail_url}
         alt={props.title}
         className={bookTitleStyles.coverImage}
       />
-      <Box component="div" className={bookTitleStyles.coverTitle}>
-        {props.title}
-      </Box>
+      <div className={bookTitleStyles.coverTitle}>{props.title}</div>
     </Box>
   );
 };

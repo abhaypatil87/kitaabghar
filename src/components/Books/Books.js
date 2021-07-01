@@ -1,11 +1,13 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
 import BookTile from "./BookTile";
 
 const Books = (props) => {
+  const viewMode = useSelector((state) => state.viewMode.viewMode);
+
   return (
-    <Box component="div">
+    <>
       {props.books.map((book) => (
         <BookTile
           key={book.book_id}
@@ -18,9 +20,10 @@ const Books = (props) => {
           page_count={book.page_count}
           author={book.author}
           description={book.description}
+          viewMode={viewMode}
         />
       ))}
-    </Box>
+    </>
   );
 };
 

@@ -202,7 +202,7 @@ const AddBookByManualEntry = () => {
               multiline={true}
               rows={4}
               rowsMax={4}
-              helperText="Maximum 2000 characters allowed"
+              helperText={`Maximum ${ALLOWED_DESCRIPTION_LENGTH} characters allowed`}
               variant="outlined"
               fullWidth
               type="text"

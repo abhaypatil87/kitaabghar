@@ -18,7 +18,7 @@ const HeadlineStyleBookTile = (props) => {
 
   const classes = useStyles();
   return listStyleMode ? (
-    <ListStyleBookTile {...props} onDelete={props.onDelete} />
+    <ListStyleBookTile {...props} />
   ) : (
     <Box
       component="div"
