@@ -6,7 +6,7 @@ import { Books } from "../components/Books";
 import { SearchBar } from "../components/SearchBar";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import { fetchBooks } from "../Store/actions";
-import ScrollToTop from "../components/common/ScrollToTop";
+import { ScrollToTop } from "../components/common";
 
 const useStyles = makeStyles((theme) => ({
   root: {

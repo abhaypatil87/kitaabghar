@@ -22,10 +22,11 @@ import {
   isValidForm,
   onFocusOut,
   onInputChange,
+  ALLOWED_DESCRIPTION_LENGTH,
   RESET_FORM,
 } from "../../utils/formUtil";
 import { SUCCESS, viewState } from "../../utils/crud";
-import { FormError, Confirm, SnackBar } from "../common";
+import { FormError, Confirm, SnackBar, WordCounter } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook, editBook, removeBook } from "../../Store/actions";
@@ -87,6 +88,9 @@ const ListStyleBookTile = (props) => {
   const [formState, dispatchForm] = useReducer(
     formsReducer,
     getInitialState(props)
+  );
+  const [totalCharacters, setTotalCharacters] = useState(
+    props.description.length
   );
   const [editMode, setEditMode] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -209,6 +213,7 @@ const ListStyleBookTile = (props) => {
   const cancelEdit = () => {
     setEditMode(false);
     setIsEditing(false);
+    setTotalCharacters(props.description.length);
     resetForm();
   };
   const resetForm = () =>
@@ -314,32 +319,40 @@ const ListStyleBookTile = (props) => {
                   </Typography>
                 )}
                 <Fade in={editMode} timeout={100} unmountOnExit>
-                  <TextField
-                    style={{ width: "80%" }}
-                    margin="dense"
-                    label="Description"
-                    variant="outlined"
-                    type="text"
-                    multiline={true}
-                    name="description"
-                    value={formState.description.value}
-                    onChange={(event) => {
-                      onInputChange(
-                        "description",
-                        event.target.value,
-                        dispatchForm,
-                        formState
-                      );
-                    }}
-                    onBlur={(event) => {
-                      onFocusOut(
-                        "description",
-                        event.target.value,
-                        dispatchForm,
-                        formState
-                      );
-                    }}
-                  />
+                  <>
+                    <TextField
+                      style={{ width: "80%" }}
+                      margin="dense"
+                      label="Description"
+                      variant="outlined"
+                      helperText="Maximum 2000 characters allowed"
+                      type="text"
+                      multiline={true}
+                      name="description"
+                      value={formState.description.value}
+                      onChange={(event) => {
+                        setTotalCharacters(event.target.value.length);
+                        onInputChange(
+                          "description",
+                          event.target.value,
+                          dispatchForm,
+                          formState
+                        );
+                      }}
+                      onBlur={(event) => {
+                        onFocusOut(
+                          "description",
+                          event.target.value,
+                          dispatchForm,
+                          formState
+                        );
+                      }}
+                    />
+                    <WordCounter
+                      maximum={ALLOWED_DESCRIPTION_LENGTH}
+                      current={totalCharacters}
+                    />
+                  </>
                 </Fade>
               </Box>
               <Grid item hidden={!editMode}>

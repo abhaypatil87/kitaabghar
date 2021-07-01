@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Box, Button, Grid, TextField, makeStyles } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   initialState,
@@ -7,12 +8,12 @@ import {
   isValidForm,
   onFocusOut,
   onInputChange,
+  ALLOWED_DESCRIPTION_LENGTH,
   RESET_FORM,
 } from "../../utils/formUtil";
 import { SUCCESS } from "../../utils/crud";
-import { LibAlert, FormError } from "../common";
+import { LibAlert, FormError, WordCounter } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
-import { useDispatch, useSelector } from "react-redux";
 import { createBook } from "../../Store/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddBookByManualEntry = () => {
   const classes = useStyles();
+  const [totalCharacters, setTotalCharacters] = useState(0);
   const [formState, dispatchForm] = useReducer(formsReducer, initialState);
   const [isCreating, setIsCreating] = useState(false);
   const dispatch = useDispatch();
@@ -200,7 +202,7 @@ const AddBookByManualEntry = () => {
               multiline={true}
               rows={4}
               rowsMax={4}
-              helperText="Maximum 2000 words allowed"
+              helperText="Maximum 2000 characters allowed"
               variant="outlined"
               fullWidth
               type="text"
@@ -208,6 +210,7 @@ const AddBookByManualEntry = () => {
               id="description"
               value={formState.description.value}
               onChange={(event) => {
+                setTotalCharacters(event.target.value.length);
                 onInputChange(
                   "description",
                   event.target.value,
@@ -223,6 +226,10 @@ const AddBookByManualEntry = () => {
                   formState
                 );
               }}
+            />
+            <WordCounter
+              maximum={ALLOWED_DESCRIPTION_LENGTH}
+              current={totalCharacters}
             />
             {formState.description.touched &&
               formState.description.hasError && (
