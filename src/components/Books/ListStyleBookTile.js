@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { Route } from "react-router-dom";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
@@ -101,6 +101,10 @@ const ListStyleBookTile = (props) => {
   const notification = useSelector((state) => state.notifications.notification);
   const { error, setError, showError, setShowError } = useAlert();
 
+  const pageCount =
+    props.page_count === 0
+      ? "Page count unavailable"
+      : `${props.page_count} Pages`;
   useEffect(() => {
     if (notification !== null) {
       if (notification.lastOp === "EDIT_BOOK") {
@@ -153,14 +157,14 @@ const ListStyleBookTile = (props) => {
 
   const renderControls = () => {
     return (
-      <Box component="div">
+      <div>
         <Route path={"/books"} exact>
           {renderEditControls()}
         </Route>
         <Route path={"/add-books"} exact>
           {renderCreateControls()}
         </Route>
-      </Box>
+      </div>
     );
   };
 
@@ -206,9 +210,15 @@ const ListStyleBookTile = (props) => {
   /*
    * Utility methods
    */
-  const enableEdit = () => setEditMode(true);
-  const confirmDeleteBook = () => setIsOpen(true);
-  const cancelDelete = () => setIsOpen(false);
+  const enableEdit = useCallback(() => {
+    setEditMode(true);
+  }, []);
+  const confirmDeleteBook = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const cancelDelete = useCallback(() => {
+    setIsOpen(false);
+  }, []);
   const titleClickHandler = () => setGlobalDisplayMode(viewMode);
   const cancelEdit = () => {
     setEditMode(false);
@@ -245,7 +255,6 @@ const ListStyleBookTile = (props) => {
         <Grid container spacing={2}>
           <Grid item>
             <img src={props.thumbnail_url} alt={formState.title.value} />
-            {renderControls()}
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs>
@@ -254,6 +263,8 @@ const ListStyleBookTile = (props) => {
                   className={`${classes.bookTitle} ${classes.hover}`}
                   variant="h5"
                   onClick={titleClickHandler}
+                  tabIndex={0}
+                  aria-label={`Title: ${props.subtitle}`}
                 >
                   {props.title}
                 </Typography>
@@ -289,20 +300,22 @@ const ListStyleBookTile = (props) => {
                   )}
                 </>
               </Fade>
-              <Typography variant="h6" gutterBottom>
-                {props.subtitle}
-              </Typography>
+              {props.subtitle.length > 0 && (
+                <Typography variant="h6" gutterBottom tabIndex={0}>
+                  {props.subtitle}
+                </Typography>
+              )}
               <Typography
                 variant="subtitle1"
                 className={bookTitleStyles.secondaryDetail}
                 gutterBottom
+                tabIndex={0}
               >
                 {props.author}
               </Typography>
 
-              <Typography variant="body2" color="textSecondary">
-                {props.page_count === 0 && "Page count unavailable"}
-                {props.page_count > 0 && `${props.page_count} Pages`}
+              <Typography variant="body2" color="textSecondary" tabIndex={0}>
+                {pageCount}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 <strong>ISBN 13:</strong> {props.isbn_13}{" "}
@@ -314,6 +327,7 @@ const ListStyleBookTile = (props) => {
                   <Typography
                     variant="body1"
                     className={bookTitleStyles.bookDescription}
+                    tabIndex={0}
                   >
                     {props.description}
                   </Typography>
@@ -325,7 +339,7 @@ const ListStyleBookTile = (props) => {
                       margin="dense"
                       label="Description"
                       variant="outlined"
-                      helperText="Maximum 2000 characters allowed"
+                      helperText={`Maximum ${ALLOWED_DESCRIPTION_LENGTH} characters allowed`}
                       type="text"
                       multiline={true}
                       name="description"
@@ -378,6 +392,9 @@ const ListStyleBookTile = (props) => {
                   Cancel
                 </Button>
               </Grid>
+              <Grid item hidden={editMode}>
+                {renderControls()}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -389,7 +406,7 @@ const ListStyleBookTile = (props) => {
         message={
           "This will permanently remove the book from the library. Are you sure?"
         }
-        keepMounted
+        keepMounted={false}
         open={isOpen}
         onClose={cancelDelete}
         onOkay={removeClickHandler}

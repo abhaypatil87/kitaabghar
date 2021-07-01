@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Dialog,
@@ -23,7 +22,6 @@ function Confirm(props) {
       disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
-      aria-labelledby="book-delete-confirmation-dialog"
       open={open}
       {...other}
     >
