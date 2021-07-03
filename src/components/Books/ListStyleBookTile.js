@@ -97,7 +97,6 @@ const ListStyleBookTile = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const books = useSelector((state) => state.books.books);
-  const viewMode = useSelector((state) => state.viewMode.viewMode);
   const notification = useSelector((state) => state.notifications.notification);
   const { error, setError, showError, setShowError } = useAlert();
 
@@ -219,7 +218,14 @@ const ListStyleBookTile = (props) => {
   const cancelDelete = useCallback(() => {
     setIsOpen(false);
   }, []);
-  const titleClickHandler = () => setGlobalDisplayMode(viewMode);
+  const titleClickHandler = (event) => {
+    if (
+      event.type === "click" ||
+      (event.type === "keydown" && event.which === 13)
+    ) {
+      setGlobalDisplayMode(props.viewMode);
+    }
+  };
   const cancelEdit = () => {
     setEditMode(false);
     setIsEditing(false);
@@ -263,6 +269,7 @@ const ListStyleBookTile = (props) => {
                   className={`${classes.bookTitle} ${classes.hover}`}
                   variant="h5"
                   onClick={titleClickHandler}
+                  onKeyDown={titleClickHandler}
                   tabIndex={0}
                   aria-label={`Title: ${props.subtitle}`}
                 >

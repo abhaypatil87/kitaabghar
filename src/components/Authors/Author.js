@@ -133,7 +133,7 @@ const Author = (props) => {
       >
         <Grid container spacing={1}>
           {!editMode && (
-            <Box hidden={editMode} className={classes.nameBox}>
+            <Box className={classes.nameBox}>
               <Typography variant="body1" tabIndex={0}>
                 {props.first_name} {props.last_name}
               </Typography>
