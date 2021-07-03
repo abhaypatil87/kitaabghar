@@ -11,7 +11,7 @@ import { createMemoryHistory } from "history";
 beforeEach(() => {
   const initialState = {
     viewMode: {
-      viewMode: viewState.MODULE,
+      viewMode: viewState.HEADLINE,
     },
     notifications: {
       notification: null,
@@ -40,6 +40,7 @@ beforeEach(() => {
           page_count={123}
           author={"Test Author"}
           description={"Test description"}
+          viewMode={viewState.HEADLINE}
         />
       </Provider>
     </Router>
@@ -60,11 +61,10 @@ describe("BookTile", () => {
   it("expands and collapses BookTile component", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
     fireEvent.click(screen.getByText(/Test book title/i));
-
     expect(screen.getByText(/isbn10/i)).toBeTruthy();
 
     fireEvent.click(screen.getByText(/Test book title/i));
-    expect(screen.queryByText(/isbn10/i)).toBeNull();
+    expect(screen.queryByText(/Test description/i)).toBeNull();
     expect(screen.getByText(/Test book title/i)).not.toBeNull();
   });
 });
