@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { Box, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { Authors } from "../components/Authors";
 import { useDispatch } from "react-redux";
-import { fetchAuthors } from "../Store/actions/authors-actions";
+import { fetchAuthors } from "../Store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,9 +22,9 @@ const AuthorsView = () => {
   }, [dispatch]);
 
   return (
-    <Box component="div" className={classes.root}>
+    <div className={classes.root}>
       <Authors />
-    </Box>
+    </div>
   );
 };
 

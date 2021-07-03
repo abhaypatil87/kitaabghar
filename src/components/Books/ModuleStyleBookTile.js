@@ -1,14 +1,11 @@
-import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 
 import { ListStyleBookTile } from "./index";
 import bookTitleStyles from "./BookTile.module.css";
+import useHandleTitleClick from "../../utils/hooks/useHandleTitleClick";
 
 const ModuleStyleBookTile = (props) => {
-  const [listStyleMode, setListStyleMode] = useState(false);
-  const onClickHandler = () => {
-    setListStyleMode((oldValue) => !oldValue);
-  };
+  const [listStyleMode, titleClickHandler] = useHandleTitleClick();
 
   return listStyleMode ? (
     <ListStyleBookTile {...props} />
@@ -17,7 +14,8 @@ const ModuleStyleBookTile = (props) => {
       component="div"
       marginTop={2}
       className={bookTitleStyles.cover}
-      onClick={onClickHandler}
+      onClick={titleClickHandler}
+      onKeyDown={titleClickHandler}
       tabIndex={0}
       aria-label={`${props.title} by ${props.author}`}
     >

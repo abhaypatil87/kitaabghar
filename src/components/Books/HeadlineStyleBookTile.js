@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
 
 import bookTitleStyles from "./BookTile.module.css";
 import { ListStyleBookTile } from "./index";
+import useHandleTitleClick from "../../utils/hooks/useHandleTitleClick";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -11,10 +11,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HeadlineStyleBookTile = (props) => {
-  const [listStyleMode, setListStyleMode] = useState(false);
-  const onClickHandler = () => {
-    setListStyleMode((oldValue) => !oldValue);
-  };
+  const [listStyleMode, titleClickHandler] = useHandleTitleClick();
 
   const classes = useStyles();
   return listStyleMode ? (
@@ -24,7 +21,8 @@ const HeadlineStyleBookTile = (props) => {
       component="div"
       marginTop={2}
       className={classes.title}
-      onClick={onClickHandler}
+      onClick={titleClickHandler}
+      onKeyDown={titleClickHandler}
       aria-label={`${props.title} by ${props.author}`}
       tabIndex={0}
     >
