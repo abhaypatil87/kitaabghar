@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
-import { Route } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -83,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListStyleBookTile = (props) => {
+  const currentLocation = useLocation();
   const [globalDisplayMode, setGlobalDisplayMode] = useState("");
   const classes = useStyles();
   const [formState, dispatchForm] = useReducer(
@@ -157,12 +158,8 @@ const ListStyleBookTile = (props) => {
   const renderControls = () => {
     return (
       <div>
-        <Route path={"/books"} exact>
-          {renderEditControls()}
-        </Route>
-        <Route path={"/add-books"} exact>
-          {renderCreateControls()}
-        </Route>
+        {currentLocation.pathname === "/books" && renderEditControls()}
+        {currentLocation.pathname === "/add-books" && renderCreateControls()}
       </div>
     );
   };

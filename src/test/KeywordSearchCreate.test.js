@@ -6,6 +6,8 @@ import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import KeywordsSearchCreate from "../components/AddBook/KeywordsSearchCreate";
+import { BrowserRouter as Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 
 beforeEach(() => {
   const initialState = {
@@ -18,10 +20,15 @@ beforeEach(() => {
   const store = mockStore(initialState);
   fetch.resetMocks();
   jest.clearAllMocks();
+  const route = "/add-books";
+  const history = createMemoryHistory();
+  history.push(route);
   render(
-    <Provider store={store}>
-      <KeywordsSearchCreate />
-    </Provider>
+    <Router history={history}>
+      <Provider store={store}>
+        <KeywordsSearchCreate />
+      </Provider>
+    </Router>
   );
 });
 
