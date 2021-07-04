@@ -5,11 +5,11 @@ import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { viewState } from "../utils/crud";
-import { Router } from "react-router";
+import { BrowserRouter as Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 
 beforeEach(() => {
-  const initialState = {
+  const initialStore = {
     viewMode: {
       viewMode: viewState.HEADLINE,
     },
@@ -22,7 +22,7 @@ beforeEach(() => {
   };
   const middlewares = [thunk];
   const mockStore = configureStore(middlewares);
-  const store = mockStore(initialState);
+  const store = mockStore(initialStore);
   const route = "/books";
   const history = createMemoryHistory();
   history.push(route);
@@ -52,18 +52,43 @@ describe("BookTile", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
   });
 
-  it("expands BookTile component", () => {
+  it("expands BookTile component on click", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
     fireEvent.click(screen.getByText(/Test book title/i));
     expect(screen.getByText(/Test description/i)).toBeTruthy();
   });
 
-  it("expands and collapses BookTile component", () => {
+  it("expands BookTile component on keyDown", () => {
+    expect(screen.getByText(/Test book title/i)).toBeTruthy();
+    fireEvent.keyDown(screen.getByText(/Test book title/i), {
+      key: "Enter",
+      keyCode: 13,
+    });
+    expect(screen.getByText(/Test description/i)).toBeTruthy();
+  });
+
+  it("expands and collapses BookTile component on click", () => {
     expect(screen.getByText(/Test book title/i)).toBeTruthy();
     fireEvent.click(screen.getByText(/Test book title/i));
     expect(screen.getByText(/isbn10/i)).toBeTruthy();
 
     fireEvent.click(screen.getByText(/Test book title/i));
+    expect(screen.queryByText(/Test description/i)).toBeNull();
+    expect(screen.getByText(/Test book title/i)).not.toBeNull();
+  });
+
+  it("expands and collapses BookTile component on keyDown", () => {
+    expect(screen.getByText(/Test book title/i)).toBeTruthy();
+    fireEvent.keyDown(screen.getByText(/Test book title/i), {
+      key: "Enter",
+      keyCode: 13,
+    });
+    expect(screen.getByText(/isbn10/i)).toBeTruthy();
+
+    fireEvent.keyDown(screen.getByText(/Test book title/i), {
+      key: "Enter",
+      keyCode: 13,
+    });
     expect(screen.queryByText(/Test description/i)).toBeNull();
     expect(screen.getByText(/Test book title/i)).not.toBeNull();
   });

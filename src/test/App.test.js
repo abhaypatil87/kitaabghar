@@ -3,11 +3,16 @@ import App from "../App";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
 
-describe("BookTile", () => {
+describe("App", () => {
   const initialState = {
     notifications: {
       notification: null,
+    },
+    books: { books: [] },
+    viewMode: {
+      viewMode: "",
     },
   };
   const middlewares = [thunk];
@@ -15,11 +20,13 @@ describe("BookTile", () => {
   const store = mockStore(initialState);
   test("renders correct number of sidebar menu items", () => {
     render(
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <Router>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </Router>
     );
     const sidebarMenuItems = screen.getAllByTestId("sidebar-menu-item");
-    expect(sidebarMenuItems.length).toEqual(4);
+    expect(sidebarMenuItems.length).toEqual(5);
   });
 });

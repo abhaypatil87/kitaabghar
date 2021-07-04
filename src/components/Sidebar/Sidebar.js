@@ -4,6 +4,7 @@ import LocalLibraryIcon from "@material-ui/icons/LocalLibrary";
 import QueueOutlinedIcon from "@material-ui/icons/QueueOutlined";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import MenuIcon from "@material-ui/icons/Menu";
+import SettingsIcon from "@material-ui/icons/Settings";
 import { Link } from "react-router-dom";
 
 import Logo from "./Logo";
@@ -92,6 +93,15 @@ const Sidebar = (props) => {
               />
             </Link>
             <div className={sideBarStyles.separator} />
+            <Link to="/settings" className={sideBarStyles.link}>
+              <MenuItem
+                title="Settings"
+                testid="sidebar-menu-item"
+                icon={SettingsIcon}
+                onClick={() => onItemClicked("Settings")}
+                active={props.selectedItem === "Settings"}
+              />
+            </Link>
           </Column>
         </Column>
         {isMobile() && expanded && (

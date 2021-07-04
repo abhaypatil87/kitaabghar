@@ -1,7 +1,7 @@
 export const UPDATE_FORM = "UPDATE_FORM";
 export const CLEAR_FORM = "CLEAR_FORM";
 export const RESET_FORM = "RESET_FORM";
-export const ALLOWED_DESCRIPTION_LENGTH = 2000;
+export const ALLOWED_DESCRIPTION_LENGTH = 4000;
 export const initialState = {
   title: { value: "", touched: false, hasError: true, error: "" },
   subtitle: { value: "", touched: false, hasError: false, error: "" },

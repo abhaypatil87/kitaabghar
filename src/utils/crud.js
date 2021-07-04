@@ -8,3 +8,8 @@ export const viewState = {
   LIST: "list",
   HEADLINE: "headline",
 };
+export const EXPORT_FILE_EXTENSION = ".csv";
+
+export const isEmpty = (object) => {
+  return Object.keys(object).length === 0 || JSON.stringify(object) === "{}";
+};
