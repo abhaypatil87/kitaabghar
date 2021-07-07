@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewHeadlineIcon from "@material-ui/icons/ViewHeadline";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
@@ -10,9 +10,6 @@ import { viewState } from "../../../utils/crud";
 import { viewModeActions } from "../../../Store/store";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    margin: "10px 0px 0px 0px",
-  },
   active: {
     color: "rgba(0, 0, 0, 0.54)",
   },

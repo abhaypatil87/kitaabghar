@@ -1,13 +1,13 @@
 import React from "react";
-import { Box, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import { AddBookByManualEntry, AddBookBySearch } from "../components/AddBook/";
 import { FullWidthTabs } from "../components/common/";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     padding: "10px 10px 10px 10px",
   },
-}));
+});
 
 const AddBooksView = () => {
   const classes = useStyles();
@@ -26,9 +26,9 @@ const AddBooksView = () => {
     },
   ];
   return (
-    <Box component="div" className={classes.root}>
+    <div className={classes.root}>
       <FullWidthTabs tabs={tabs} />
-    </Box>
+    </div>
   );
 };
 

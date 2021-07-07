@@ -56,7 +56,7 @@ const Sidebar = (props) => {
         >
           <Logo />
           <Column className={sideBarStyles.menuItemList}>
-            <Link to="/timeline" className={sideBarStyles.link}>
+            <Link to="/library/timeline" className={sideBarStyles.link}>
               <MenuItem
                 title="Timeline"
                 testid="sidebar-menu-item"
@@ -65,7 +65,7 @@ const Sidebar = (props) => {
                 active={props.selectedItem === "Timeline"}
               />
             </Link>
-            <Link to="/books" className={sideBarStyles.link}>
+            <Link to="/library/books" className={sideBarStyles.link}>
               <MenuItem
                 title="Books"
                 testid="sidebar-menu-item"
@@ -74,7 +74,7 @@ const Sidebar = (props) => {
                 active={props.selectedItem === "Books"}
               />
             </Link>
-            <Link to="/add-books" className={sideBarStyles.link}>
+            <Link to="/library/add-books" className={sideBarStyles.link}>
               <MenuItem
                 title="Add Books"
                 testid="sidebar-menu-item"
@@ -83,7 +83,7 @@ const Sidebar = (props) => {
                 active={props.selectedItem === "Add Books"}
               />
             </Link>
-            <Link to="/authors" className={sideBarStyles.link}>
+            <Link to="/library/authors" className={sideBarStyles.link}>
               <MenuItem
                 title="Authors"
                 testid="sidebar-menu-item"
@@ -93,7 +93,7 @@ const Sidebar = (props) => {
               />
             </Link>
             <div className={sideBarStyles.separator} />
-            <Link to="/settings" className={sideBarStyles.link}>
+            <Link to="/library/settings" className={sideBarStyles.link}>
               <MenuItem
                 title="Settings"
                 testid="sidebar-menu-item"

@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import { Grid, Box, Button, TextField } from "@material-ui/core";
 
 import {
@@ -16,17 +16,11 @@ import { useSelector } from "react-redux";
 
 import { ListStyleBookTile } from "../Books";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   form: {
     width: "40rem",
   },
-  m1: {
-    marginTop: theme.spacing(1),
-  },
-  m2: {
-    marginTop: theme.spacing(2),
-  },
-}));
+});
 
 const initialState = {
   keywords: { value: "", touched: false, hasError: true, error: "" },
@@ -86,7 +80,6 @@ const KeywordsSearchCreate = () => {
 
   return (
     <Grid
-      className={classes.m1}
       container
       direction="column"
       justify="flex-start"
@@ -100,7 +93,7 @@ const KeywordsSearchCreate = () => {
           onClose={handleErrorAlertClose}
         />
         <form
-          className={`${classes.m1} ${classes.form}`}
+          className={`${classes.form}`}
           onSubmit={(event) => formSubmitHandler(event)}
         >
           <Box component="div">
@@ -139,7 +132,6 @@ const KeywordsSearchCreate = () => {
             disabled={isSearching}
             aria-disabled={isSearching}
             disableElevation
-            className={classes.m2}
             type="submit"
             value="search"
           >

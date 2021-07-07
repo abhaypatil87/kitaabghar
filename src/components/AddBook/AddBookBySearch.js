@@ -1,20 +1,12 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 
 import IsbnSearchCreate from "./IsbnSearchCreate";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import KeywordsSearchCreate from "./KeywordsSearchCreate";
+import { experimentalStyled as styled } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  m0: {
-    marginLeft: "0px",
-  },
-  m1: {
-    marginTop: theme.spacing(1),
-  },
-  m2: {
-    marginTop: theme.spacing(2),
-  },
+const SearchRadioGroup = styled(RadioGroup)(({ theme }) => ({
+  marginTop: `${theme.spacing(2)}`,
 }));
 
 const AddBookBySearch = () => {
@@ -23,18 +15,11 @@ const AddBookBySearch = () => {
     setCreateState(event.target.value);
   };
 
-  const classes = useStyles();
   return (
     <>
-      <RadioGroup
-        value={createState}
-        row
-        aria-label="position"
-        className={classes.m2}
-        onChange={handleRadioChange}
-      >
+      <SearchRadioGroup value={createState} row onChange={handleRadioChange}>
         <FormControlLabel
-          className={classes.m0}
+          style={{ marginLeft: "0px" }}
           value="isbn"
           control={<Radio />}
           label="ISBN Search"
@@ -46,7 +31,7 @@ const AddBookBySearch = () => {
           label="Keywords Search"
           labelPlacement="start"
         />
-      </RadioGroup>
+      </SearchRadioGroup>
       {createState === "isbn" && <IsbnSearchCreate />}
       {createState === "keywords" && <KeywordsSearchCreate />}
     </>

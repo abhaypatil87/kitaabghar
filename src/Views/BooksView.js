@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/styles";
 
 import { Books } from "../components/Books";
 import { SearchBar } from "../components/SearchBar";

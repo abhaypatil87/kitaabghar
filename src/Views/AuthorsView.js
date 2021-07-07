@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import { Authors } from "../components/Authors";
 import { useDispatch } from "react-redux";
 import { fetchAuthors } from "../Store/actions";

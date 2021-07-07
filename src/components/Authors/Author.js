@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/styles";
 import {
   Box,
   Button,
   Fade,
   Grid,
   IconButton,
-  makeStyles,
   TextField,
   Typography,
 } from "@material-ui/core";
@@ -23,7 +23,7 @@ import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
 import { editAuthor } from "../../Store/actions";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   container: {
     alignItems: "baseline",
   },
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     display: "inherit",
   },
-}));
+});
 
 const getInitialState = (props) => {
   return {
@@ -149,7 +149,7 @@ const Author = (props) => {
           )}
         </Grid>
         <Fade in={editMode} timeout={1} unmountOnExit>
-          <>
+          <Box>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <TextField
@@ -214,7 +214,7 @@ const Author = (props) => {
                   )}
               </Grid>
             </Grid>
-          </>
+          </Box>
         </Fade>
         <Grid item xs={12} sm={12} md={12} lg={12} hidden={!editMode}>
           <Button

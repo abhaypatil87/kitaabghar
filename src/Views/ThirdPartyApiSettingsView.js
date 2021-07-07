@@ -40,22 +40,10 @@ const ThirdPartyApiSettingsView = (props) => {
 
   return (
     <>
-      <Accordion
-        classes={{
-          expanded: props.styles.expandedAccordion,
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ChevronRightIcon />}
-          classes={{
-            expandIcon: props.styles.expandIcon,
-            expanded: props.styles.expanded,
-          }}
-        >
+      <Accordion>
+        <AccordionSummary expandIcon={<ChevronRightIcon />}>
           <div>
-            <Typography variant={"h1"} className={props.styles.heading1}>
-              Third Party APIs
-            </Typography>
+            <Typography variant={"h1"}>Third Party APIs</Typography>
             <Typography variant={"subtitle1"}>
               Control from where to search from or fetch the information about
               the books (Google Books, Open Library etc.).

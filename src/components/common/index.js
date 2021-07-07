@@ -6,6 +6,7 @@ import Confirm from "./Confirm";
 import SnackBar from "./SnackBar/SnackBar";
 import ScrollToTop from "./ScrollToTop";
 import WordCounter from "./WordCounter";
+import MenuPopover from "./MenuPopover";
 export {
   LibAlert,
   FormError,
@@ -15,4 +16,5 @@ export {
   ScrollToTop,
   SnackBar,
   WordCounter,
+  MenuPopover,
 };

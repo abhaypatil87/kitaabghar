@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { Box, Button, Grid, TextField, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, TextField } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -15,21 +15,13 @@ import { SUCCESS } from "../../utils/crud";
 import { LibAlert, FormError, WordCounter } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook } from "../../Store/actions";
+import { experimentalStyled as styled } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  form: {
-    width: "40rem",
-  },
-  m1: {
-    marginTop: theme.spacing(1),
-  },
-  m2: {
-    marginTop: theme.spacing(2),
-  },
+const LibraryForm = styled("form")(() => ({
+  width: "40rem",
 }));
 
 const AddBookByManualEntry = () => {
-  const classes = useStyles();
   const [totalCharacters, setTotalCharacters] = useState(0);
   const [formState, dispatchForm] = useReducer(formsReducer, initialState);
   const [isCreating, setIsCreating] = useState(false);
@@ -81,26 +73,21 @@ const AddBookByManualEntry = () => {
 
   return (
     <Grid
-      className={classes.m1}
       container
       direction="column"
       justify="flex-start"
       alignItems="flex-start"
     >
-      <Grid item xs={12} sm={12} md={8} lg={6}>
+      <Grid item xs={12} sm={12} md={8} lg={6} marginTop={2}>
         {showError && (!formState.isFormValid || error.length > 0) && (
           <LibAlert
             severity="error"
-            className={classes.m2}
             onClose={handleErrorAlertClose}
             message={error}
           />
         )}
-        <form
-          className={`${classes.m1} ${classes.form}`}
-          onSubmit={(event) => formSubmitHandler(event)}
-        >
-          <Grid item className={classes.m2}>
+        <LibraryForm onSubmit={(event) => formSubmitHandler(event)}>
+          <Grid item marginTop={1}>
             <TextField
               autoFocus={true}
               margin="dense"
@@ -132,7 +119,7 @@ const AddBookByManualEntry = () => {
               <FormError error={formState.title.error} />
             )}
           </Grid>
-          <Grid item className={classes.m2}>
+          <Grid item marginTop={1}>
             <TextField
               margin="dense"
               label="Subtitle"
@@ -163,7 +150,7 @@ const AddBookByManualEntry = () => {
               <FormError error={formState.subtitle.error} />
             )}
           </Grid>
-          <Grid item className={classes.m2}>
+          <Grid item marginTop={1}>
             <TextField
               margin="dense"
               label="Author"
@@ -195,13 +182,12 @@ const AddBookByManualEntry = () => {
               <FormError error={formState.author.error} />
             )}
           </Grid>
-          <Grid item className={classes.m2}>
+          <Grid item marginTop={1}>
             <TextField
               margin="dense"
               label="Description"
               multiline={true}
               rows={4}
-              rowsMax={4}
               helperText={`Maximum ${ALLOWED_DESCRIPTION_LENGTH} characters allowed`}
               variant="outlined"
               fullWidth
@@ -236,7 +222,7 @@ const AddBookByManualEntry = () => {
                 <FormError error={formState.description.error} />
               )}
           </Grid>
-          <Grid item className={classes.m2}>
+          <Grid item marginTop={1}>
             <TextField
               margin="dense"
               label="ISBN 10"
@@ -267,7 +253,7 @@ const AddBookByManualEntry = () => {
               <FormError error={formState.isbn_10.error} />
             )}
           </Grid>
-          <Grid item className={classes.m2}>
+          <Grid item marginTop={1}>
             <TextField
               margin="dense"
               label="ISBN 13"
@@ -298,7 +284,7 @@ const AddBookByManualEntry = () => {
               <FormError error={formState.isbn_13.error} />
             )}
           </Grid>
-          <Grid item className={classes.m2}>
+          <Grid item marginTop={1}>
             <TextField
               margin="dense"
               label="Pages"
@@ -326,12 +312,10 @@ const AddBookByManualEntry = () => {
               }}
             />
             {formState.page_count.touched && formState.page_count.hasError && (
-              <Box component="div" className={classes.error}>
-                {formState.page_count.error}
-              </Box>
+              <Box component="div">{formState.page_count.error}</Box>
             )}
           </Grid>
-          <Grid item className={classes.m2}>
+          <Grid item marginTop={1}>
             <TextField
               margin="dense"
               label="Thumbnail URL"
@@ -369,13 +353,12 @@ const AddBookByManualEntry = () => {
             disableElevation
             disabled={isCreating}
             aria-disabled={isCreating}
-            className={classes.m2}
             type="submit"
             value="Add"
           >
             Add
           </Button>
-        </form>
+        </LibraryForm>
       </Grid>
     </Grid>
   );
