@@ -2,13 +2,17 @@ import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
 import { booksActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
+import { RequestHeader } from "../../utils/RequestHeader";
 
 export const fetchBooks = () => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const fetchData = async () => {
       const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books`
+        `http://${SERVER_URL}:${SERVER_PORT}/api/books`,
+        {
+          headers: new RequestHeader().addAuthorisation().getHeader(),
+        }
       );
       return await response.json();
     };
@@ -35,9 +39,10 @@ export const editBook = (book) => {
         {
           method: "PUT",
           body: JSON.stringify(book),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: new RequestHeader()
+            .addContentType("application/json")
+            .addAuthorisation()
+            .getHeader(),
         }
       );
 
@@ -69,6 +74,7 @@ export const removeBook = (bookId) => {
         `http://${SERVER_URL}:${SERVER_PORT}/api/books/${bookId}`,
         {
           method: "DELETE",
+          headers: new RequestHeader().addAuthorisation().getHeader(),
         }
       );
 
@@ -101,9 +107,10 @@ export const createBook = (isbn) => {
         {
           method: "POST",
           body: JSON.stringify(isbn),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: new RequestHeader()
+            .addContentType("application/json")
+            .addAuthorisation()
+            .getHeader(),
         }
       );
 

@@ -131,7 +131,7 @@ const Author = (props) => {
         container
         className={classes.container}
       >
-        <Grid container spacing={1}>
+        <Grid container>
           {!editMode && (
             <Box className={classes.nameBox}>
               <Typography variant="body1" tabIndex={0}>
@@ -150,7 +150,7 @@ const Author = (props) => {
         </Grid>
         <Fade in={editMode} timeout={1} unmountOnExit>
           <Box>
-            <Grid container spacing={1}>
+            <Grid container>
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <TextField
                   autoFocus={true}

@@ -45,8 +45,8 @@ const ThirdPartyApiSettingsView = (props) => {
           <div>
             <Typography variant={"h1"}>Third Party APIs</Typography>
             <Typography variant={"subtitle1"}>
-              Control from where to search from or fetch the information about
-              the books (Google Books, Open Library etc.).
+              Control where to search from or fetch the information about the
+              books (Google Books, Open Library etc.).
             </Typography>
           </div>
         </AccordionSummary>

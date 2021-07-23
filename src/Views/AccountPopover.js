@@ -8,13 +8,31 @@ import {
   Typography,
   Avatar,
   IconButton,
+  styled,
 } from "@material-ui/core";
 import { MenuPopover } from "../components/common";
+import { signOut } from "../Store/actions";
+import { useDispatch } from "react-redux";
+import { LOCAL_STORAGE_USER_KEY } from "../utils/crud";
+
+const SignOutButton = styled(Button)(({ theme }) => ({
+  color: "#3c4043",
+  textTransform: "none",
+  border: "1px solid #dadce0",
+  "&:hover": {
+    backgroundColor: "#898a8b",
+    borderColor: "#898a8b",
+    color: "white",
+  },
+}));
 
 const AccountPopover = () => {
+  const dispatch = useDispatch();
   const history = useNavigate();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const loggedInUser = JSON.parse(localStorage.getItem(LOCAL_STORAGE_USER_KEY));
+  const [user] = useState(loggedInUser);
 
   const handleOpen = () => {
     setOpen(true);
@@ -24,6 +42,7 @@ const AccountPopover = () => {
   };
 
   const handleLogout = () => {
+    dispatch(signOut());
     history("/sign-in");
   };
   return (
@@ -48,10 +67,7 @@ const AccountPopover = () => {
           }),
         }}
       >
-        <Avatar
-          src="https://avatars3.githubusercontent.com/u/8400709?s=460&v=4"
-          alt="photoURL"
-        />
+        <Avatar src={user.image_url} alt="photoURL" />
       </IconButton>
 
       <MenuPopover
@@ -62,22 +78,17 @@ const AccountPopover = () => {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {"Abhay Patil"}
+            {`${user.first_name} ${user.last_name}`}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {"abhaypatil87@gmail.com"}
+            {user.email}
           </Typography>
         </Box>
         <Divider sx={{ my: 1 }} />
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button
-            fullWidth
-            color="inherit"
-            variant="outlined"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
+          <SignOutButton fullWidth variant="outlined" onClick={handleLogout}>
+            Sign Out
+          </SignOutButton>
         </Box>
       </MenuPopover>
     </>

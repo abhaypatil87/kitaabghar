@@ -114,7 +114,7 @@ export const validateInput = (name, value) => {
     case "last_name":
       if (value.trim() === "") {
         hasError = true;
-        error = "Author name cannot be empty";
+        error = "Name cannot be empty";
       } else if (value.trim().length > 50) {
         hasError = true;
         error = "Name cannot have more than 50 characters";
@@ -127,6 +127,24 @@ export const validateInput = (name, value) => {
       if (value.trim() === "") {
         hasError = true;
         error = "Keywords cannot be empty";
+      } else {
+        hasError = false;
+        error = "";
+      }
+      break;
+    case "email":
+      if (value.trim() === "") {
+        hasError = true;
+        error = "Email ID cannot be empty";
+      } else {
+        hasError = false;
+        error = "";
+      }
+      break;
+    case "password":
+      if (value.trim() === "") {
+        hasError = true;
+        error = "Password cannot be empty";
       } else {
         hasError = false;
         error = "";

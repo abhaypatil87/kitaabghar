@@ -7,13 +7,14 @@ import AddBooksView from "./Views/AddBooksView";
 import SettingsView from "./Views/SettingsView";
 import LibraryLayout from "./Views/layouts/LibraryLayout";
 import LoginLayout from "./Views/layouts/LoginLayout";
-import LogInView from "./Views/LogInView";
+import SignInView from "./Views/SignInView";
 
-const Router = () => {
+const Router = (props) => {
+  const isLoggedIn = props.user !== null;
   return useRoutes([
     {
       path: "/library",
-      element: <LibraryLayout />,
+      element: !isLoggedIn ? <Navigate to="/sign-in" /> : <LibraryLayout />,
       children: [
         { path: "/", element: <Navigate to="/library/books" replace /> },
         { path: "books", element: <BooksView /> },
@@ -25,11 +26,11 @@ const Router = () => {
     },
     {
       path: "/",
-      element: <LoginLayout />,
+      element: !isLoggedIn ? <LoginLayout /> : <Navigate to="/library" />,
       children: [
-        { path: "/sign-in", element: <LogInView /> },
-        { path: "/sign-up", element: <LogInView /> },
-        { path: "/", element: <Navigate to="/library" /> },
+        { path: "/", element: <Navigate to="/sign-in" replace /> },
+        { path: "/sign-in", element: <SignInView /> },
+        { path: "/sign-up", element: <SignInView /> },
       ],
     },
   ]);

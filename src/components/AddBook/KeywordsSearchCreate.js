@@ -15,6 +15,7 @@ import useAlert from "../../utils/hooks/useAlert";
 import { useSelector } from "react-redux";
 
 import { ListStyleBookTile } from "../Books";
+import { RequestHeader } from "../../utils/RequestHeader";
 
 const useStyles = makeStyles({
   form: {
@@ -61,7 +62,10 @@ const KeywordsSearchCreate = () => {
     setIsSearching(true);
     try {
       const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books?keywords=${formState.keywords.value}`
+        `http://${SERVER_URL}:${SERVER_PORT}/api/books?keywords=${formState.keywords.value}`,
+        {
+          headers: new RequestHeader().addAuthorisation().getHeader(),
+        }
       );
       const result = await response.json();
       setFoundBooks(result.data.books);
