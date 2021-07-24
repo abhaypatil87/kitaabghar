@@ -60,8 +60,11 @@ describe("KeywordsSearchCreate", () => {
       userEvent.click(screen.getByRole("button", { name: /search/i }));
     });
 
-    expect(fetch).toHaveBeenCalledWith(
-      `http://192.168.1.67:4000/api/books?keywords=${validKeywords}`
+    expect(
+      fetch
+    ).toHaveBeenCalledWith(
+      `http://192.168.1.67:4000/api/books?keywords=${validKeywords}`,
+      { headers: {} }
     );
   });
 });

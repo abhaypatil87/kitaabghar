@@ -32,7 +32,7 @@ describe("Author", () => {
     userEvent.clear(screen.getAllByRole("textbox")[0]);
     userEvent.click(screen.getByRole("button", { name: /edit/i }));
     expect(
-      await screen.findByText(/Author name cannot be empty/i)
+      await screen.findByText(/name cannot be empty/i)
     ).toBeInTheDocument();
   });
 
@@ -42,7 +42,7 @@ describe("Author", () => {
     userEvent.clear(screen.getAllByRole("textbox")[0]);
     userEvent.click(screen.getByRole("button", { name: /edit/i }));
     expect(
-      await screen.findByText(/Author name cannot be empty/i)
+      await screen.findByText(/name cannot be empty/i)
     ).toBeInTheDocument();
 
     userEvent.click(screen.getByRole("button", { name: /edit/i }));
