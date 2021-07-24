@@ -1,24 +1,33 @@
-import React, { useEffect, useLayoutEffect, useReducer, useState } from "react";
-import { Column, Row } from "simple-flexbox";
+import React, { useEffect, useLayoutEffect, useReducer } from "react";
 import { SnackBar } from "./components/common";
-import { useSelector } from "react-redux";
-import { useRoutes } from "react-router-dom";
-
-import routes from "./routes";
-import styles from "./App.css";
+import { useDispatch, useSelector } from "react-redux";
+import decode from "jwt-decode";
 import useAlert from "./utils/hooks/useAlert";
-import { Header } from "./components/Header";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Router from "./routes";
+import { LOCAL_STORAGE_USER_KEY } from "./utils/crud";
+import { signOut } from "./Store/actions";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
-  const routing = useRoutes(routes);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [selectedItem, setSelectedItem] = useState("Books");
   const notification = useSelector((state) => state.notifications.notification);
   const { showNotification, setShowNotification } = useAlert();
+  const user = JSON.parse(localStorage.getItem(LOCAL_STORAGE_USER_KEY));
+  const dispatch = useDispatch();
+  const history = useNavigate();
 
   useLayoutEffect(() => {
     window.addEventListener("resize", forceUpdate);
+
+    if (user && user?.token) {
+      const decodedToken = decode(user?.token);
+      const currentTimeInMill = new Date().getTime();
+      const mill = decodedToken.exp * 1000;
+      if (mill < currentTimeInMill) {
+        dispatch(signOut());
+        history("/sign-in");
+      }
+    }
 
     return () => window.removeEventListener("resize", forceUpdate);
   }, []);
@@ -29,7 +38,7 @@ const App = () => {
     }
   }, [notification, setShowNotification]);
 
-  const handleErrorAlertClose = (event, reason) => {
+  const handleAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
@@ -43,19 +52,10 @@ const App = () => {
           message={notification.message}
           open={showNotification}
           severity={notification.status}
-          onClose={handleErrorAlertClose}
+          onClose={handleAlertClose}
         />
       )}
-      <Row className={styles.container}>
-        <Sidebar
-          selectedItem={selectedItem}
-          onChange={(selectedItem) => setSelectedItem(selectedItem)}
-        />
-        <Column flexGrow={1} className={styles.mainBlock}>
-          <Header title={selectedItem} />
-          <div className={styles.content}>{routing}</div>
-        </Column>
-      </Row>
+      <Router user={user} />
     </>
   );
 };

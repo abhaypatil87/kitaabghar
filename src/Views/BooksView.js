@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Books } from "../components/Books";
@@ -8,18 +8,11 @@ import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import { fetchBooks } from "../Store/actions";
 import { ScrollToTop } from "../components/common";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: "10px 10px 10px 10px",
-  },
-}));
-
 const BooksView = () => {
   const books = useSelector((state) => state.books.books);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredBooks, setFilteredBooks] = useState(books);
   const dispatch = useDispatch();
-  const classes = useStyles();
   const total = books.length;
 
   useEffect(() => {
@@ -45,7 +38,7 @@ const BooksView = () => {
   };
 
   return (
-    <Box component="div" className={classes.root}>
+    <div>
       <ScrollToTop showBelow={250} />
       <SearchBar onSearch={searchChangeHandler} />
       <Grid container direction="row" justify="flex-start" alignItems="center">
@@ -62,7 +55,7 @@ const BooksView = () => {
         </Box>
       </Grid>
       <Books books={filteredBooks} />
-    </Box>
+    </div>
   );
 };
 

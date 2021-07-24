@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import { Paper, InputBase, IconButton } from "@material-ui/core";
 
 import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from "@material-ui/icons/Clear";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     padding: "10px 10px 10px 10px",
     display: "flex",
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   iconButton: {
     padding: 10,
   },
-}));
+});
 
 const SearchBar = (props) => {
   const searchRef = useRef("");

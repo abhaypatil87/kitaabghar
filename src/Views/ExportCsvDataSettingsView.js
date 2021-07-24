@@ -16,22 +16,10 @@ const ExportCsvDataSettingsView = (props) => {
   const books = useSelector((state) => state.books.books);
   const csvFileName = `library${Date.now().toString()}`;
   return (
-    <Accordion
-      classes={{
-        expanded: props.styles.expandedAccordion,
-      }}
-    >
-      <AccordionSummary
-        expandIcon={<ChevronRightIcon />}
-        classes={{
-          expandIcon: props.styles.expandIcon,
-          expanded: props.styles.expanded,
-        }}
-      >
+    <Accordion>
+      <AccordionSummary expandIcon={<ChevronRightIcon />}>
         <div>
-          <Typography variant={"h1"} className={props.styles.heading1}>
-            Export Libraries
-          </Typography>
+          <Typography variant={"h1"}>Export Libraries</Typography>
           <Typography variant={"subtitle1"}>
             Export all your book from the library to a comma-separated-values
             (csv) file.

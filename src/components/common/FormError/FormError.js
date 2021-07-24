@@ -1,20 +1,13 @@
 import { Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { experimentalStyled as styled } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  error: {
-    marginTop: theme.spacing(1),
-    color: "#f65157",
-  },
+const FormErrorBox = styled(Box)(({ theme }) => ({
+  marginTop: `${theme.spacing(1)}`,
+  color: "#f65157",
 }));
 
 const FormError = (props) => {
-  const classes = useStyles();
-  return (
-    <Box component="div" className={classes.error}>
-      {props.error}
-    </Box>
-  );
+  return <FormErrorBox>{props.error}</FormErrorBox>;
 };
 
 export default FormError;

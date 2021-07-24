@@ -2,6 +2,7 @@ import React from "react";
 import { Row } from "simple-flexbox";
 
 import styles from "./Header.module.css";
+import AccountPopover from "../../Views/AccountPopover";
 
 const Header = (props) => {
   const { ...otherProps } = props;
@@ -15,16 +16,7 @@ const Header = (props) => {
       <span className={styles.title}>{props.title}</span>
       <Row vertical="center">
         <div className={styles.separator} />
-        <Row vertical="center">
-          <span className={`${styles.name} ${styles.cursorPointer}`}>
-            Abhay Patil
-          </span>
-          <img
-            src="https://avatars3.githubusercontent.com/u/8400709?s=460&v=4"
-            alt="avatar"
-            className={`${styles.avatar} ${styles.cursorPointer}`}
-          />
-        </Row>
+        <AccountPopover />
       </Row>
     </Row>
   );

@@ -1,26 +1,22 @@
-import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
+import { experimentalStyled as styled } from "@material-ui/core/styles";
 
 import bookTitleStyles from "./BookTile.module.css";
 import { ListStyleBookTile } from "./index";
 import useHandleTitleClick from "../../utils/hooks/useHandleTitleClick";
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    cursor: "pointer",
-  },
+const HeadlineBox = styled(Box)(({ theme }) => ({
+  cursor: "pointer",
+  marginTop: `${theme.spacing(2)}`,
 }));
 
 const HeadlineStyleBookTile = (props) => {
   const [listStyleMode, titleClickHandler] = useHandleTitleClick();
 
-  const classes = useStyles();
   return listStyleMode ? (
     <ListStyleBookTile {...props} />
   ) : (
-    <Box
-      component="div"
-      marginTop={2}
-      className={classes.title}
+    <HeadlineBox
       onClick={titleClickHandler}
       onKeyDown={titleClickHandler}
       aria-label={`${props.title} by ${props.author}`}
@@ -37,7 +33,7 @@ const HeadlineStyleBookTile = (props) => {
           </Typography>
         </Grid>
       </Grid>
-    </Box>
+    </HeadlineBox>
   );
 };
 

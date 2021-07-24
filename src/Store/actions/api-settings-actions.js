@@ -2,13 +2,17 @@ import { notificationsActions } from "../slices/notifications-slice";
 import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
 import { apiSettingsActions } from "../store";
+import { RequestHeader } from "../../utils/RequestHeader";
 
 export const fetchThirdPartyApis = () => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const fetchData = async () => {
       const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/third_party_apis`
+        `http://${SERVER_URL}:${SERVER_PORT}/api/third_party_apis`,
+        {
+          headers: new RequestHeader().addAuthorisation().getHeader(),
+        }
       );
       return await response.json();
     };
@@ -35,9 +39,10 @@ export const saveApiSettings = (apiSettings) => {
         {
           method: "PUT",
           body: JSON.stringify(apiSettings),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: new RequestHeader()
+            .addAuthorisation()
+            .addContentType("application/json")
+            .getHeader(),
         }
       );
 

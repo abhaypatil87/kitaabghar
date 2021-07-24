@@ -1,16 +1,8 @@
 import React from "react";
-import { Box, makeStyles } from "@material-ui/core";
 import { AddBookByManualEntry, AddBookBySearch } from "../components/AddBook/";
 import { FullWidthTabs } from "../components/common/";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: "10px 10px 10px 10px",
-  },
-}));
-
 const AddBooksView = () => {
-  const classes = useStyles();
   const tabs = [
     {
       index: 0,
@@ -25,11 +17,7 @@ const AddBooksView = () => {
       body: <AddBookByManualEntry />,
     },
   ];
-  return (
-    <Box component="div" className={classes.root}>
-      <FullWidthTabs tabs={tabs} />
-    </Box>
-  );
+  return <FullWidthTabs tabs={tabs} />;
 };
 
 export default AddBooksView;

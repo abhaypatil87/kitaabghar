@@ -3,18 +3,19 @@ import { useLocation } from "react-router-dom";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import { makeStyles } from "@material-ui/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { experimentalStyled as styled } from "@material-ui/core/styles";
 import {
   Box,
   Button,
   Fade,
   Grid,
   IconButton,
-  makeStyles,
   Paper,
   TextField,
   Typography,
 } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
 
 import bookTitleStyles from "./BookTile.module.css";
 import {
@@ -44,26 +45,15 @@ const getInitialState = (props) => {
   };
 };
 
+const LibraryPaper = styled(Paper)(({ theme }) => ({
+  padding: `${theme.spacing(2)}`,
+  marginBottom: "10px",
+  maxWidth: "100%",
+}));
+
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    marginBottom: "10px",
-    maxWidth: "100%",
-  },
   hover: {
     cursor: "pointer",
-  },
-  img: {
-    margin: "auto",
-    display: "block",
-    maxWidth: "100%",
-    maxHeight: "100%",
-    width: 128,
-    height: 128,
-  },
-  error: {
-    marginTop: theme.spacing(1),
-    color: "#f65157",
   },
   bookTitle: {
     "&:hover": {
@@ -74,11 +64,6 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "#2158d0",
     },
-  },
-  formMessage: {
-    width: "98%",
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -158,8 +143,9 @@ const ListStyleBookTile = (props) => {
   const renderControls = () => {
     return (
       <div>
-        {currentLocation.pathname === "/books" && renderEditControls()}
-        {currentLocation.pathname === "/add-books" && renderCreateControls()}
+        {currentLocation.pathname === "/library/books" && renderEditControls()}
+        {currentLocation.pathname === "/library/add-books" &&
+          renderCreateControls()}
       </div>
     );
   };
@@ -254,7 +240,7 @@ const ListStyleBookTile = (props) => {
         severity={"error"}
         onClose={handleErrorAlertClose}
       />
-      <Paper elevation={3} className={classes.paper}>
+      <LibraryPaper elevation={3}>
         <Grid container spacing={2}>
           <Grid item>
             <img src={props.thumbnail_url} alt={formState.title.value} />
@@ -274,7 +260,7 @@ const ListStyleBookTile = (props) => {
                 </Typography>
               )}
               <Fade in={editMode} timeout={1} unmountOnExit>
-                <>
+                <Box>
                   <TextField
                     margin="dense"
                     label="Title"
@@ -302,7 +288,7 @@ const ListStyleBookTile = (props) => {
                   {formState.title.touched && formState.title.hasError && (
                     <FormError error={formState.title.error} />
                   )}
-                </>
+                </Box>
               </Fade>
               {props.subtitle.length > 0 && (
                 <Typography variant="h6" gutterBottom tabIndex={0}>
@@ -337,7 +323,7 @@ const ListStyleBookTile = (props) => {
                   </Typography>
                 )}
                 <Fade in={editMode} timeout={100} unmountOnExit>
-                  <>
+                  <Box>
                     <TextField
                       style={{ width: "80%" }}
                       margin="dense"
@@ -370,7 +356,7 @@ const ListStyleBookTile = (props) => {
                       maximum={ALLOWED_DESCRIPTION_LENGTH}
                       current={totalCharacters}
                     />
-                  </>
+                  </Box>
                 </Fade>
               </Box>
               <Grid item hidden={!editMode}>
@@ -402,11 +388,8 @@ const ListStyleBookTile = (props) => {
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
+      </LibraryPaper>
       <Confirm
-        classes={{
-          paper: classes.paper,
-        }}
         message={
           "This will permanently remove the book from the library. Are you sure?"
         }

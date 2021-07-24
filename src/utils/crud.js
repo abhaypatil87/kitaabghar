@@ -3,6 +3,8 @@ export const SERVER_PORT = 4000;
 
 export const ERROR = "error";
 export const SUCCESS = "success";
+export const LOCAL_STORAGE_USER_KEY = "user";
+
 export const viewState = {
   MODULE: "module",
   LIST: "list",

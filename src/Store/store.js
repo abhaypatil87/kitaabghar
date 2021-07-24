@@ -5,6 +5,7 @@ import {
   notifications,
   viewMode,
   apiSettingsSlice,
+  authorisationSlice,
 } from "./slices";
 
 const store = configureStore({
@@ -14,6 +15,7 @@ const store = configureStore({
     viewMode: viewMode.reducer,
     notifications: notifications.reducer,
     apiSettings: apiSettingsSlice.reducer,
+    authorisation: authorisationSlice.reducer,
   },
 });
 
@@ -22,5 +24,6 @@ export const authorsActions = authors.actions;
 export const booksActions = books.actions;
 export const viewModeActions = viewMode.actions;
 export const apiSettingsActions = apiSettingsSlice.actions;
+export const authorisationActions = authorisationSlice.actions;
 
 export default store;

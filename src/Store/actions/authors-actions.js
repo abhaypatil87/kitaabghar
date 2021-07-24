@@ -2,13 +2,17 @@ import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
 import { authorsActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
+import { RequestHeader } from "../../utils/RequestHeader";
 
 export const fetchAuthors = () => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const fetchData = async () => {
       const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/authors`
+        `http://${SERVER_URL}:${SERVER_PORT}/api/authors`,
+        {
+          headers: new RequestHeader().addAuthorisation().getHeader(),
+        }
       );
 
       if (!response.ok) {
@@ -39,9 +43,10 @@ export const editAuthor = (author) => {
         {
           method: "PUT",
           body: JSON.stringify(author),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: new RequestHeader()
+            .addContentType("application/json")
+            .addAuthorisation()
+            .getHeader(),
         }
       );
 

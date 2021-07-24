@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import { Grid, Box, Button, TextField } from "@material-ui/core";
 
 import {
@@ -15,18 +15,13 @@ import useAlert from "../../utils/hooks/useAlert";
 import { useSelector } from "react-redux";
 
 import { ListStyleBookTile } from "../Books";
+import { RequestHeader } from "../../utils/RequestHeader";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   form: {
     width: "40rem",
   },
-  m1: {
-    marginTop: theme.spacing(1),
-  },
-  m2: {
-    marginTop: theme.spacing(2),
-  },
-}));
+});
 
 const initialState = {
   keywords: { value: "", touched: false, hasError: true, error: "" },
@@ -67,7 +62,10 @@ const KeywordsSearchCreate = () => {
     setIsSearching(true);
     try {
       const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books?keywords=${formState.keywords.value}`
+        `http://${SERVER_URL}:${SERVER_PORT}/api/books?keywords=${formState.keywords.value}`,
+        {
+          headers: new RequestHeader().addAuthorisation().getHeader(),
+        }
       );
       const result = await response.json();
       setFoundBooks(result.data.books);
@@ -86,7 +84,6 @@ const KeywordsSearchCreate = () => {
 
   return (
     <Grid
-      className={classes.m1}
       container
       direction="column"
       justify="flex-start"
@@ -100,7 +97,7 @@ const KeywordsSearchCreate = () => {
           onClose={handleErrorAlertClose}
         />
         <form
-          className={`${classes.m1} ${classes.form}`}
+          className={`${classes.form}`}
           onSubmit={(event) => formSubmitHandler(event)}
         >
           <Box component="div">
@@ -139,7 +136,6 @@ const KeywordsSearchCreate = () => {
             disabled={isSearching}
             aria-disabled={isSearching}
             disableElevation
-            className={classes.m2}
             type="submit"
             value="search"
           >
