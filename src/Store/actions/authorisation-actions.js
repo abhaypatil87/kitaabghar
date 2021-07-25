@@ -1,5 +1,5 @@
 import { notificationsActions } from "../slices/notifications-slice";
-import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
+import { SERVER, SUCCESS } from "../../utils/crud";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
 import { authorisationActions } from "../store";
 import { RequestHeader } from "../../utils/RequestHeader";
@@ -45,16 +45,13 @@ export const signIn = (signInData) => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const signInUser = async () => {
-      const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/signin`,
-        {
-          method: "POST",
-          body: JSON.stringify(signInData),
-          headers: new RequestHeader()
-            .addContentType("application/json")
-            .getHeader(),
-        }
-      );
+      const response = await fetch(`${SERVER}/api/signin`, {
+        method: "POST",
+        body: JSON.stringify(signInData),
+        headers: new RequestHeader()
+          .addContentType("application/json")
+          .getHeader(),
+      });
 
       const parsedResponse = await response.json();
       if (!response.ok) {
@@ -83,16 +80,13 @@ export const signUp = (signUpData) => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const signUpUser = async () => {
-      const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/signup`,
-        {
-          method: "POST",
-          body: JSON.stringify(signUpData),
-          headers: new RequestHeader()
-            .addContentType("application/json")
-            .getHeader(),
-        }
-      );
+      const response = await fetch(`${SERVER}/api/signup`, {
+        method: "POST",
+        body: JSON.stringify(signUpData),
+        headers: new RequestHeader()
+          .addContentType("application/json")
+          .getHeader(),
+      });
 
       const parsedResponse = await response.json();
       if (!response.ok) {

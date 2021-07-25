@@ -12,8 +12,8 @@ import {
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmpty } from "../utils/crud";
-import { saveApiSettings } from "../Store/actions";
+import { isEmpty } from "../../utils/crud";
+import { saveApiSettings } from "../../Store/actions";
 
 const ThirdPartyApiSettingsView = (props) => {
   const dispatch = useDispatch();

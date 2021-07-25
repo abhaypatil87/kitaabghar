@@ -10,7 +10,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { useSelector } from "react-redux";
 import CsvDownloader from "react-csv-downloader";
-import { EXPORT_FILE_EXTENSION } from "../utils/crud";
+import { EXPORT_FILE_EXTENSION } from "../../utils/crud";
 
 const ExportCsvDataSettingsView = (props) => {
   const books = useSelector((state) => state.books.books);

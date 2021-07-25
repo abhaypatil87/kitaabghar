@@ -10,7 +10,7 @@ import {
   RESET_FORM,
 } from "../../utils/formUtil";
 import { SUCCESS } from "../../utils/crud";
-import { FormError, SnackBar } from "../common";
+import { FormError, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { createBook } from "../../Store/actions";
@@ -25,7 +25,7 @@ const initialState = {
   isbn: { value: "", touched: false, hasError: true, error: "" },
   isFormValid: false,
 };
-const IsbnSearchCreate = () => {
+const IsbnSearchEntryView = () => {
   const [formState, dispatchForm] = useReducer(formsReducer, initialState);
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notifications.notification);
@@ -127,4 +127,4 @@ const IsbnSearchCreate = () => {
   );
 };
 
-export default IsbnSearchCreate;
+export default IsbnSearchEntryView;

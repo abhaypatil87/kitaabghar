@@ -5,9 +5,10 @@ import { act } from "react-dom/test-utils";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import KeywordsSearchCreate from "../components/AddBook/KeywordsSearchCreate";
+import KeywordsSearchEntryView from "../Views/AddBooks/KeywordsSearchEntryView";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { SERVER } from "../utils/crud";
 
 beforeEach(() => {
   const initialState = {
@@ -26,7 +27,7 @@ beforeEach(() => {
   render(
     <Router history={history}>
       <Provider store={store}>
-        <KeywordsSearchCreate />
+        <KeywordsSearchEntryView />
       </Provider>
     </Router>
   );
@@ -60,11 +61,11 @@ describe("KeywordsSearchCreate", () => {
       userEvent.click(screen.getByRole("button", { name: /search/i }));
     });
 
-    expect(
-      fetch
-    ).toHaveBeenCalledWith(
-      `http://192.168.1.67:4000/api/books?keywords=${validKeywords}`,
-      { headers: {} }
+    expect(fetch).toHaveBeenCalledWith(
+      `${SERVER}/api/books?keywords=${validKeywords}`,
+      {
+        headers: {},
+      }
     );
   });
 });

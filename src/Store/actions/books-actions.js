@@ -1,4 +1,4 @@
-import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
+import { SERVER, SUCCESS } from "../../utils/crud";
 import { booksActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
@@ -8,12 +8,9 @@ export const fetchBooks = () => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const fetchData = async () => {
-      const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books`,
-        {
-          headers: new RequestHeader().addAuthorisation().getHeader(),
-        }
-      );
+      const response = await fetch(`${SERVER}/api/books`, {
+        headers: new RequestHeader().addAuthorisation().getHeader(),
+      });
       return await response.json();
     };
 
@@ -34,17 +31,14 @@ export const editBook = (book) => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const updateData = async () => {
-      const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books/${book.book_id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(book),
-          headers: new RequestHeader()
-            .addContentType("application/json")
-            .addAuthorisation()
-            .getHeader(),
-        }
-      );
+      const response = await fetch(`${SERVER}/api/books/${book.book_id}`, {
+        method: "PUT",
+        body: JSON.stringify(book),
+        headers: new RequestHeader()
+          .addContentType("application/json")
+          .addAuthorisation()
+          .getHeader(),
+      });
 
       if (!response.ok) {
         throw new Error("Error occurred while updating the book details");
@@ -70,13 +64,10 @@ export const removeBook = (bookId) => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const removeData = async () => {
-      const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books/${bookId}`,
-        {
-          method: "DELETE",
-          headers: new RequestHeader().addAuthorisation().getHeader(),
-        }
-      );
+      const response = await fetch(`${SERVER}/api/books/${bookId}`, {
+        method: "DELETE",
+        headers: new RequestHeader().addAuthorisation().getHeader(),
+      });
 
       if (!response.ok) {
         throw new Error("Error occurred while deleting the book");
@@ -102,17 +93,14 @@ export const createBook = (isbn) => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const createData = async () => {
-      const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books`,
-        {
-          method: "POST",
-          body: JSON.stringify(isbn),
-          headers: new RequestHeader()
-            .addContentType("application/json")
-            .addAuthorisation()
-            .getHeader(),
-        }
-      );
+      const response = await fetch(`${SERVER}/api/books`, {
+        method: "POST",
+        body: JSON.stringify(isbn),
+        headers: new RequestHeader()
+          .addContentType("application/json")
+          .addAuthorisation()
+          .getHeader(),
+      });
 
       if (!response.ok) {
         throw new Error("Error occurred while creating the book");

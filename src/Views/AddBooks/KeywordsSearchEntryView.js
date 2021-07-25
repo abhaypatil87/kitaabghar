@@ -9,12 +9,12 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
-import { FormError, SnackBar } from "../common";
+import { SERVER, SUCCESS } from "../../utils/crud";
+import { FormError, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { useSelector } from "react-redux";
 
-import { ListStyleBookTile } from "../Books";
+import { ListStyleBookTile } from "../../components/Books";
 import { RequestHeader } from "../../utils/RequestHeader";
 
 const useStyles = makeStyles({
@@ -27,7 +27,8 @@ const initialState = {
   keywords: { value: "", touched: false, hasError: true, error: "" },
   isFormValid: false,
 };
-const KeywordsSearchCreate = () => {
+
+const KeywordsSearchEntryView = () => {
   const [formState, dispatchForm] = useReducer(formsReducer, initialState);
   const [foundBooks, setFoundBooks] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -62,7 +63,7 @@ const KeywordsSearchCreate = () => {
     setIsSearching(true);
     try {
       const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/books?keywords=${formState.keywords.value}`,
+        `${SERVER}/api/books?keywords=${formState.keywords.value}`,
         {
           headers: new RequestHeader().addAuthorisation().getHeader(),
         }
@@ -163,4 +164,4 @@ const KeywordsSearchCreate = () => {
   );
 };
 
-export default KeywordsSearchCreate;
+export default KeywordsSearchEntryView;

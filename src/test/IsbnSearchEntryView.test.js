@@ -5,7 +5,8 @@ import { act } from "react-dom/test-utils";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import IsbnSearchCreate from "../components/AddBook/IsbnSearchCreate";
+import IsbnSearchEntryView from "../Views/AddBooks/IsbnSearchEntryView";
+import { SERVER } from "../utils/crud";
 
 beforeEach(() => {
   const initialState = {
@@ -20,12 +21,12 @@ beforeEach(() => {
   jest.clearAllMocks();
   render(
     <Provider store={store}>
-      <IsbnSearchCreate />
+      <IsbnSearchEntryView />
     </Provider>
   );
 });
 
-describe("IsbnSearchCreate", () => {
+describe("IsbnSearchEntryView", () => {
   it("should throw error message when entered no ISBN value", async () => {
     act(() => userEvent.click(screen.getByRole("button", { name: /add/i })));
     expect(
@@ -60,7 +61,7 @@ describe("IsbnSearchCreate", () => {
       userEvent.click(screen.getByRole("button", { name: /add/i }));
     });
 
-    expect(fetch).toHaveBeenCalledWith("http://192.168.1.67:4000/api/books", {
+    expect(fetch).toHaveBeenCalledWith(`${SERVER}/api/books`, {
       body: '{"isbn":"0330258648"}',
       headers: { "Content-Type": "application/json" },
       method: "POST",
