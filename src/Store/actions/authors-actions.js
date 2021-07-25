@@ -1,4 +1,4 @@
-import { SERVER_PORT, SERVER_URL, SUCCESS } from "../../utils/crud";
+import { SERVER, SUCCESS } from "../../utils/crud";
 import { authorsActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
@@ -8,12 +8,9 @@ export const fetchAuthors = () => {
   return async (dispatch) => {
     dispatch(notificationsActions.clearNotifications());
     const fetchData = async () => {
-      const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/authors`,
-        {
-          headers: new RequestHeader().addAuthorisation().getHeader(),
-        }
-      );
+      const response = await fetch(`${SERVER}/api/authors`, {
+        headers: new RequestHeader().addAuthorisation().getHeader(),
+      });
 
       if (!response.ok) {
         throw new Error("Error occurred while fetching the list of authors");
@@ -39,7 +36,7 @@ export const editAuthor = (author) => {
     dispatch(notificationsActions.clearNotifications());
     const updateData = async () => {
       const response = await fetch(
-        `http://${SERVER_URL}:${SERVER_PORT}/api/authors/${author.author_id}`,
+        `${SERVER}/api/authors/${author.author_id}`,
         {
           method: "PUT",
           body: JSON.stringify(author),

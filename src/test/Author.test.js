@@ -6,6 +6,7 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import { SERVER } from "../utils/crud";
 
 beforeEach(() => {
   const initialState = {
@@ -60,14 +61,10 @@ describe("Author", () => {
       userEvent.click(screen.getByRole("button", { name: /edit/i }));
     });
 
-    expect(fetch).toHaveBeenCalledWith(
-      "http://192.168.1.67:4000/api/authors/1",
-      {
-        body:
-          '{"author_id":1,"first_name":"AlicePatrick","last_name":"Walker"}',
-        headers: { "Content-Type": "application/json" },
-        method: "PUT",
-      }
-    );
+    expect(fetch).toHaveBeenCalledWith(`${SERVER}/api/authors/1`, {
+      body: '{"author_id":1,"first_name":"AlicePatrick","last_name":"Walker"}',
+      headers: { "Content-Type": "application/json" },
+      method: "PUT",
+    });
   });
 });

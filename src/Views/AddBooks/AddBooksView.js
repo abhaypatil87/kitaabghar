@@ -1,6 +1,8 @@
 import React from "react";
-import { AddBookByManualEntry, AddBookBySearch } from "../components/AddBook/";
-import { FullWidthTabs } from "../components/common/";
+import { FullWidthTabs } from "../../components/common";
+
+import ManualEntryView from "./ManualEntryView";
+import SearchEntryView from "./SearchEntryView";
 
 const AddBooksView = () => {
   const tabs = [
@@ -8,13 +10,13 @@ const AddBooksView = () => {
       index: 0,
       value: 0,
       title: "Search",
-      body: <AddBookBySearch />,
+      body: <SearchEntryView />,
     },
     {
       index: 1,
       value: 1,
       title: "Manual Entry",
-      body: <AddBookByManualEntry />,
+      body: <ManualEntryView />,
     },
   ];
   return <FullWidthTabs tabs={tabs} />;

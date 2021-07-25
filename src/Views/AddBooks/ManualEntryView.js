@@ -12,7 +12,7 @@ import {
   RESET_FORM,
 } from "../../utils/formUtil";
 import { SUCCESS } from "../../utils/crud";
-import { LibAlert, FormError, WordCounter } from "../common";
+import { LibAlert, FormError, WordCounter } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook } from "../../Store/actions";
 import { experimentalStyled as styled } from "@material-ui/core/styles";
@@ -21,7 +21,7 @@ const LibraryForm = styled("form")(() => ({
   width: "40rem",
 }));
 
-const AddBookByManualEntry = () => {
+const ManualEntryView = () => {
   const [totalCharacters, setTotalCharacters] = useState(0);
   const [formState, dispatchForm] = useReducer(formsReducer, initialState);
   const [isCreating, setIsCreating] = useState(false);
@@ -364,4 +364,4 @@ const AddBookByManualEntry = () => {
   );
 };
 
-export default AddBookByManualEntry;
+export default ManualEntryView;

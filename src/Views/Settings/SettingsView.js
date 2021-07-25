@@ -3,7 +3,7 @@ import ExportCsvDataSettingsView from "./ExportCsvDataSettingsView";
 import ThirdPartyApiSettingsView from "./ThirdPartyApiSettingsView";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { fetchThirdPartyApis } from "../Store/actions";
+import { fetchThirdPartyApis } from "../../Store/actions";
 
 const theme = createTheme({
   components: {
