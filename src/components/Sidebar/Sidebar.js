@@ -6,10 +6,10 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { Link } from "react-router-dom";
+import { Column, Row } from "simple-flexbox";
 
 import Logo from "./Logo";
 import MenuItem from "./MenuItem";
-import { Column, Row } from "simple-flexbox";
 import sideBarStyles from "./Sidebar.module.css";
 
 const Sidebar = (props) => {

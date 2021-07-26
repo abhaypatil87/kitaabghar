@@ -1,22 +1,27 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewHeadlineIcon from "@material-ui/icons/ViewHeadline";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
-import IconButton from "@material-ui/core/IconButton";
+import { styled } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 
 import { viewState } from "../../../utils/crud";
 import { viewModeActions } from "../../../Store/store";
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  active: {
-    color: "rgba(0, 0, 0, 0.54)",
-  },
-  icon: {
-    color: "rgba(0, 0, 0, 0.26)",
-    "&:hover": {
-      color: "#2158d0",
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  "& .MuiToggleButtonGroup-grouped": {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    border: 0,
+    "&.Mui-disabled": {
+      border: 0,
+    },
+    "&:not(:first-of-type)": {
+      borderRadius: theme.shape.borderRadius,
+    },
+    "&:first-of-type": {
+      borderRadius: theme.shape.borderRadius,
     },
   },
 }));
@@ -24,43 +29,33 @@ const useStyles = makeStyles((theme) => ({
 const ViewAsContainer = () => {
   const viewMode = useSelector((state) => state.viewMode.viewMode);
   const dispatch = useDispatch();
-  const classes = useStyles();
 
   const onViewChangeHandler = (viewMode) => {
     dispatch(viewModeActions.changeViewMode(viewMode));
   };
 
+  const handleAlignment = (event, newAlignment) => {
+    onViewChangeHandler(newAlignment);
+  };
+
   return (
-    <>
-      <IconButton
-        onClick={onViewChangeHandler.bind(null, viewState.MODULE)}
-        aria-label={"View as grid"}
-        className={
-          viewMode === viewState.MODULE ? classes.active : classes.icon
-        }
-        color="primary"
-      >
+    <StyledToggleButtonGroup
+      size="large"
+      value={viewMode}
+      exclusive
+      onChange={handleAlignment}
+      aria-label="text alignment"
+    >
+      <ToggleButton value={viewState.MODULE} aria-label={"View as grid"}>
         <ViewModuleIcon />
-      </IconButton>
-      <IconButton
-        onClick={onViewChangeHandler.bind(null, viewState.HEADLINE)}
-        aria-label={"View as headlines"}
-        className={
-          viewMode === viewState.HEADLINE ? classes.active : classes.icon
-        }
-        color="primary"
-      >
+      </ToggleButton>
+      <ToggleButton value={viewState.HEADLINE} aria-label={"View as headline"}>
         <ViewHeadlineIcon />
-      </IconButton>
-      <IconButton
-        onClick={onViewChangeHandler.bind(null, viewState.LIST)}
-        aria-label={"View as list"}
-        className={viewMode === viewState.LIST ? classes.active : classes.icon}
-        color="primary"
-      >
+      </ToggleButton>
+      <ToggleButton value={viewState.LIST} aria-label={"View as list"}>
         <ViewListIcon />
-      </IconButton>
-    </>
+      </ToggleButton>
+    </StyledToggleButtonGroup>
   );
 };
 

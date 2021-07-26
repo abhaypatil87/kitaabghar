@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { Box, Button, Grid, TextField } from "@material-ui/core";
+import { Box, Grid, TextField } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -16,6 +16,7 @@ import { LibAlert, FormError, WordCounter } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook } from "../../Store/actions";
 import { experimentalStyled as styled } from "@material-ui/core/styles";
+import { LibButton } from "../../components/common/LibButton";
 
 const LibraryForm = styled("form")(() => ({
   width: "40rem",
@@ -347,7 +348,7 @@ const ManualEntryView = () => {
                 <FormError error={formState.thumbnail_url.error} />
               )}
           </Grid>
-          <Button
+          <LibButton
             variant="contained"
             color="primary"
             disableElevation
@@ -356,8 +357,8 @@ const ManualEntryView = () => {
             type="submit"
             value="Add"
           >
-            Add
-          </Button>
+            Create
+          </LibButton>
         </LibraryForm>
       </Grid>
     </Grid>

@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Grid, Box, Button, TextField } from "@material-ui/core";
+import { Grid, Box, TextField } from "@material-ui/core";
 
 import {
   formsReducer,
@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 
 import { ListStyleBookTile } from "../../components/Books";
 import { RequestHeader } from "../../utils/RequestHeader";
+import { LibButton } from "../../components/common/LibButton";
 
 const useStyles = makeStyles({
   form: {
@@ -131,7 +132,7 @@ const KeywordsSearchEntryView = () => {
               <FormError error={formState.keywords.error} />
             )}
           </Box>
-          <Button
+          <LibButton
             variant="contained"
             color="primary"
             disabled={isSearching}
@@ -141,7 +142,7 @@ const KeywordsSearchEntryView = () => {
             value="search"
           >
             Search
-          </Button>
+          </LibButton>
         </form>
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12}>

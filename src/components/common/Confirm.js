@@ -1,10 +1,10 @@
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
+import { LibButton } from "./LibButton";
 
 function Confirm(props) {
   const { onClose, onOkay, open, ...other } = props;
@@ -30,12 +30,17 @@ function Confirm(props) {
         <span>{props.message}</span>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="secondary">
+        <LibButton size="small" onClick={handleCancel} variant={"secondary"}>
           Cancel
-        </Button>
-        <Button onClick={handleOk} color="primary">
-          Ok
-        </Button>
+        </LibButton>
+        <LibButton
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={handleOk}
+        >
+          Okay
+        </LibButton>
       </DialogActions>
     </Dialog>
   );

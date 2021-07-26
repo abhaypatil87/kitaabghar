@@ -3,7 +3,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Button,
   Typography,
 } from "@material-ui/core";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -11,6 +10,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { useSelector } from "react-redux";
 import CsvDownloader from "react-csv-downloader";
 import { EXPORT_FILE_EXTENSION } from "../../utils/crud";
+import { LibButton } from "../../components/common/LibButton";
 
 const ExportCsvDataSettingsView = (props) => {
   const books = useSelector((state) => state.books.books);
@@ -34,14 +34,14 @@ const ExportCsvDataSettingsView = (props) => {
             wrapColumnChar="'"
             datas={books}
           >
-            <Button
+            <LibButton
               variant="contained"
               color="primary"
               size="medium"
               startIcon={<GetAppIcon />}
             >
               Download CSV
-            </Button>
+            </LibButton>
           </CsvDownloader>
         </Box>
       </AccordionDetails>
