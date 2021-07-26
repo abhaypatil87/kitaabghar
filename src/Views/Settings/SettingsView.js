@@ -4,6 +4,7 @@ import ThirdPartyApiSettingsView from "./ThirdPartyApiSettingsView";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchThirdPartyApis } from "../../Store/actions";
+import { Helmet } from "react-helmet";
 
 const theme = createTheme({
   components: {
@@ -40,8 +41,18 @@ const SettingsView = () => {
     dispatch(fetchThirdPartyApis());
   }, [dispatch]);
 
+  const renderHelmet = () => {
+    return (
+      <Helmet>
+        <title>{`Settings | Home Library`}</title>
+        <meta name="description" content={`Manage Library settings`} />
+      </Helmet>
+    );
+  };
+
   return (
     <ThemeProvider theme={theme}>
+      {renderHelmet()}
       <Container maxWidth="md">
         <Box>
           <ExportCsvDataSettingsView />

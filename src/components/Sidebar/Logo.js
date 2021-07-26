@@ -1,11 +1,28 @@
 import React from "react";
 import { Row } from "simple-flexbox";
-import styles from "./Logo.module.css";
+import { makeStyles } from "@material-ui/styles";
 
-const Logo = () => (
-  <Row horizontal="center" vertical="center">
-    <span className={styles.title}>My Library</span>
-  </Row>
-);
+const useStyle = makeStyles({
+  title: {
+    fontFamily: "Roboto Thin, serif",
+    fontSize: "20px",
+    fontWeight: "bold",
+    fontStyle: "normal",
+    lineHeight: "24px",
+    letterSpacing: "inherit",
+    color: "#a4a6b3",
+    opacity: "0.7",
+  },
+});
+
+const Logo = () => {
+  const classes = useStyle();
+
+  return (
+    <Row horizontal="center" vertical="center">
+      <span className={classes.title}>My Library</span>
+    </Row>
+  );
+};
 
 export default Logo;

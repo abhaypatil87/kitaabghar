@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { alpha } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import {
-  Button,
   Box,
   Divider,
   Typography,
@@ -14,10 +13,10 @@ import { MenuPopover } from "../components/common";
 import { signOut } from "../Store/actions";
 import { useDispatch } from "react-redux";
 import { LOCAL_STORAGE_USER_KEY } from "../utils/crud";
+import { LibButton } from "../components/common/LibButton";
 
-const SignOutButton = styled(Button)(({ theme }) => ({
+const SignOutButton = styled(LibButton)(({ theme }) => ({
   color: "#3c4043",
-  textTransform: "none",
   border: "1px solid #dadce0",
   "&:hover": {
     backgroundColor: "#898a8b",

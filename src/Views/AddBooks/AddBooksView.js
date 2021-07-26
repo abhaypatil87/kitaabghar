@@ -3,8 +3,21 @@ import { FullWidthTabs } from "../../components/common";
 
 import ManualEntryView from "./ManualEntryView";
 import SearchEntryView from "./SearchEntryView";
+import { Helmet } from "react-helmet";
 
 const AddBooksView = () => {
+  const renderHelmet = () => {
+    return (
+      <Helmet>
+        <title>{`Add Books | Home Library`}</title>
+        <meta
+          name="description"
+          content={`Add books into the library by ISBN or Keywords search.`}
+        />
+      </Helmet>
+    );
+  };
+
   const tabs = [
     {
       index: 0,
@@ -19,7 +32,12 @@ const AddBooksView = () => {
       body: <ManualEntryView />,
     },
   ];
-  return <FullWidthTabs tabs={tabs} />;
+  return (
+    <>
+      {renderHelmet()}
+      <FullWidthTabs tabs={tabs} />
+    </>
+  );
 };
 
 export default AddBooksView;

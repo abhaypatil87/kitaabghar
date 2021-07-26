@@ -7,6 +7,7 @@ import { SearchBar } from "../components/SearchBar";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import { fetchBooks } from "../Store/actions";
 import { ScrollToTop } from "../components/common";
+import { Helmet } from "react-helmet";
 
 const BooksView = () => {
   const books = useSelector((state) => state.books.books);
@@ -37,8 +38,21 @@ const BooksView = () => {
     setSearchTerm(searchTerm);
   };
 
+  const renderHelmet = () => {
+    return (
+      <Helmet>
+        <title>{`Books | Home Library`}</title>
+        <meta
+          name="description"
+          content={`List of books available in the library`}
+        />
+      </Helmet>
+    );
+  };
+
   return (
     <div>
+      {renderHelmet()}
       <ScrollToTop showBelow={250} />
       <SearchBar onSearch={searchChangeHandler} />
       <Grid container direction="row" justify="flex-start" alignItems="center">

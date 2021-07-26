@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import {
   Box,
-  Button,
   Fade,
   Grid,
   IconButton,
@@ -22,6 +21,7 @@ import {
 import { FormError, SnackBar } from "../common";
 import useAlert from "../../utils/hooks/useAlert";
 import { editAuthor } from "../../Store/actions";
+import { LibButton } from "../common/LibButton";
 
 const useStyles = makeStyles({
   container: {
@@ -217,7 +217,7 @@ const Author = (props) => {
           </Box>
         </Fade>
         <Grid item xs={12} sm={12} md={12} lg={12} hidden={!editMode}>
-          <Button
+          <LibButton
             variant="contained"
             color="primary"
             disableElevation
@@ -229,15 +229,15 @@ const Author = (props) => {
             onClick={editClickHandler}
           >
             Edit
-          </Button>
-          <Button
+          </LibButton>
+          <LibButton
             style={{ marginLeft: "6px" }}
             size="small"
-            variant="outlined"
             onClick={cancelEdit}
+            variant={"secondary"}
           >
             Cancel
-          </Button>
+          </LibButton>
         </Grid>
       </Grid>
     </Box>

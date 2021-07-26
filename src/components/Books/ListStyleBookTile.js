@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { experimentalStyled as styled } from "@material-ui/core/styles";
 import {
   Box,
-  Button,
   Fade,
   Grid,
   IconButton,
@@ -31,6 +30,7 @@ import { FormError, Confirm, SnackBar, WordCounter } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook, editBook, removeBook } from "../../Store/actions";
+import { LibButton } from "../common/LibButton";
 
 const getInitialState = (props) => {
   return {
@@ -360,27 +360,26 @@ const ListStyleBookTile = (props) => {
                 </Fade>
               </Box>
               <Grid item hidden={!editMode}>
-                <Button
+                <LibButton
                   variant="contained"
                   color="primary"
                   disableElevation
                   disabled={isEditing}
                   aria-disabled={isEditing}
-                  type="button"
                   value="Edit"
                   size="small"
                   onClick={editClickHandler}
                 >
                   Edit
-                </Button>
-                <Button
+                </LibButton>
+                <LibButton
                   style={{ marginLeft: "6px" }}
-                  size="small"
-                  variant="outlined"
                   onClick={cancelEdit}
+                  size="small"
+                  variant={"secondary"}
                 >
                   Cancel
-                </Button>
+                </LibButton>
               </Grid>
               <Grid item hidden={editMode}>
                 {renderControls()}

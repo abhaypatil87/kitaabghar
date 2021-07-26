@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Grid, Box, Button, TextField } from "@material-ui/core";
+import { Grid, Box, TextField } from "@material-ui/core";
 
 import {
   formsReducer,
@@ -14,6 +14,7 @@ import { FormError, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { createBook } from "../../Store/actions";
+import { LibButton } from "../../components/common/LibButton";
 
 const useStyles = makeStyles({
   form: {
@@ -110,7 +111,7 @@ const IsbnSearchEntryView = () => {
               <FormError error={formState.isbn.error} />
             )}
           </Box>
-          <Button
+          <LibButton
             variant="contained"
             color="primary"
             disabled={isCreating}
@@ -120,7 +121,7 @@ const IsbnSearchEntryView = () => {
             value="Add"
           >
             Add
-          </Button>
+          </LibButton>
         </form>
       </Grid>
     </Grid>
