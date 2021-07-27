@@ -11,10 +11,13 @@ const SocialLoginView = (props) => {
           render={(renderProps) => (
             <LoadingButton
               fullWidth
-              variant={"outlined"}
+              loading={props.isLoading}
+              loadingIndicator="Signing In With Google"
+              variant="contained"
               color="primary"
               style={{ textTransform: "none" }}
               onClick={renderProps.onClick}
+              aria-disabled={props.isLoading}
             >
               Continue with Google
             </LoadingButton>
@@ -28,7 +31,7 @@ const SocialLoginView = (props) => {
 
       <Divider sx={{ my: 3 }}>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          OR
+          Or
         </Typography>
       </Divider>
     </>
