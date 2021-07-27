@@ -198,6 +198,7 @@ const SignUpFormView = () => {
             size="large"
             type="submit"
             variant="contained"
+            style={{ textTransform: "none" }}
             disabled={isSigningUp}
             aria-disabled={isSigningUp}
           >

@@ -148,7 +148,8 @@ const SignInFormView = () => {
             size="large"
             type="submit"
             variant="contained"
-            disabled={isSigningIn}
+            style={{ textTransform: "none" }}
+            loading={isSigningIn}
             aria-disabled={isSigningIn}
           >
             Login

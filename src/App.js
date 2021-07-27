@@ -1,12 +1,13 @@
-import React, { useEffect, useLayoutEffect, useReducer } from "react";
+import { useEffect, useLayoutEffect, useReducer } from "react";
 import { SnackBar } from "./components/common";
 import { useDispatch, useSelector } from "react-redux";
 import decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+
 import useAlert from "./utils/hooks/useAlert";
 import Router from "./routes";
 import { LOCAL_STORAGE_USER_KEY } from "./utils/crud";
 import { signOut } from "./Store/actions";
-import { useNavigate } from "react-router-dom";
 
 const App = () => {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -18,7 +19,10 @@ const App = () => {
 
   useLayoutEffect(() => {
     window.addEventListener("resize", forceUpdate);
+    return () => window.removeEventListener("resize", forceUpdate);
+  }, []);
 
+  useEffect(() => {
     if (user && user?.token) {
       const decodedToken = decode(user?.token);
       const currentTimeInMill = new Date().getTime();
@@ -28,9 +32,7 @@ const App = () => {
         history("/sign-in");
       }
     }
-
-    return () => window.removeEventListener("resize", forceUpdate);
-  }, []);
+  }, [dispatch, history, user]);
 
   useEffect(() => {
     if (notification && notification.message !== null) {

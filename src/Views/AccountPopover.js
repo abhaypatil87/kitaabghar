@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { LOCAL_STORAGE_USER_KEY } from "../utils/crud";
 import { LibButton } from "../components/common/LibButton";
 
-const SignOutButton = styled(LibButton)(({ theme }) => ({
+const SignOutButton = styled(LibButton)({
   color: "#3c4043",
   border: "1px solid #dadce0",
   "&:hover": {
@@ -23,7 +23,7 @@ const SignOutButton = styled(LibButton)(({ theme }) => ({
     borderColor: "#898a8b",
     color: "white",
   },
-}));
+});
 
 const AccountPopover = () => {
   const dispatch = useDispatch();
@@ -32,6 +32,7 @@ const AccountPopover = () => {
   const [open, setOpen] = useState(false);
   const loggedInUser = JSON.parse(localStorage.getItem(LOCAL_STORAGE_USER_KEY));
   const [user] = useState(loggedInUser);
+  const fullName = `${user.first_name} ${user.last_name}`;
 
   const handleOpen = () => {
     setOpen(true);
@@ -66,7 +67,10 @@ const AccountPopover = () => {
           }),
         }}
       >
-        <Avatar src={user.image_url} alt="photoURL" />
+        {user.image_url !== null && <Avatar src={user.image_url} />}
+        {user.image_url === null && (
+          <Avatar alt={fullName}>{fullName.charAt(0)}</Avatar>
+        )}
       </IconButton>
 
       <MenuPopover
@@ -77,7 +81,7 @@ const AccountPopover = () => {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {`${user.first_name} ${user.last_name}`}
+            {fullName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {user.email}

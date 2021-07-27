@@ -1,11 +1,12 @@
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { experimentalStyled as styled } from "@material-ui/core/styles";
 import { Stack, Link, Container, Typography } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SocialLoginView from "./SocialLoginView";
 import SignInFormView from "./SignInFormView";
 import { signIn } from "../Store/actions";
 import SignUpFormView from "./SignUpFormView";
+import { useEffect, useState } from "react";
 
 const ContentStyle = styled("div")(({ theme }) => ({
   maxWidth: 400,
@@ -20,6 +21,16 @@ const ContentStyle = styled("div")(({ theme }) => ({
 const SignInView = () => {
   const dispatch = useDispatch();
   const currentLocation = useLocation();
+  const [loading, setLoading] = useState(false);
+  const notification = useSelector((state) => state.notifications.notification);
+
+  useEffect(() => {
+    if (notification !== null) {
+      if (notification.lastOp === "SIGN_IN") {
+        setLoading(false);
+      }
+    }
+  }, [notification]);
 
   const googleSuccessCallbackHandler = async (response) => {
     const profile = response?.profileObj;
@@ -34,6 +45,7 @@ const SignInView = () => {
       token: token,
     };
     try {
+      setLoading(true);
       dispatch(signIn(signInData));
     } catch (error) {
       console.log(`${error}`);
@@ -80,7 +92,10 @@ const SignInView = () => {
             </Typography>
           </Stack>
 
-          <SocialLoginView responseGoogle={googleSuccessCallbackHandler} />
+          <SocialLoginView
+            isLoading={loading}
+            responseGoogle={googleSuccessCallbackHandler}
+          />
           {currentLocation.pathname === "/sign-in" && <SignInFormView />}
           {currentLocation.pathname === "/sign-up" && <SignUpFormView />}
 
