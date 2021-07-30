@@ -21,7 +21,6 @@ const HeadlineStyleBookTile = (props: BookTileProps) => {
       onClick={titleClickHandler}
       onKeyDown={titleClickHandler}
       aria-label={`${props.title} by ${props.author}`}
-      tabIndex={0}
     >
       <Grid item xs={12} sm container>
         <Grid item xs>

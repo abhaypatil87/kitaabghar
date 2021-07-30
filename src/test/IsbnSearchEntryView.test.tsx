@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import IsbnSearchEntryView from "../Views/AddBooks/IsbnSearchEntryView";
 import { SERVER } from "../utils/crud";
+import { enableFetchMocks } from "jest-fetch-mock";
 
 beforeEach(() => {
   const initialState = {
@@ -17,7 +18,7 @@ beforeEach(() => {
   const middlewares = [thunk];
   const mockStore = configureStore(middlewares);
   const store = mockStore(initialState);
-  fetch.resetMocks();
+  enableFetchMocks();
   jest.clearAllMocks();
   render(
     <Provider store={store}>

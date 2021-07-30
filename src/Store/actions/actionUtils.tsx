@@ -1,5 +1,5 @@
 import { notificationsActions } from "../slices/notifications-slice";
-import { ERROR, SUCCESS } from "../../utils/crud";
+import { Status } from "../../utils/crud";
 
 export const dispatchError = (
   dispatch: Function,
@@ -9,7 +9,7 @@ export const dispatchError = (
   dispatch(
     notificationsActions.showNotification({
       lastOp,
-      status: ERROR,
+      status: Status.ERROR,
       message,
     })
   );
@@ -22,7 +22,7 @@ export const dispatchSuccess = (
   dispatch(
     notificationsActions.showNotification({
       lastOp,
-      status: SUCCESS,
+      status: Status.SUCCESS,
       message,
     })
   );

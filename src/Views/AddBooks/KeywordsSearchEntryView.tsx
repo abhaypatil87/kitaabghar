@@ -9,7 +9,7 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { SERVER, SUCCESS } from "../../utils/crud";
+import { SERVER, Status } from "../../utils/crud";
 import { FormError, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { useSelector } from "react-redux";
@@ -45,7 +45,7 @@ const KeywordsSearchEntryView = () => {
   useEffect(() => {
     if (notification !== null) {
       if (notification.lastOp === "ADD_BOOK") {
-        if (notification.status === SUCCESS) {
+        if (notification.status === Status.SUCCESS) {
           dispatchForm({
             type: RESET_FORM,
             data: initialState,

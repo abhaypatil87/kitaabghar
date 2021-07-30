@@ -31,7 +31,7 @@ beforeEach(() => {
       <Provider store={store}>
         <BookTile
           key={1}
-          book_id={1}
+          book_id={"1"}
           title={"Test book title"}
           subtitle={"Test book subtitle"}
           thumbnail_url={"url"}
@@ -85,10 +85,7 @@ describe("BookTile", () => {
     });
     expect(screen.getByText(/isbn10/i)).toBeTruthy();
 
-    fireEvent.keyDown(screen.getByText(/Test book title/i), {
-      key: "Enter",
-      keyCode: 13,
-    });
+    fireEvent.click(screen.getByText(/Test book title/i));
     expect(screen.queryByText(/Test description/i)).toBeNull();
     expect(screen.getByText(/Test book title/i)).not.toBeNull();
   });

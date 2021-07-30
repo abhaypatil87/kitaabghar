@@ -13,9 +13,10 @@ function getServerUrl() {
 
 export const SERVER = getServerUrl();
 
-export const ERROR = "error";
-export const SUCCESS = "success";
-export const LOCAL_STORAGE_USER_KEY = "user";
+export enum Status {
+  ERROR = "error",
+  SUCCESS = "success",
+}
 
 export enum Method {
   PUT = "PUT",

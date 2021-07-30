@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { SERVER } from "../utils/crud";
+import { enableFetchMocks } from "jest-fetch-mock";
 
 beforeEach(() => {
   const initialState = {
@@ -17,8 +18,8 @@ beforeEach(() => {
   const middlewares = [thunk];
   const mockStore = configureStore(middlewares);
   const store = mockStore(initialState);
-  fetch.resetMocks();
   jest.clearAllMocks();
+  enableFetchMocks();
   render(
     <Provider store={store}>
       <Author key={1} author_id={1} first_name={"Alice"} last_name={"Walker"} />

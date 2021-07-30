@@ -1,6 +1,7 @@
 import React from "react";
 import { Row } from "simple-flexbox";
 import { makeStyles } from "@material-ui/styles";
+import { SvgIcon } from "@material-ui/core";
 
 const useStyles = makeStyles({
   activeBar: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles({
 
 type MenuItemProps = {
   active: boolean;
-  icon: any;
+  icon: typeof SvgIcon;
   title: string;
   testid?: string;
   onClick: Function;

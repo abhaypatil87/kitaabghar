@@ -16,7 +16,7 @@ export const initialState = {
 
 const getFormValidityDataForFocus = (
   name: string,
-  value: any,
+  value: string,
   formState: Array<any>
 ) => {
   const data = isFormValid(name, value, formState);
@@ -26,7 +26,7 @@ const getFormValidityDataForFocus = (
 
 const getFromValidityDataForInputChange = (
   name: string,
-  value: any,
+  value: string,
   formState: Array<any>
 ) => {
   const data = isFormValid(name, value, formState);
@@ -55,7 +55,7 @@ const isFormValid = (name: string, value: string, formState: Array<any>) => {
  */
 export const onInputChange = (
   name: string,
-  value: any,
+  value: string,
   dispatch: Function,
   formState: Array<any>
 ) => {
@@ -72,7 +72,7 @@ export const onInputChange = (
 
 export const onFocusOut = (
   name: string,
-  value: any,
+  value: string,
   dispatch: Function,
   formState: Array<any>
 ) => {

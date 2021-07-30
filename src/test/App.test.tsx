@@ -4,14 +4,13 @@ import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
-import { LOCAL_STORAGE_USER_KEY } from "../utils/crud";
+import { loggedInUser } from "../Store/store";
 
 const DUMMY_USER = "{}";
 
 beforeEach(() => {
   localStorage.clear();
   jest.clearAllMocks();
-  localStorage.setItem.mockClear();
 });
 
 describe("App", () => {
@@ -28,7 +27,7 @@ describe("App", () => {
   const mockStore = configureStore(middlewares);
   const store = mockStore(initialState);
   test("renders correct number of sidebar menu items", () => {
-    localStorage.setItem(LOCAL_STORAGE_USER_KEY, DUMMY_USER);
+    loggedInUser.setLoggedInUser(DUMMY_USER);
 
     render(
       <Router>
@@ -36,9 +35,6 @@ describe("App", () => {
           <App />
         </Provider>
       </Router>
-    );
-    expect(localStorage.getItem).toHaveBeenLastCalledWith(
-      LOCAL_STORAGE_USER_KEY
     );
     const sidebarMenuItems = screen.getAllByTestId("sidebar-menu-item");
     expect(sidebarMenuItems.length).toEqual(5);

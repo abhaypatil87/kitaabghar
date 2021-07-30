@@ -23,6 +23,7 @@ import useAlert from "../../utils/hooks/useAlert";
 import { editAuthor } from "../../Store/actions";
 import { LibButton } from "../common/LibButton";
 import { RootState } from "../../Store/store";
+import { AuthorType } from "../../declarations";
 
 const useStyles = makeStyles({
   container: {
@@ -42,7 +43,9 @@ const useStyles = makeStyles({
   },
 });
 
-const getInitialState = (props: any) => {
+type AuthorPropsType = AuthorType;
+
+const getInitialState = (props: AuthorPropsType) => {
   return {
     first_name: {
       value: props.first_name,
@@ -60,7 +63,7 @@ const getInitialState = (props: any) => {
   };
 };
 
-const Author = (props: any) => {
+const Author = (props: AuthorPropsType) => {
   const [editMode, setEditMode] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formState, dispatchForm] = useReducer(
@@ -140,7 +143,7 @@ const Author = (props: any) => {
         <Grid container>
           {!editMode && (
             <Box className={classes.nameBox}>
-              <Typography variant="body1" tabIndex={0}>
+              <Typography variant="body1">
                 {props.first_name} {props.last_name}
               </Typography>
               <IconButton

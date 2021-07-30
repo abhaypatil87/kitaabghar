@@ -1,4 +1,5 @@
 import StorageWrapper from "../utils/StorageWrapper";
+import { User } from "../declarations";
 
 enum Keys {
   USER = "user",
@@ -23,7 +24,7 @@ export default class LoggedInUser extends StorageWrapper<Keys> {
     return this.get(Keys.USER);
   }
 
-  public setLoggedInUser(loggedInUser: any) {
+  public setLoggedInUser(loggedInUser: User) {
     this.set(Keys.USER, loggedInUser);
   }
 

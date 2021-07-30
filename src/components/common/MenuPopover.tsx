@@ -18,7 +18,7 @@ const ArrowStyle = styled("span")(({ theme }) => ({
   },
 }));
 
-const MenuPopover = ({ children, sx, ...other }: any) => {
+const MenuPopover = ({ children, ...other }: any) => {
   return (
     <Popover
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -29,8 +29,7 @@ const MenuPopover = ({ children, sx, ...other }: any) => {
           ml: 0.5,
           overflow: "inherit",
           border: (theme) => `solid 1px ${theme.palette.grey[500]}`,
-          width: 200,
-          ...sx,
+          width: 220,
         },
       }}
       {...other}

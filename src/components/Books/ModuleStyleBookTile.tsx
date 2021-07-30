@@ -12,11 +12,12 @@ const ModuleStyleBookTile = (props: BookTileProps) => {
     <ListStyleBookTile {...props} />
   ) : (
     <Box
-      component="div"
+      component={"article"}
+      role={"article"}
+      tabIndex={0}
       className={bookTitleStyles.cover}
       onClick={titleClickHandler}
       onKeyDown={titleClickHandler}
-      tabIndex={0}
       aria-label={`${props.title} by ${props.author}`}
       sx={{ mt: 2 }}
     >

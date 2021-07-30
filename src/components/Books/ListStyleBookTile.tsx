@@ -26,7 +26,7 @@ import {
   ALLOWED_DESCRIPTION_LENGTH,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { SUCCESS, viewState } from "../../utils/crud";
+import { Status, viewState } from "../../utils/crud";
 import { FormError, Confirm, SnackBar, WordCounter } from "../common";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import useAlert from "../../utils/hooks/useAlert";
@@ -35,7 +35,7 @@ import { LibButton } from "../common/LibButton";
 import { BookTileProps } from "../../declarations";
 import { RootState } from "../../Store/store";
 
-const getInitialState = (props: any) => {
+const getInitialState = (props: BookTileProps) => {
   return {
     title: { value: props.title, touched: false, hasError: true, error: "" },
     description: {
@@ -99,7 +99,7 @@ const ListStyleBookTile = (props: BookTileProps) => {
     if (notification !== null) {
       if (notification.lastOp === "EDIT_BOOK") {
         setIsEditing(false);
-        if (notification.status === SUCCESS) {
+        if (notification.status === Status.SUCCESS) {
           setEditMode(false);
         }
       }
@@ -192,6 +192,7 @@ const ListStyleBookTile = (props: BookTileProps) => {
           thumbnail_url: props.thumbnail_url,
           title: formState.title.value,
           description: formState.description.value,
+          author: "",
         })
       );
     }

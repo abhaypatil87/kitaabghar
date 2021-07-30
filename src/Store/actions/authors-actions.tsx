@@ -1,4 +1,4 @@
-import { Method, SERVER, SUCCESS } from "../../utils/crud";
+import { Method, SERVER, Status } from "../../utils/crud";
 import { authorsActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
@@ -21,7 +21,7 @@ export const fetchAuthors = () => {
 
     try {
       const response = await fetchData();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "GET_AUTHORS", response.message);
         return;
       }
@@ -56,7 +56,7 @@ export const editAuthor = (author: AuthorType) => {
 
     try {
       const response = await updateData();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "EDIT_AUTHOR", response.message);
         return;
       }

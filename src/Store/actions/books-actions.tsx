@@ -1,4 +1,4 @@
-import { Method, SERVER, SUCCESS } from "../../utils/crud";
+import { Method, SERVER, Status } from "../../utils/crud";
 import { booksActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
@@ -17,7 +17,7 @@ export const fetchBooks = () => {
 
     try {
       const response = await fetchData();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "GET_BOOKS", response.message);
         return;
       }
@@ -28,7 +28,7 @@ export const fetchBooks = () => {
   };
 };
 
-export const editBook = (book: any) => {
+export const editBook = (book: BookType) => {
   return async (dispatch: Function) => {
     dispatch(notificationsActions.clearNotifications());
     const updateData = async () => {
@@ -49,7 +49,7 @@ export const editBook = (book: any) => {
 
     try {
       const response = await updateData();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "EDIT_BOOK", response.message);
         return;
       }
@@ -78,7 +78,7 @@ export const removeBook = (bookId: number) => {
 
     try {
       const response = await removeData();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "REMOVE_BOOK", response.message);
         return;
       }
@@ -111,7 +111,7 @@ export const createBook = (book: { isbn: string } | BookType) => {
 
     try {
       const response = await createData();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "ADD_BOOK", response.message);
         return;
       }

@@ -1,5 +1,5 @@
 import { notificationsActions } from "../slices/notifications-slice";
-import { Method, SERVER, SUCCESS } from "../../utils/crud";
+import { Method, SERVER, Status } from "../../utils/crud";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
 import { authorisationActions } from "../store";
 import { RequestHeader } from "../../utils/RequestHeader";
@@ -9,7 +9,7 @@ export const signOut = () => {
   return async (dispatch: Function) => {
     dispatch(notificationsActions.clearNotifications());
     const signOutUser = () => {
-      return { status: SUCCESS };
+      return { status: Status.SUCCESS, message: "" };
       // const response = await fetch(
       //   `http://${SERVER_URL}:${SERVER_PORT}/api/login`,
       //   {
@@ -28,8 +28,8 @@ export const signOut = () => {
     };
 
     try {
-      const response: any = signOutUser();
-      if (response.status !== SUCCESS) {
+      const response: { status: string; message: string } = signOutUser();
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "SIGN_OUT", response.message);
         return;
       }
@@ -63,7 +63,7 @@ export const signIn = (signInData: SignInProps) => {
 
     try {
       const response = await signInUser();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "SIGN_IN", response.message);
         return;
       }
@@ -98,7 +98,7 @@ export const signUp = (signUpData: SignUpProps) => {
 
     try {
       const response = await signUpUser();
-      if (response.status !== SUCCESS) {
+      if (response.status !== Status.SUCCESS) {
         dispatchError(dispatch, "SIGN_UP", response.message);
         return;
       }

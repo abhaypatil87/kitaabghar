@@ -11,7 +11,7 @@ import {
   ALLOWED_DESCRIPTION_LENGTH,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { SUCCESS } from "../../utils/crud";
+import { Status } from "../../utils/crud";
 import { FormError, WordCounter, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook } from "../../Store/actions";
@@ -38,7 +38,7 @@ const ManualEntryView = () => {
     setIsCreating(false);
     if (notification !== null) {
       if (notification.lastOp === "ADD_BOOK") {
-        if (notification.status === SUCCESS) {
+        if (notification.status === Status.SUCCESS) {
           dispatchForm({
             type: RESET_FORM,
             data: initialState,

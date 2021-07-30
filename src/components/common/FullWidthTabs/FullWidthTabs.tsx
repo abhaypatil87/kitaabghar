@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { Box, Tab, Tabs, AppBar, TabProps } from "@material-ui/core";
+import { Box, Tabs, AppBar, Tab } from "@material-ui/core";
+
+type TabTypeProps = {
+  index: number;
+  value: number;
+  title: string;
+  body: JSX.Element;
+};
 
 type FullWidthTabsProps = {
-  tabs: Array<TabProps>;
+  tabs: Array<TabTypeProps>;
 };
 
 type TabPanelProps = {
@@ -51,12 +58,12 @@ const FullWidthTabs = (props: FullWidthTabsProps) => {
           textColor="primary"
           variant="fullWidth"
         >
-          {props.tabs.map((tab: any) => (
+          {props.tabs.map((tab: TabTypeProps) => (
             <Tab key={tab.index} label={tab.title} {...a11yProps(tab.index)} />
           ))}
         </Tabs>
       </AppBar>
-      {props.tabs.map((tab: any) => (
+      {props.tabs.map((tab: TabTypeProps) => (
         <TabPanel key={tab.index} index={tab.index} value={value}>
           {tab.body}
         </TabPanel>

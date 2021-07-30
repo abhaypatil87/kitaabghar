@@ -9,6 +9,7 @@ import KeywordsSearchEntryView from "../Views/AddBooks/KeywordsSearchEntryView";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { SERVER } from "../utils/crud";
+import { enableFetchMocks } from "jest-fetch-mock";
 
 beforeEach(() => {
   const initialState = {
@@ -19,7 +20,7 @@ beforeEach(() => {
   const middlewares = [thunk];
   const mockStore = configureStore(middlewares);
   const store = mockStore(initialState);
-  fetch.resetMocks();
+  enableFetchMocks();
   jest.clearAllMocks();
   const route = "/add-books";
   const history = createMemoryHistory();

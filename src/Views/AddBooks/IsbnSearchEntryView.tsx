@@ -9,7 +9,7 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { SUCCESS } from "../../utils/crud";
+import { Status } from "../../utils/crud";
 import { FormError, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,7 +44,7 @@ const IsbnSearchEntryView = () => {
     setIsCreating(false);
     if (notification !== null) {
       if (notification.lastOp === "ADD_BOOK") {
-        if (notification.status === SUCCESS) {
+        if (notification.status === Status.SUCCESS) {
           dispatchForm({
             type: RESET_FORM,
             data: initialState,
