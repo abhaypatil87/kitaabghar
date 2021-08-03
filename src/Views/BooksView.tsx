@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 
-import { BookType } from "../declarations";
+import { BookType, SearchType } from "../declarations";
+import { RootState } from "../Store/store";
 import { Books } from "../components/Books";
 import { fetchBooks } from "../Store/actions";
 import { ScrollToTop } from "../components/common";
 import { SearchBar } from "../components/SearchBar";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
-import { RootState } from "../Store/store";
+import AlphabeticalFilter from "../components/common/AlphabeticalFilter/AlphabeticalFilter";
 
 const BooksView = () => {
   const books = useSelector((state: RootState) => state.books.books);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("all");
+  const [searchMode, setSearchMode] = useState("filter");
   const [filteredBooks, setFilteredBooks] = useState<Array<BookType>>(books);
   const dispatch = useDispatch();
   const total = books.length;
@@ -26,18 +28,37 @@ const BooksView = () => {
     setFilteredBooks(books);
   }, [books]);
 
-  useEffect(() => {
-    setFilteredBooks(
-      books.filter(
-        (book: BookType) =>
+  const searchBooks = useCallback(
+    (book: BookType) => {
+      if (searchMode === SearchType.SEARCH) {
+        return (
           book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           book.author.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [books, searchTerm]);
+        );
+      } else if (searchMode === SearchType.FILTER) {
+        if (searchTerm === "all") {
+          return book;
+        } else if (searchTerm === "#") {
+          return book.title.match(/^\d/);
+        }
+        return book.title.toLowerCase().startsWith(searchTerm);
+      }
+    },
+    [searchMode, searchTerm]
+  );
+
+  useEffect(() => {
+    setFilteredBooks(books.filter(searchBooks));
+  }, [books, searchBooks]);
 
   const searchChangeHandler = (searchTerm: string) => {
+    setSearchMode("search");
     setSearchTerm(searchTerm);
+  };
+
+  const filterChangeHandler = (filterTerm: string) => {
+    setSearchMode("filter");
+    setSearchTerm(filterTerm);
   };
 
   const renderHelmet = () => {
@@ -75,6 +96,7 @@ const BooksView = () => {
           </Typography>
         </Box>
       </Grid>
+      <AlphabeticalFilter value={searchTerm} onFilter={filterChangeHandler} />
       <Books books={filteredBooks} />
     </div>
   );
