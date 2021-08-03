@@ -33,7 +33,7 @@ const AccountPopover = () => {
   const [open, setOpen] = useState(false);
   const [user] = useState<User>(loggedInUser.getLoggedInUser());
   const fullName = user !== null ? `${user.first_name} ${user.last_name}` : "";
-
+  const ariaLabel = `Home Library Account: ${fullName} (${user.email})`;
   const handleOpen = () => {
     setOpen(true);
   };
@@ -50,6 +50,7 @@ const AccountPopover = () => {
       <IconButton
         ref={anchorRef}
         onClick={handleOpen}
+        aria-label={ariaLabel}
         sx={{
           padding: 0,
           width: 44,

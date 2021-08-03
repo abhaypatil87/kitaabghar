@@ -47,6 +47,11 @@ export enum ExternalIdentifiers {
   GOOGLE = "GOOGLE",
 }
 
+export enum SearchType {
+  SEARCH = "search",
+  FILTER = "filter",
+}
+
 export type SignUpProps = {
   readonly email: string;
   readonly first_name: string;
