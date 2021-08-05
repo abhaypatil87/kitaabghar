@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -12,16 +13,17 @@ import CsvDownloader from "react-csv-downloader";
 import { EXPORT_FILE_EXTENSION } from "../../utils/crud";
 import { LibButton } from "../../components/common/LibButton";
 
-const ExportCsvDataSettingsView = () => {
+const ExportCsvDataSettingsView: React.FC = () => {
   const books = useSelector((state: RootStateOrAny) => state.books.books);
   const csvFileName = `library${Date.now().toString()}`;
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ChevronRightIcon />}>
         <div>
-          <Typography variant={"h1"}>Export Libraries</Typography>
+          <Typography variant={"h1"}>Export Library</Typography>
           <Typography variant={"subtitle1"}>
-            Export all your book from the library to a comma-separated-values
+            Export all your books from the library to a comma-separated-values
             (csv) file.
           </Typography>
         </div>

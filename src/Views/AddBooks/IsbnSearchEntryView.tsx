@@ -1,7 +1,8 @@
 import React, { FormEvent, useEffect, useReducer, useState } from "react";
+import Quagga from "@ericblade/quagga2";
 import { makeStyles } from "@material-ui/styles";
-import { Grid, Box, TextField } from "@material-ui/core";
-
+import { Grid, IconButton, Paper, Divider, InputBase } from "@material-ui/core";
+import PhotoCameraRoundedIcon from "@material-ui/icons/PhotoCameraRounded";
 import {
   formsReducer,
   isValidForm,
@@ -27,7 +28,8 @@ const initialState = {
   isbn: { value: "", touched: false, hasError: true, error: "" },
   isFormValid: false,
 };
-const IsbnSearchEntryView = () => {
+
+const IsbnSearchEntryView: React.FC = () => {
   const [formState, dispatchForm] = useReducer(formsReducer, initialState);
   const dispatch = useDispatch();
   const notification = useSelector(
@@ -37,7 +39,7 @@ const IsbnSearchEntryView = () => {
   const [error, setError] = useState(
     "Please enter a 10 or 13 digit ISBN value"
   );
-  const [isCreating, setIsCreating] = useState(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
   const { showError, setShowError } = useAlert();
 
   useEffect(() => {
@@ -71,6 +73,37 @@ const IsbnSearchEntryView = () => {
     setError("");
   };
 
+  const handleCapture = (target: any) => {
+    if (target.files) {
+      if (target.files.length !== 0) {
+        setIsCreating(true);
+        const file = target.files[0];
+        const newUrl = URL.createObjectURL(file);
+        Quagga.decodeSingle(
+          {
+            src: newUrl,
+            numOfWorkers: 0,
+            inputStream: {
+              size: 4000,
+            },
+            decoder: {
+              readers: ["ean_reader"],
+            },
+          },
+          function (result: any) {
+            setIsCreating(false);
+            if (result.codeResult) {
+              dispatch(createBook({ isbn: result.codeResult.code }));
+            } else {
+              setShowError(true);
+              setError("Error occurred while scanning the Barcode.");
+            }
+          }
+        );
+      }
+    }
+  };
+
   return (
     <Grid>
       <SnackBar
@@ -84,15 +117,22 @@ const IsbnSearchEntryView = () => {
           className={`${classes.form}`}
           onSubmit={(event) => formSubmitHandler(event)}
         >
-          <Box component="div">
-            <TextField
-              label="ISBN Number"
-              variant="outlined"
-              fullWidth
-              margin="dense"
-              type="text"
+          <Paper
+            variant={"outlined"}
+            component="div"
+            sx={{
+              my: 1,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <InputBase
               name="isbn"
               id="isbn"
+              fullWidth
+              sx={{ ml: 1, my: 1, flex: 1 }}
+              placeholder="ISBN Number"
+              inputProps={{ "aria-label": "ISBN Number" }}
               value={formState.isbn.value}
               onChange={(event) => {
                 onInputChange(
@@ -106,10 +146,29 @@ const IsbnSearchEntryView = () => {
                 onFocusOut("isbn", event.target.value, dispatchForm, formState);
               }}
             />
-            {formState.isbn.touched && formState.isbn.hasError && (
-              <FormError error={formState.isbn.error} />
-            )}
-          </Box>
+            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <input
+              accept="image/*"
+              style={{ display: "none" }}
+              id="icon-button-file"
+              type="file"
+              capture="environment"
+              onChange={(e) => handleCapture(e.target)}
+            />
+            <label htmlFor="icon-button-file">
+              <IconButton
+                color="primary"
+                sx={{ p: "10px" }}
+                aria-label="upload picture"
+                component="span"
+              >
+                <PhotoCameraRoundedIcon fontSize={"medium"} />
+              </IconButton>
+            </label>
+          </Paper>
+          {formState.isbn.touched && formState.isbn.hasError && (
+            <FormError error={formState.isbn.error} />
+          )}
           <LibButton
             variant="contained"
             color="primary"
@@ -119,7 +178,7 @@ const IsbnSearchEntryView = () => {
             type="submit"
             value="Add"
           >
-            Add
+            {isCreating ? "Adding" : "Add"}
           </LibButton>
         </form>
       </Grid>

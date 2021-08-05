@@ -1,118 +1,132 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { Box, Toolbar, Divider, Paper, Drawer } from "@material-ui/core";
+import { Link, useLocation } from "react-router-dom";
+import { makeStyles } from "@material-ui/styles";
 import TimelineIcon from "@material-ui/icons/Timeline";
+import SettingsIcon from "@material-ui/icons/Settings";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import LocalLibraryIcon from "@material-ui/icons/LocalLibrary";
 import QueueOutlinedIcon from "@material-ui/icons/QueueOutlined";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import MenuIcon from "@material-ui/icons/Menu";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { Link } from "react-router-dom";
-import { Column, Row } from "simple-flexbox";
 
-import Logo from "./Logo";
 import MenuItem from "./MenuItem";
-import sideBarStyles from "./Sidebar.module.css";
+import Logo from "./Logo";
 
-type SidebarProps = {
-  onChange: Function;
-  selectedItem: string;
+const drawerWidth = 240;
+
+const useStyles = makeStyles({
+  link: {
+    textDecoration: "none",
+  },
+});
+
+type NewSidebarProps = {
+  handleDrawerToggle: Function;
+  mobileOpen: boolean;
+  window?: () => Window;
 };
-const Sidebar = (props: SidebarProps) => {
-  const [expanded, setExpanded] = useState(true);
 
-  const isMobile = () => window.innerWidth <= 768;
+const Sidebar: React.FC<NewSidebarProps> = (props) => {
+  const { window } = props;
+  const classes = useStyles();
+  const currentLocation = useLocation();
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
-  const toggleMenu = () => {
-    setExpanded((prevState) => {
-      return !prevState;
-    });
-  };
+  const drawer = (
+    <div>
+      <Paper component={"div"}>
+        <Toolbar>
+          <Logo />
+        </Toolbar>
+      </Paper>
+      <Divider />
+      <Link to="/library/timeline" className={classes.link}>
+        <MenuItem
+          title="Timeline"
+          testid="sidebar-menu-item"
+          icon={TimelineIcon}
+          active={currentLocation.pathname === "/library/timeline"}
+        />
+      </Link>
+      <Link to="/library/books" className={classes.link}>
+        <MenuItem
+          title="Books"
+          testid="sidebar-menu-item"
+          icon={LocalLibraryIcon}
+          active={currentLocation.pathname === "/library/books"}
+        />
+      </Link>
+      <Link to="/library/add-books" className={classes.link}>
+        <MenuItem
+          title="Add Books"
+          testid="sidebar-menu-item"
+          icon={QueueOutlinedIcon}
+          active={currentLocation.pathname === "/library/add-books"}
+        />
+      </Link>
+      <Link to="/library/authors" className={classes.link}>
+        <MenuItem
+          title="Authors"
+          testid="sidebar-menu-item"
+          icon={PeopleAltIcon}
+          active={currentLocation.pathname === "/library/authors"}
+        />
+      </Link>
+      <Divider />
+      <Link to="/library/settings" className={classes.link}>
+        <MenuItem
+          title="Settings"
+          testid="sidebar-menu-item"
+          icon={SettingsIcon}
+          active={currentLocation.pathname === "/library/settings"}
+        />
+      </Link>
+    </div>
+  );
 
-  const onItemClicked = (item: string) => {
-    setExpanded(false);
-    return props.onChange(item);
-  };
-
-  const renderBurger = () => {
-    return (
-      <div onClick={toggleMenu} className={sideBarStyles.burgerIcon}>
-        <MenuIcon />
-      </div>
-    );
-  };
   return (
-    <div style={{ position: "relative" }}>
-      <Row
-        className={sideBarStyles.mainContainer}
-        breakpoints={{
-          768: `${sideBarStyles.mainContainerMobile} ${
-            expanded && sideBarStyles.mainContainerExpanded
-          }`,
+    <Box
+      component="nav"
+      sx={{
+        width: { sm: drawerWidth },
+        flexShrink: { sm: 0 },
+      }}
+      aria-label="library navigation menu"
+    >
+      <Drawer
+        container={container}
+        open={props.mobileOpen}
+        variant="temporary"
+        onClose={props.handleDrawerToggle.bind(null)}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": {
+            backgroundColor: "#363740",
+            boxSizing: "border-box",
+            width: drawerWidth,
+          },
         }}
       >
-        {isMobile() && !expanded && renderBurger()}
-        <Column
-          className={sideBarStyles.container}
-          breakpoints={{
-            768: `${sideBarStyles.containerMobile} ${
-              expanded ? sideBarStyles.show : sideBarStyles.hide
-            }`,
-          }}
-        >
-          <Logo />
-          <Column className={sideBarStyles.menuItemList}>
-            <Link to="/library/timeline" className={sideBarStyles.link}>
-              <MenuItem
-                title="Timeline"
-                testid="sidebar-menu-item"
-                icon={TimelineIcon}
-                onClick={onItemClicked.bind(null, "Timeline")}
-                active={props.selectedItem === "Timeline"}
-              />
-            </Link>
-            <Link to="/library/books" className={sideBarStyles.link}>
-              <MenuItem
-                title="Books"
-                testid="sidebar-menu-item"
-                icon={LocalLibraryIcon}
-                onClick={onItemClicked.bind(null, "Books")}
-                active={props.selectedItem === "Books"}
-              />
-            </Link>
-            <Link to="/library/add-books" className={sideBarStyles.link}>
-              <MenuItem
-                title="Add Books"
-                testid="sidebar-menu-item"
-                icon={QueueOutlinedIcon}
-                onClick={onItemClicked.bind(null, "Add Books")}
-                active={props.selectedItem === "Add Books"}
-              />
-            </Link>
-            <Link to="/library/authors" className={sideBarStyles.link}>
-              <MenuItem
-                title="Authors"
-                testid="sidebar-menu-item"
-                icon={PeopleAltIcon}
-                onClick={onItemClicked.bind(null, "Authors")}
-                active={props.selectedItem === "Authors"}
-              />
-            </Link>
-            <div className={sideBarStyles.separator} />
-            <Link to="/library/settings" className={sideBarStyles.link}>
-              <MenuItem
-                title="Settings"
-                testid="sidebar-menu-item"
-                icon={SettingsIcon}
-                onClick={onItemClicked.bind(null, "Settings")}
-                active={props.selectedItem === "Settings"}
-              />
-            </Link>
-          </Column>
-        </Column>
-        {isMobile() && expanded && (
-          <div className={sideBarStyles.outsideLayer} onClick={toggleMenu} />
-        )}
-      </Row>
-    </div>
+        {drawer}
+      </Drawer>
+      <Drawer
+        open
+        variant="permanent"
+        sx={{
+          display: { xs: "none", sm: "block" },
+          "& .MuiDrawer-paper": {
+            backgroundColor: "#363740",
+            boxSizing: "border-box",
+            width: drawerWidth,
+          },
+        }}
+      >
+        {drawer}
+      </Drawer>
+    </Box>
   );
 };
 

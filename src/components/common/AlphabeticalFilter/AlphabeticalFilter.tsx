@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Grid, ToggleButton, ToggleButtonGroup } from "@material-ui/core";
 
 type AlphabeticalFilterProps = {
@@ -6,7 +6,7 @@ type AlphabeticalFilterProps = {
   value: string;
 };
 
-const AlphabeticalFilter = (props: AlphabeticalFilterProps) => {
+const AlphabeticalFilter: React.FC<AlphabeticalFilterProps> = (props) => {
   const [currentFilter, setCurrentFilter] = useState(props.value);
   const elements = [
     "#",

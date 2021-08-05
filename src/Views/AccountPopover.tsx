@@ -29,7 +29,7 @@ const SignOutButton = styled(LibButton)({
 const AccountPopover = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
-  const anchorRef = useRef(null);
+  const anchorRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [user] = useState<User>(loggedInUser.getLoggedInUser());
   const fullName = user !== null ? `${user.first_name} ${user.last_name}` : "";

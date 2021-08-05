@@ -37,6 +37,6 @@ describe("App", () => {
       </Router>
     );
     const sidebarMenuItems = screen.getAllByTestId("sidebar-menu-item");
-    expect(sidebarMenuItems.length).toEqual(5);
+    expect(sidebarMenuItems.length).toEqual(10);
   });
 });

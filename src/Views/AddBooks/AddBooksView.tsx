@@ -1,9 +1,10 @@
 import React from "react";
-import { FullWidthTabs } from "../../components/common";
+import { Helmet } from "react-helmet";
+import { Container } from "@material-ui/core";
 
 import ManualEntryView from "./ManualEntryView";
 import SearchEntryView from "./SearchEntryView";
-import { Helmet } from "react-helmet";
+import { FullWidthTabs } from "../../components/common";
 
 const AddBooksView = () => {
   const renderHelmet = () => {
@@ -33,10 +34,10 @@ const AddBooksView = () => {
     },
   ];
   return (
-    <>
+    <Container maxWidth="lg">
       {renderHelmet()}
       <FullWidthTabs tabs={tabs} />
-    </>
+    </Container>
   );
 };
 
