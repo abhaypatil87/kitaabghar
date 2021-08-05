@@ -50,7 +50,6 @@ const SignInFormView = () => {
           password: formState.password.value,
         })
       );
-      setIsSigningIn(false);
     }
   };
 
@@ -147,6 +146,7 @@ const SignInFormView = () => {
             fullWidth
             size="large"
             type="submit"
+            loadingIndicator="Signing In"
             variant="contained"
             style={{ textTransform: "none" }}
             loading={isSigningIn}

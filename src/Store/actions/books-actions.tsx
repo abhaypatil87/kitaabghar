@@ -103,9 +103,6 @@ export const createBook = (book: { isbn: string } | BookType) => {
           .getHeader(),
       });
 
-      if (!response.ok) {
-        throw new Error("Error occurred while creating the book");
-      }
       return await response.json();
     };
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Box, Container, Grid, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 
@@ -12,10 +12,10 @@ import { SearchBar } from "../components/SearchBar";
 import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import AlphabeticalFilter from "../components/common/AlphabeticalFilter/AlphabeticalFilter";
 
-const BooksView = () => {
+const BooksView: React.FC = () => {
   const books = useSelector((state: RootState) => state.books.books);
-  const [searchTerm, setSearchTerm] = useState("all");
-  const [searchMode, setSearchMode] = useState("filter");
+  const [searchTerm, setSearchTerm] = useState<string>("all");
+  const [searchMode, setSearchMode] = useState<string>("filter");
   const [filteredBooks, setFilteredBooks] = useState<Array<BookType>>(books);
   const dispatch = useDispatch();
   const total = books.length;
@@ -51,14 +51,9 @@ const BooksView = () => {
     setFilteredBooks(books.filter(searchBooks));
   }, [books, searchBooks]);
 
-  const searchChangeHandler = (searchTerm: string) => {
-    setSearchMode("search");
+  const searchChangeHandler = (searchMode: string, searchTerm: string) => {
+    setSearchMode(searchMode);
     setSearchTerm(searchTerm);
-  };
-
-  const filterChangeHandler = (filterTerm: string) => {
-    setSearchMode("filter");
-    setSearchTerm(filterTerm);
   };
 
   const renderHelmet = () => {
@@ -74,10 +69,10 @@ const BooksView = () => {
   };
 
   return (
-    <div>
+    <Container maxWidth="lg">
       {renderHelmet()}
       <ScrollToTop showBelow={250} />
-      <SearchBar onSearch={searchChangeHandler} />
+      <SearchBar onSearch={searchChangeHandler.bind(null, "search")} />
       <Grid
         container
         direction="row"
@@ -96,9 +91,12 @@ const BooksView = () => {
           </Typography>
         </Box>
       </Grid>
-      <AlphabeticalFilter value={searchTerm} onFilter={filterChangeHandler} />
+      <AlphabeticalFilter
+        value={searchTerm}
+        onFilter={searchChangeHandler.bind(null, "filter")}
+      />
       <Books books={filteredBooks} />
-    </div>
+    </Container>
   );
 };
 

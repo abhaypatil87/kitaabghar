@@ -1,26 +1,30 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Column, Row } from "simple-flexbox";
+import { Box, Toolbar, CssBaseline } from "@material-ui/core";
 
-import { Header } from "../../components/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { Header } from "../../components/Header";
 
-const LibraryLayout = () => {
-  const [selectedItem, setSelectedItem] = useState("Books");
+const LibraryLayout: React.FC = () => {
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((mobileOpen) => !mobileOpen);
+  };
 
   return (
-    <Row>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <Header handleDrawerToggle={handleDrawerToggle} />
       <Sidebar
-        selectedItem={selectedItem}
-        onChange={(selectedItem: string) => {
-          setSelectedItem(selectedItem);
-        }}
+        handleDrawerToggle={handleDrawerToggle}
+        mobileOpen={mobileOpen}
       />
-      <Column flexGrow={1} style={{ padding: "20px" }}>
-        <Header title={selectedItem} />
+      <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
+        <Toolbar />
         <Outlet />
-      </Column>
-    </Row>
+      </Box>
+    </Box>
   );
 };
 

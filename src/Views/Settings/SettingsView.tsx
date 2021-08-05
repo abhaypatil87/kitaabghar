@@ -1,10 +1,10 @@
+import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
 import { Box, Container, createTheme, ThemeProvider } from "@material-ui/core";
+import { Helmet } from "react-helmet";
 import ExportCsvDataSettingsView from "./ExportCsvDataSettingsView";
 import ThirdPartyApiSettingsView from "./ThirdPartyApiSettingsView";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { fetchThirdPartyApis } from "../../Store/actions";
-import { Helmet } from "react-helmet";
 
 const theme = createTheme({
   components: {
@@ -35,7 +35,7 @@ const theme = createTheme({
   },
 });
 
-const SettingsView = () => {
+const SettingsView: React.FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchThirdPartyApis());
@@ -51,17 +51,17 @@ const SettingsView = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <Container maxWidth="lg">
       {renderHelmet()}
-      <Container maxWidth="md">
+      <ThemeProvider theme={theme}>
         <Box>
           <ExportCsvDataSettingsView />
         </Box>
         <Box sx={{ mt: 1 }}>
           <ThirdPartyApiSettingsView />
         </Box>
-      </Container>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Container>
   );
 };
 

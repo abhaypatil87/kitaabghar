@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { Container } from "@material-ui/core";
 import { Authors } from "../components/Authors";
 import { useDispatch } from "react-redux";
 import { fetchAuthors } from "../Store/actions";
 
-const AuthorsView = () => {
+const AuthorsView: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,10 +22,10 @@ const AuthorsView = () => {
   };
 
   return (
-    <>
+    <Container maxWidth="lg">
       {renderHelmet()}
       <Authors />
-    </>
+    </Container>
   );
 };
 

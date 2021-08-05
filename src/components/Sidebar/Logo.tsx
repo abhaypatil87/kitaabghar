@@ -1,27 +1,26 @@
 import React from "react";
-import { Row } from "simple-flexbox";
 import { makeStyles } from "@material-ui/styles";
+import { Box } from "@material-ui/core";
 
 const useStyle = makeStyles({
   title: {
-    fontFamily: "Roboto Thin, serif",
     fontSize: "20px",
     fontWeight: "bold",
     fontStyle: "normal",
     lineHeight: "24px",
     letterSpacing: "inherit",
-    color: "#a4a6b3",
+    color: "inherit",
     opacity: "0.7",
   },
 });
 
-const Logo = () => {
+const Logo: React.FC = () => {
   const classes = useStyle();
 
   return (
-    <Row horizontal="center" vertical="center">
-      <span className={classes.title}>My Library</span>
-    </Row>
+    <Box component={"div"}>
+      <span className={classes.title}>Home Library</span>
+    </Box>
   );
 };
 

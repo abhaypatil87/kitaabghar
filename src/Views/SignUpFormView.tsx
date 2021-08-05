@@ -52,7 +52,6 @@ const SignUpFormView = () => {
           external_id: null,
         })
       );
-      setIsSigningUp(false);
     }
   };
 
@@ -197,9 +196,10 @@ const SignUpFormView = () => {
             fullWidth
             size="large"
             type="submit"
+            loadingIndicator="Signing Up"
             variant="contained"
             style={{ textTransform: "none" }}
-            disabled={isSigningUp}
+            loading={isSigningUp}
             aria-disabled={isSigningUp}
           >
             Register

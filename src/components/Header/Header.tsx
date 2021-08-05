@@ -1,51 +1,39 @@
-import React from "react";
-import { Row } from "simple-flexbox";
-import { makeStyles } from "@material-ui/styles";
-
+import * as React from "react";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 import AccountPopover from "../../Views/AccountPopover";
-
-const useStyle = makeStyles({
-  container: {
-    height: "40px",
-    marginTop: "10px",
-    marginBottom: "10px",
-  },
-  separator: {
-    width: "2px",
-    height: "32px",
-    marginRight: "32px",
-    marginLeft: "32px",
-    borderLeft: "1px solid #dfe0eb",
-  },
-  title: {
-    fontStyle: "normal",
-    fontWeight: "bold",
-    fontSize: "24px",
-    lineHeight: "30px",
-    letterSpacing: "inherit",
-  },
-});
+import AppBar from "@material-ui/core/AppBar";
+import { Box } from "@material-ui/core";
+const drawerWidth = 240;
 
 type HeaderProps = {
-  title: string;
+  handleDrawerToggle: Function;
 };
-
-const Header = (props: HeaderProps) => {
-  const classes = useStyle();
-  const { ...otherProps } = props;
+const Header: React.FC<HeaderProps> = (props) => {
   return (
-    <Row
-      className={classes.container}
-      vertical="center"
-      horizontal="space-between"
-      {...otherProps}
+    <AppBar
+      position="fixed"
+      color={"default"}
+      sx={{
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` },
+      }}
     >
-      <span className={classes.title}>{props.title}</span>
-      <Row vertical="center">
-        <div className={classes.separator} />
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="open navigation menu"
+          edge="start"
+          onClick={props.handleDrawerToggle.bind(null)}
+          sx={{ mr: 2, display: { sm: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Box sx={{ flexGrow: 1 }} />
         <AccountPopover />
-      </Row>
-    </Row>
+      </Toolbar>
+    </AppBar>
   );
 };
 

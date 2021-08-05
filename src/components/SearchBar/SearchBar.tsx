@@ -9,7 +9,7 @@ type SearchBarProps = {
 };
 
 const SearchBar = (props: SearchBarProps) => {
-  const searchRef = useRef<HTMLInputElement | null>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const [searchDisabled, setSearchDisabled] = useState(true);
 
   const formSubmitHandler = (event: FormEvent) => {
