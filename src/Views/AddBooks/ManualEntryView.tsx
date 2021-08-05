@@ -15,13 +15,8 @@ import { Status } from "../../utils/crud";
 import { FormError, WordCounter, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook } from "../../Store/actions";
-import { experimentalStyled as styled } from "@material-ui/core/styles";
 import { LibButton } from "../../components/common/LibButton";
 import { RootState } from "../../Store/store";
-
-const LibraryForm = styled("form")(() => ({
-  width: "40rem",
-}));
 
 const ManualEntryView = () => {
   const [totalCharacters, setTotalCharacters] = useState(0);
@@ -84,7 +79,7 @@ const ManualEntryView = () => {
           severity={"error"}
           onClose={handleErrorAlertClose}
         />
-        <LibraryForm onSubmit={(event) => formSubmitHandler(event)}>
+        <form onSubmit={(event) => formSubmitHandler(event)}>
           <Grid item marginTop={1}>
             <TextField
               autoFocus={true}
@@ -356,7 +351,7 @@ const ManualEntryView = () => {
           >
             Create
           </LibButton>
-        </LibraryForm>
+        </form>
       </Grid>
     </Grid>
   );

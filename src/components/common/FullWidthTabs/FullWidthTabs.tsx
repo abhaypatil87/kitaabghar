@@ -59,7 +59,12 @@ const FullWidthTabs = (props: FullWidthTabsProps) => {
           variant="fullWidth"
         >
           {props.tabs.map((tab: TabTypeProps) => (
-            <Tab key={tab.index} label={tab.title} {...a11yProps(tab.index)} />
+            <Tab
+              key={tab.index}
+              label={tab.title}
+              {...a11yProps(tab.index)}
+              sx={{ textTransform: "none" }}
+            />
           ))}
         </Tabs>
       </AppBar>

@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect, useReducer, useState } from "react";
-import { makeStyles } from "@material-ui/styles";
 import { Grid, Box, TextField } from "@material-ui/core";
 
 import {
@@ -20,12 +19,6 @@ import { LibButton } from "../../components/common/LibButton";
 import { BookType } from "../../declarations";
 import { RootState } from "../../Store/store";
 
-const useStyles = makeStyles({
-  form: {
-    width: "40rem",
-  },
-});
-
 const initialState = {
   keywords: { value: "", touched: false, hasError: true, error: "" },
   isFormValid: false,
@@ -38,7 +31,6 @@ const KeywordsSearchEntryView = () => {
   const notification = useSelector(
     (state: RootState) => state.notifications.notification
   );
-  const classes = useStyles();
   const [error, setError] = useState("Please enter keywords to search");
   const { showError, setShowError } = useAlert();
 
@@ -97,10 +89,7 @@ const KeywordsSearchEntryView = () => {
           severity={"error"}
           onClose={handleErrorAlertClose}
         />
-        <form
-          className={`${classes.form}`}
-          onSubmit={(event) => formSubmitHandler(event)}
-        >
+        <form onSubmit={(event) => formSubmitHandler(event)}>
           <Box component="div">
             <TextField
               label="Keywords"
