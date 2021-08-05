@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useReducer, useState } from "react";
 import Quagga from "@ericblade/quagga2";
-import { makeStyles } from "@material-ui/styles";
 import { Grid, IconButton, Paper, Divider, InputBase } from "@material-ui/core";
 import PhotoCameraRoundedIcon from "@material-ui/icons/PhotoCameraRounded";
 import {
@@ -18,12 +17,6 @@ import { createBook } from "../../Store/actions";
 import { LibButton } from "../../components/common/LibButton";
 import { RootState } from "../../Store/store";
 
-const useStyles = makeStyles({
-  form: {
-    width: "40rem",
-  },
-});
-
 const initialState = {
   isbn: { value: "", touched: false, hasError: true, error: "" },
   isFormValid: false,
@@ -35,7 +28,6 @@ const IsbnSearchEntryView: React.FC = () => {
   const notification = useSelector(
     (state: RootState) => state.notifications.notification
   );
-  const classes = useStyles();
   const [error, setError] = useState(
     "Please enter a 10 or 13 digit ISBN value"
   );
@@ -113,10 +105,7 @@ const IsbnSearchEntryView: React.FC = () => {
         onClose={handleErrorAlertClose}
       />
       <Grid item xs={12} sm={12} md={6} lg={6}>
-        <form
-          className={`${classes.form}`}
-          onSubmit={(event) => formSubmitHandler(event)}
-        >
+        <form onSubmit={(event) => formSubmitHandler(event)}>
           <Paper
             variant={"outlined"}
             component="div"
