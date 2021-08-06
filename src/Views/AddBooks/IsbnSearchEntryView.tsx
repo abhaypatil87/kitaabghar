@@ -1,7 +1,8 @@
 import React, { FormEvent, useEffect, useReducer, useState } from "react";
-import Quagga from "@ericblade/quagga2";
 import { Grid, IconButton, Paper, Divider, InputBase } from "@material-ui/core";
 import PhotoCameraRoundedIcon from "@material-ui/icons/PhotoCameraRounded";
+import { BrowserBarcodeReader } from "@zxing/library";
+
 import {
   formsReducer,
   isValidForm,
@@ -71,27 +72,16 @@ const IsbnSearchEntryView: React.FC = () => {
         setIsCreating(true);
         const file = target.files[0];
         const newUrl = URL.createObjectURL(file);
-        Quagga.decodeSingle(
-          {
-            src: newUrl,
-            numOfWorkers: 0,
-            inputStream: {
-              size: 4000,
-            },
-            decoder: {
-              readers: ["ean_reader"],
-            },
-          },
-          function (result: any) {
-            setIsCreating(false);
-            if (result.codeResult) {
-              dispatch(createBook({ isbn: result.codeResult.code }));
-            } else {
-              setShowError(true);
-              setError("Error occurred while scanning the Barcode.");
-            }
-          }
-        );
+        const codeReader = new BrowserBarcodeReader();
+        codeReader
+          .decodeFromImageUrl(newUrl)
+          .then((result) => {
+            dispatch(createBook({ isbn: result.toString() }));
+          })
+          .catch((e) => {
+            setShowError(true);
+            setError("Error occurred while scanning the barcode");
+          });
       }
     }
   };

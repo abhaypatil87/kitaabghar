@@ -4,7 +4,8 @@ import { Box } from "@material-ui/core";
 
 const useStyle = makeStyles({
   title: {
-    fontSize: "20px",
+    fontFamily: "Yatra One, cursive",
+    fontSize: "18px",
     fontWeight: "bold",
     fontStyle: "normal",
     lineHeight: "24px",
@@ -19,7 +20,7 @@ const Logo: React.FC = () => {
 
   return (
     <Box component={"div"}>
-      <span className={classes.title}>Home Library</span>
+      <span className={classes.title}>क़िताबघर / Kitaabghar</span>
     </Box>
   );
 };

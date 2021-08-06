@@ -33,7 +33,7 @@ const AccountPopover = () => {
   const [open, setOpen] = useState(false);
   const [user] = useState<User>(loggedInUser.getLoggedInUser());
   const fullName = user !== null ? `${user.first_name} ${user.last_name}` : "";
-  const ariaLabel = `Home Library Account: ${fullName} (${user.email})`;
+  const ariaLabel = `Kitaabghar Account: ${fullName} (${user.email})`;
   const handleOpen = () => {
     setOpen(true);
   };

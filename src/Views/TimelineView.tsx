@@ -5,7 +5,7 @@ const TimelineView = () => {
   const renderHelmet = () => {
     return (
       <Helmet>
-        <title>{`Timeline | Home Library`}</title>
+        <title>{`Timeline | Kitaabghar`}</title>
         <meta name="description" content={`Manage your reading timeline`} />
       </Helmet>
     );

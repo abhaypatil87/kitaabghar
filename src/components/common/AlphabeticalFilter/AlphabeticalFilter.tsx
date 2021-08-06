@@ -4,6 +4,7 @@ import { Grid, ToggleButton, ToggleButtonGroup } from "@material-ui/core";
 type AlphabeticalFilterProps = {
   onFilter: Function;
   value: string;
+  orientation: "horizontal" | "vertical" | undefined;
 };
 
 const AlphabeticalFilter: React.FC<AlphabeticalFilterProps> = (props) => {
@@ -53,7 +54,7 @@ const AlphabeticalFilter: React.FC<AlphabeticalFilterProps> = (props) => {
       sx={{ my: 1 }}
       data-testid="alphabetical-filter"
     >
-      <ToggleButtonGroup value={currentFilter}>
+      <ToggleButtonGroup value={currentFilter} orientation={props.orientation}>
         {elements.map((value) => {
           return (
             <ToggleButton

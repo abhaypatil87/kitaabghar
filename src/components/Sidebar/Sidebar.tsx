@@ -19,13 +19,13 @@ const useStyles = makeStyles({
   },
 });
 
-type NewSidebarProps = {
+type SidebarProps = {
   handleDrawerToggle: Function;
   mobileOpen: boolean;
   window?: () => Window;
 };
 
-const Sidebar: React.FC<NewSidebarProps> = (props) => {
+const Sidebar: React.FC<SidebarProps> = (props) => {
   const { window } = props;
   const classes = useStyles();
   const currentLocation = useLocation();

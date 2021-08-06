@@ -10,7 +10,7 @@ const AddBooksView = () => {
   const renderHelmet = () => {
     return (
       <Helmet>
-        <title>{`Add Books | Home Library`}</title>
+        <title>{`Add Books | Kitaabghar`}</title>
         <meta
           name="description"
           content={`Add books into the library by ISBN or Keywords search.`}

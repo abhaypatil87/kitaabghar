@@ -13,11 +13,11 @@ import ViewAsContainer from "../components/common/ViewAs/ViewAsContainer";
 import AlphabeticalFilter from "../components/common/AlphabeticalFilter/AlphabeticalFilter";
 
 const BooksView: React.FC = () => {
-  const books = useSelector((state: RootState) => state.books.books);
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState<string>("all");
   const [searchMode, setSearchMode] = useState<string>("filter");
+  const books = useSelector((state: RootState) => state.books.books);
   const [filteredBooks, setFilteredBooks] = useState<Array<BookType>>(books);
-  const dispatch = useDispatch();
   const total = books.length;
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const BooksView: React.FC = () => {
   const renderHelmet = () => {
     return (
       <Helmet>
-        <title>{`Books | Home Library`}</title>
+        <title>{`Books | Kitaabghar`}</title>
         <meta
           name="description"
           content={`List of books available in the library`}
@@ -70,32 +70,54 @@ const BooksView: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      {renderHelmet()}
-      <ScrollToTop showBelow={250} />
-      <SearchBar onSearch={searchChangeHandler.bind(null, "search")} />
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <ViewAsContainer />
-        <Box marginLeft={"auto"}>
-          <Typography
-            variant="body1"
-            component="span"
-            tabIndex={0}
-            aria-label={`${total} total books`}
+      <Grid item xs={12} sm={12} md={12} lg={12}>
+        {renderHelmet()}
+        <ScrollToTop showBelow={250} />
+        <SearchBar onSearch={searchChangeHandler.bind(null, "search")} />
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <ViewAsContainer />
+          <Box marginLeft={"auto"}>
+            <Typography
+              variant="body1"
+              tabIndex={0}
+              aria-label={`${total} total books`}
+            >
+              {total} books
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid container>
+          <Grid sx={{ display: { xs: "none", sm: "block" } }}>
+            <AlphabeticalFilter
+              value={searchTerm}
+              orientation={"horizontal"}
+              onFilter={searchChangeHandler.bind(null, "filter")}
+            />
+          </Grid>
+          <Grid item xs={11} sm={12} md={12} lg={12}>
+            <Books books={filteredBooks} />
+          </Grid>
+          <Grid
+            item
+            xs={1}
+            sm={12}
+            md={12}
+            lg={12}
+            sx={{ display: { xs: "block", sm: "none" } }}
           >
-            {total} books
-          </Typography>
-        </Box>
+            <AlphabeticalFilter
+              value={searchTerm}
+              orientation={"vertical"}
+              onFilter={searchChangeHandler.bind(null, "filter")}
+            />
+          </Grid>
+        </Grid>
       </Grid>
-      <AlphabeticalFilter
-        value={searchTerm}
-        onFilter={searchChangeHandler.bind(null, "filter")}
-      />
-      <Books books={filteredBooks} />
     </Container>
   );
 };

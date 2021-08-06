@@ -99,7 +99,7 @@ const SignInView = () => {
         <ContentStyle>
           <Stack sx={{ mb: 5, textAlign: "center" }}>
             <Typography variant="h5" gutterBottom>
-              Sign in to Home Library
+              Sign in to Kitaabghar
             </Typography>
           </Stack>
 

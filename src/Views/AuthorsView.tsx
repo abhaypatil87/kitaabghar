@@ -15,7 +15,7 @@ const AuthorsView: React.FC = () => {
   const renderHelmet = () => {
     return (
       <Helmet>
-        <title>{`Authors | Home Library`}</title>
+        <title>{`Authors | Kitaabghar`}</title>
         <meta name="description" content={`List of authors in the library`} />
       </Helmet>
     );
