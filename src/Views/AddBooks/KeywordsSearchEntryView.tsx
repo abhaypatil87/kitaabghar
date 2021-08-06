@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useReducer, useState } from "react";
-import { Grid, Box, TextField } from "@material-ui/core";
+import { Grid, Paper, InputBase } from "@material-ui/core";
 
 import {
   formsReducer,
@@ -81,23 +81,31 @@ const KeywordsSearchEntryView = () => {
   };
 
   return (
-    <Grid container={true} direction={"column"}>
+    <Grid>
+      <SnackBar
+        message={error}
+        open={showError}
+        severity={"error"}
+        onClose={handleErrorAlertClose}
+      />
       <Grid item xs={12} sm={12} md={6} lg={6}>
-        <SnackBar
-          message={error}
-          open={showError}
-          severity={"error"}
-          onClose={handleErrorAlertClose}
-        />
         <form onSubmit={(event) => formSubmitHandler(event)}>
-          <Box component="div">
-            <TextField
-              label="Keywords"
-              variant="outlined"
-              fullWidth
-              margin="dense"
-              type="text"
+          <Paper
+            variant={"outlined"}
+            component="div"
+            sx={{
+              my: 1,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <InputBase
               name="keywords"
+              id="keywords"
+              fullWidth
+              sx={{ ml: 1, my: 1, flex: 1 }}
+              placeholder="Keywords"
+              inputProps={{ "aria-label": "Keywords" }}
               value={formState.keywords.value}
               onChange={(event) => {
                 onInputChange(
@@ -116,10 +124,10 @@ const KeywordsSearchEntryView = () => {
                 );
               }}
             />
-            {formState.keywords.touched && formState.keywords.hasError && (
-              <FormError error={formState.keywords.error} />
-            )}
-          </Box>
+          </Paper>
+          {formState.keywords.touched && formState.keywords.hasError && (
+            <FormError error={formState.keywords.error} />
+          )}
           <LibButton
             variant="contained"
             color="primary"
@@ -129,7 +137,7 @@ const KeywordsSearchEntryView = () => {
             type="submit"
             value="search"
           >
-            Search
+            {isSearching ? "Searching" : "Search"}
           </LibButton>
         </form>
       </Grid>

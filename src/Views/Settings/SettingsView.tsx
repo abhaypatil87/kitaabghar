@@ -44,7 +44,7 @@ const SettingsView: React.FC = () => {
   const renderHelmet = () => {
     return (
       <Helmet>
-        <title>{`Settings | Home Library`}</title>
+        <title>{`Settings | Kitaabghar`}</title>
         <meta name="description" content={`Manage Library settings`} />
       </Helmet>
     );

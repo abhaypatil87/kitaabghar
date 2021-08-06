@@ -18,9 +18,9 @@ const SearchEntryView = () => {
 
   return (
     <>
-      <SearchRadioGroup value={createState} row onChange={handleRadioChange}>
+      <SearchRadioGroup row value={createState} onChange={handleRadioChange}>
         <FormControlLabel
-          style={{ marginLeft: "0px" }}
+          sx={{ marginLeft: "0px" }}
           value="isbn"
           control={<Radio />}
           label="ISBN Search"

@@ -16,7 +16,9 @@ const LoginLayout = () => {
   return (
     <>
       <StyledHeader>
-        <RouterLink to="/">{"Home Library"}</RouterLink>
+        <RouterLink to="/" style={{ textDecoration: "none" }}>
+          {"क़िताबघर / Kitaabghar"}
+        </RouterLink>
       </StyledHeader>
       <Outlet />
     </>
