@@ -22,7 +22,12 @@ beforeEach(() => {
   enableFetchMocks();
   render(
     <Provider store={store}>
-      <Author key={1} author_id={1} first_name={"Alice"} last_name={"Walker"} />
+      <Author
+        key={1}
+        author_id={"1"}
+        first_name={"Alice"}
+        last_name={"Walker"}
+      />
     </Provider>
   );
 });
@@ -63,7 +68,8 @@ describe("Author", () => {
     });
 
     expect(fetch).toHaveBeenCalledWith(`${SERVER}/api/authors/1`, {
-      body: '{"author_id":1,"first_name":"AlicePatrick","last_name":"Walker"}',
+      body:
+        '{"author_id":"1","first_name":"AlicePatrick","last_name":"Walker"}',
       headers: { "Content-Type": "application/json" },
       method: "PUT",
     });

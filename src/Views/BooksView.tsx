@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Container, Grid, Typography } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 
@@ -14,19 +20,32 @@ import AlphabeticalFilter from "../components/common/AlphabeticalFilter/Alphabet
 
 const BooksView: React.FC = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>("all");
   const [searchMode, setSearchMode] = useState<string>("filter");
   const books = useSelector((state: RootState) => state.books.books);
   const [filteredBooks, setFilteredBooks] = useState<Array<BookType>>(books);
+  const notification = useSelector(
+    (state: RootState) => state.notifications.notification
+  );
   const total = books.length;
 
   useEffect(() => {
+    setLoading(true);
     dispatch(fetchBooks());
   }, [dispatch]);
 
   useEffect(() => {
     setFilteredBooks(books);
   }, [books]);
+
+  useEffect(() => {
+    if (notification !== null) {
+      if (notification.lastOp === "GET_BOOKS") {
+        setLoading(false);
+      }
+    }
+  }, [notification]);
 
   const searchBooks = useCallback(
     (book: BookType) => {
@@ -82,11 +101,7 @@ const BooksView: React.FC = () => {
         >
           <ViewAsContainer />
           <Box marginLeft={"auto"}>
-            <Typography
-              variant="body1"
-              tabIndex={0}
-              aria-label={`${total} total books`}
-            >
+            <Typography variant="body1" tabIndex={0}>
               {total} books
             </Typography>
           </Box>
@@ -100,7 +115,7 @@ const BooksView: React.FC = () => {
             />
           </Grid>
           <Grid item xs={11} sm={12} md={12} lg={12}>
-            <Books books={filteredBooks} />
+            {loading ? <LinearProgress /> : <Books books={filteredBooks} />}
           </Grid>
           <Grid
             item
