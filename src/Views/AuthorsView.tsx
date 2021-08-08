@@ -1,14 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Container } from "@material-ui/core";
+import { Container, LinearProgress } from "@material-ui/core";
 import { Authors } from "../components/Authors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthors } from "../Store/actions";
+import { RootState } from "../Store/store";
 
 const AuthorsView: React.FC = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const notification = useSelector(
+    (state: RootState) => state.notifications.notification
+  );
 
   useEffect(() => {
+    if (notification !== null) {
+      if (notification.lastOp === "GET_AUTHORS") {
+        setLoading(false);
+      }
+    }
+  }, [notification]);
+
+  useEffect(() => {
+    setLoading(true);
     dispatch(fetchAuthors());
   }, [dispatch]);
 
@@ -24,7 +38,7 @@ const AuthorsView: React.FC = () => {
   return (
     <Container maxWidth="lg">
       {renderHelmet()}
-      <Authors />
+      {loading ? <LinearProgress /> : <Authors />}
     </Container>
   );
 };

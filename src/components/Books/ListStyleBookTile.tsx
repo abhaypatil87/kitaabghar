@@ -27,13 +27,14 @@ import {
   RESET_FORM,
 } from "../../utils/formUtil";
 import { Status, viewState } from "../../utils/crud";
-import { FormError, Confirm, SnackBar, WordCounter } from "../common";
-import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
+import BookDescription from "./BookDescription";
 import useAlert from "../../utils/hooks/useAlert";
-import { createBook, editBook, removeBook } from "../../Store/actions";
 import { LibButton } from "../common/LibButton";
 import { BookTileProps } from "../../declarations";
 import { RootState } from "../../Store/store";
+import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
+import { FormError, Confirm, SnackBar, WordCounter } from "../common";
+import { createBook, editBook, removeBook } from "../../Store/actions";
 
 const getInitialState = (props: BookTileProps) => {
   return {
@@ -341,13 +342,7 @@ const ListStyleBookTile = (props: BookTileProps) => {
 
               <Box component="div" marginTop={2}>
                 {!editMode && (
-                  <Typography
-                    variant="body1"
-                    className={bookTitleStyles.bookDescription}
-                    tabIndex={0}
-                  >
-                    {props.description}
-                  </Typography>
+                  <BookDescription description={props.description} />
                 )}
                 <Fade in={editMode} timeout={100} unmountOnExit>
                   <Box>

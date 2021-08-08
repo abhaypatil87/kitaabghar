@@ -26,6 +26,7 @@ export const fetchAuthors = () => {
         return;
       }
       dispatch(authorsActions.initiate(response));
+      dispatchSuccess(dispatch, "GET_AUTHORS", response.message);
     } catch (error) {
       dispatchError(dispatch, "GET_AUTHORS", error.message);
     }

@@ -22,6 +22,7 @@ export const fetchBooks = () => {
         return;
       }
       dispatch(booksActions.initiate(response.data.books));
+      dispatchSuccess(dispatch, "GET_BOOKS", response.message);
     } catch (error) {
       dispatchError(dispatch, "GET_BOOKS", error.message);
     }

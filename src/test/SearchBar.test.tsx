@@ -4,7 +4,7 @@ import SearchBar from "../components/SearchBar/SearchBar";
 
 describe("SearchBar", () => {
   test("renders SearchBar component", () => {
-    render(<SearchBar />);
+    render(<SearchBar onSearch={() => {}} />);
 
     /* Search the case sensitive placeholder */
     expect(screen.getByPlaceholderText(/Search Books/)).toBeInTheDocument();

@@ -31,6 +31,7 @@ export enum viewState {
   HEADLINE = "headline",
 }
 export const EXPORT_FILE_EXTENSION = ".csv";
+export const MAXIMUM_VISIBLE_DESCRIPTION_LENGTH = 500;
 
 export const isEmpty = (object: Object) => {
   return Object.keys(object).length === 0 || JSON.stringify(object) === "{}";

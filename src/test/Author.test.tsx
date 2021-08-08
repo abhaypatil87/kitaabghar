@@ -22,7 +22,12 @@ beforeEach(() => {
   enableFetchMocks();
   render(
     <Provider store={store}>
-      <Author key={1} author_id={1} first_name={"Alice"} last_name={"Walker"} />
+      <Author
+        key={1}
+        author_id={"1"}
+        first_name={"Alice"}
+        last_name={"Walker"}
+      />
     </Provider>
   );
 });
