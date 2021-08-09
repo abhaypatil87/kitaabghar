@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { useDispatch } from "react-redux";
-import { deleteAccount, removeBook } from "../../Store/actions";
+import { deleteAccount } from "../../Store/actions";
 import { Confirm } from "../../components/common";
 import { LibButton } from "../../components/common/LibButton";
 

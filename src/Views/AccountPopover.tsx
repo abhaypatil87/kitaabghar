@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { alpha } from "@material-ui/core/styles";
-import { useNavigate } from "react-router-dom";
 import {
   Box,
   Divider,
@@ -28,7 +27,6 @@ const SignOutButton = styled(LibButton)({
 
 const AccountPopover = () => {
   const dispatch = useDispatch();
-  const history = useNavigate();
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [user] = useState<User>(loggedInUser.getLoggedInUser());
