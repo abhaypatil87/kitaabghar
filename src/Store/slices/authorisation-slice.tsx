@@ -10,6 +10,7 @@ const authorisationSlice = createSlice({
     },
     signOut(state, action) {
       loggedInUser.clear();
+      document.location.href = "/sign-in";
     },
   },
 });

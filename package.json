@@ -1,6 +1,6 @@
 {
-  "name": "library_ui",
-  "description": "क़िताबघर / Kitaabghar | A clone of GoodReads, except only personal, and re-imagined and re-designed.",
+  "name": "kitaabghar",
+  "description": "क़िताबघर / Kitaabghar | A clone of GoodReads, except very personal, re-imagined and re-designed.",
   "version": "0.1.0",
   "private": true,
   "scripts": {

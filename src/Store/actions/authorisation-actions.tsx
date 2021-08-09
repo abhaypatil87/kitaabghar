@@ -10,21 +10,6 @@ export const signOut = () => {
     dispatch(notificationsActions.clearNotifications());
     const signOutUser = () => {
       return { status: Status.SUCCESS, message: "" };
-      // const response = await fetch(
-      //   `http://${SERVER_URL}:${SERVER_PORT}/api/login`,
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify(signInData),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-      //
-      // if (!response.ok) {
-      //   throw new Error("Error occurred while signing in");
-      // }
-      // return await response.json();
     };
 
     try {
@@ -108,6 +93,35 @@ export const signUp = (signUpData: SignUpProps) => {
       window.location.href = "/";
     } catch (error) {
       dispatchError(dispatch, "SIGN_UP", error.message);
+    }
+  };
+};
+
+export const deleteAccount = () => {
+  return async (dispatch: Function) => {
+    dispatch(notificationsActions.clearNotifications());
+    const deleteAccount = async () => {
+      const response = await fetch(`${SERVER}/api/me`, {
+        method: Method.DELETE,
+        headers: new RequestHeader().addAuthorisation().getHeader(),
+      });
+
+      const parsedResponse = await response.json();
+      if (!response.ok) {
+        throw new Error(parsedResponse.message);
+      }
+      return parsedResponse;
+    };
+
+    try {
+      const response = await deleteAccount();
+      if (response.status !== Status.SUCCESS) {
+        dispatchError(dispatch, "DELETE_ACCOUNT", response.message);
+        return;
+      }
+      dispatch(authorisationActions.signOut(response));
+    } catch (error) {
+      dispatchError(dispatch, "DELETE_ACCOUNT", error.message);
     }
   };
 };

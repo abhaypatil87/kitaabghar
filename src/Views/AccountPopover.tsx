@@ -43,7 +43,6 @@ const AccountPopover = () => {
 
   const handleLogout = () => {
     dispatch(signOut());
-    history("/sign-in");
   };
   return (
     <>
