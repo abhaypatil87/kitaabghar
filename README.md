@@ -11,7 +11,7 @@ I read a lot. Or at least I try my best to. However, in the hopes of which, I do
 
 ## Technology Stack
 
-The application has been booted off of **Create React App** so needless to say, React is a driving force behind this web application. Apart from that, I have made use of almost all the supportive tech-stacks that help React what it is, a really good JavaScript library.
+The application has been booted off of **Create React App** so needless to say, React is the driving force behind this web application. Apart from that, I have made use of almost all the supportive tech-stacks that help React what it is, a really good JavaScript library.
 
 1. Typescript
 2. React-Redux
