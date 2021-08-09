@@ -36,9 +36,9 @@ const IsbnSearchEntryView: React.FC = () => {
   const { showError, setShowError } = useAlert();
 
   useEffect(() => {
-    setIsCreating(false);
     if (notification !== null) {
       if (notification.lastOp === "ADD_BOOK") {
+        setIsCreating(false);
         if (notification.status === Status.SUCCESS) {
           dispatchForm({
             type: RESET_FORM,

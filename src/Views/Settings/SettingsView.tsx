@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import ExportCsvDataSettingsView from "./ExportCsvDataSettingsView";
 import ThirdPartyApiSettingsView from "./ThirdPartyApiSettingsView";
 import { fetchThirdPartyApis } from "../../Store/actions";
+import AccountSettingsView from "./AccountSettingsView";
 
 const theme = createTheme({
   components: {
@@ -59,6 +60,9 @@ const SettingsView: React.FC = () => {
         </Box>
         <Box sx={{ mt: 1 }}>
           <ThirdPartyApiSettingsView />
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          <AccountSettingsView />
         </Box>
       </ThemeProvider>
     </Container>
