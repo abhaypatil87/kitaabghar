@@ -1,4 +1,4 @@
-const LOCAL_SERVER = true;
+const LOCAL_SERVER = false;
 const SERVER_URL = "https://home-library-server.herokuapp.com";
 const LOCAL_SERVER_URL = "192.168.1.67";
 const LOCAL_SERVER_PORT = 4000;
