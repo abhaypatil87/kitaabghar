@@ -1,8 +1,9 @@
 import { notificationsActions } from "../slices/notifications-slice";
-import { Method, SERVER, Status } from "../../utils/crud";
+import { SERVER } from "../../utils/crud";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
 import { apiSettingsActions } from "../store";
 import { RequestHeader } from "../../utils/RequestHeader";
+import { Method, Status } from "../../declarations";
 
 export const fetchThirdPartyApis = () => {
   return async (dispatch: Function) => {

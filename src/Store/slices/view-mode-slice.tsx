@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { viewState } from "../../utils/crud";
+import { viewState } from "../../declarations";
 
 const initialViewState = {
   viewMode: viewState.MODULE,

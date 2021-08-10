@@ -1,9 +1,9 @@
-import { Method, SERVER, Status } from "../../utils/crud";
+import { SERVER } from "../../utils/crud";
 import { authorsActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
 import { RequestHeader } from "../../utils/RequestHeader";
-import { AuthorType } from "../../declarations";
+import { AuthorType, Method, Status } from "../../declarations";
 
 export const fetchAuthors = () => {
   return async (dispatch: Function) => {

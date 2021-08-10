@@ -1,5 +1,5 @@
 import { notificationsActions } from "../slices/notifications-slice";
-import { Status } from "../../utils/crud";
+import { Status } from "../../declarations";
 
 export const dispatchError = (
   dispatch: Function,

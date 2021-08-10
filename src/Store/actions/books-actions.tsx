@@ -1,9 +1,9 @@
-import { Method, SERVER, Status } from "../../utils/crud";
+import { SERVER } from "../../utils/crud";
 import { booksActions } from "../store";
 import { notificationsActions } from "../slices/notifications-slice";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
 import { RequestHeader } from "../../utils/RequestHeader";
-import { BookType } from "../../declarations";
+import { BookType, Method, Status } from "../../declarations";
 
 export const fetchBooks = () => {
   return async (dispatch: Function) => {

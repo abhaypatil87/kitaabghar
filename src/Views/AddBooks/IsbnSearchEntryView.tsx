@@ -10,13 +10,13 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { Status } from "../../utils/crud";
 import { FormError, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { createBook } from "../../Store/actions";
 import { LibButton } from "../../components/common/LibButton";
 import { RootState } from "../../Store/store";
+import { Status } from "../../declarations";
 
 const initialState = {
   isbn: { value: "", touched: false, hasError: true, error: "" },
@@ -78,7 +78,7 @@ const IsbnSearchEntryView: React.FC = () => {
           .then((result) => {
             dispatch(createBook({ isbn: result.toString() }));
           })
-          .catch((e) => {
+          .catch(() => {
             setShowError(true);
             setError("Error occurred while scanning the barcode");
           });

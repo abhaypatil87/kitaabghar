@@ -8,7 +8,7 @@ import {
   onInputChange,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { SERVER, Status } from "../../utils/crud";
+import { SERVER } from "../../utils/crud";
 import { FormError, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { ListStyleBookTile } from "../../components/Books";
 import { RequestHeader } from "../../utils/RequestHeader";
 import { LibButton } from "../../components/common/LibButton";
-import { BookType } from "../../declarations";
+import { BookType, Status } from "../../declarations";
 import { RootState } from "../../Store/store";
 
 const initialState = {

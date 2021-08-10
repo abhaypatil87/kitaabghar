@@ -3,8 +3,7 @@ import React from "react";
 import ListStyleBookTile from "./ListStyleBookTile";
 import ModuleStyleBookTile from "./ModuleStyleBookTile";
 import HeadlineStyleBookTile from "./HeadlineStyleBookTile";
-import { viewState } from "../../utils/crud";
-import { BookTileProps } from "../../declarations";
+import { BookTileProps, viewState } from "../../declarations";
 
 const BookTile: (props: BookTileProps) => JSX.Element = (
   props: BookTileProps

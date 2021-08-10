@@ -11,12 +11,12 @@ import {
   ALLOWED_DESCRIPTION_LENGTH,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { Status } from "../../utils/crud";
 import { FormError, WordCounter, SnackBar } from "../../components/common";
 import useAlert from "../../utils/hooks/useAlert";
 import { createBook } from "../../Store/actions";
 import { LibButton } from "../../components/common/LibButton";
 import { RootState } from "../../Store/store";
+import { Status } from "../../declarations";
 
 const ManualEntryView = () => {
   const [totalCharacters, setTotalCharacters] = useState(0);
