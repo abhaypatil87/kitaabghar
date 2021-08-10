@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Toolbar, Divider, Paper, Drawer } from "@material-ui/core";
-import { Link, useLocation } from "react-router-dom";
+import { Link as RouterLink, Link, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -16,6 +16,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles({
   link: {
     textDecoration: "none",
+    color: "inherit",
   },
 });
 
@@ -36,7 +37,9 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
     <div>
       <Paper component={"div"}>
         <Toolbar>
-          <Logo />
+          <RouterLink to="/" className={classes.link}>
+            <Logo />
+          </RouterLink>
         </Toolbar>
       </Paper>
       <Divider />
