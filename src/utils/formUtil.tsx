@@ -24,7 +24,7 @@ const getFormValidityDataForFocus = (
   return data;
 };
 
-const getFromValidityDataForInputChange = (
+const getFormValidityDataForInputChange = (
   name: string,
   value: string,
   formState: Array<any>
@@ -59,7 +59,7 @@ export const onInputChange = (
   dispatch: Function,
   formState: Array<any>
 ) => {
-  const formValidityData = getFromValidityDataForInputChange(
+  const formValidityData = getFormValidityDataForInputChange(
     name,
     value,
     formState
