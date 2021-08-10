@@ -1,9 +1,9 @@
 import { notificationsActions } from "../slices/notifications-slice";
-import { Method, SERVER, Status } from "../../utils/crud";
+import { SERVER } from "../../utils/crud";
 import { dispatchError, dispatchSuccess } from "./actionUtils";
 import { authorisationActions } from "../store";
 import { RequestHeader } from "../../utils/RequestHeader";
-import { SignInProps, SignUpProps } from "../../declarations";
+import { Method, SignInProps, SignUpProps, Status } from "../../declarations";
 
 export const signOut = () => {
   return async (dispatch: Function) => {

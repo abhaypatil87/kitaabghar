@@ -26,11 +26,10 @@ import {
   ALLOWED_DESCRIPTION_LENGTH,
   RESET_FORM,
 } from "../../utils/formUtil";
-import { Status, viewState } from "../../utils/crud";
 import BookDescription from "./BookDescription";
 import useAlert from "../../utils/hooks/useAlert";
 import { LibButton } from "../common/LibButton";
-import { BookTileProps } from "../../declarations";
+import { BookTileProps, Status, viewState } from "../../declarations";
 import { RootState } from "../../Store/store";
 import { HeadlineStyleBookTile, ModuleStyleBookTile } from "./index";
 import { FormError, Confirm, SnackBar, WordCounter } from "../common";

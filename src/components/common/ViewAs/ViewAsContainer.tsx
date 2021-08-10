@@ -6,8 +6,8 @@ import { styled } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/core";
 
-import { viewState } from "../../../utils/crud";
 import { RootState, viewModeActions } from "../../../Store/store";
+import { viewState } from "../../../declarations";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   "& .MuiToggleButtonGroup-grouped": {

@@ -69,3 +69,21 @@ export type SignInProps = {
   external?: ExternalIdentifiers;
   token?: string;
 };
+
+export enum Status {
+  ERROR = "error",
+  SUCCESS = "success",
+}
+
+export enum Method {
+  PUT = "PUT",
+  GET = "GET",
+  POST = "POST",
+  DELETE = "DELETE",
+}
+
+export enum viewState {
+  MODULE = "module",
+  LIST = "list",
+  HEADLINE = "headline",
+}
