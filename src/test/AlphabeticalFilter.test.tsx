@@ -1,13 +1,12 @@
 import React from "react";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { BookTile } from "../components/Books/";
+import { cleanup, render, screen } from "@testing-library/react";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { viewState } from "../utils/crud";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import AlphabeticalFilter from "../components/common/AlphabeticalFilter/AlphabeticalFilter";
+import { viewState } from "../declarations";
 
 beforeEach(() => {
   const initialStore = {
@@ -45,7 +44,11 @@ beforeEach(() => {
   render(
     <Router history={history}>
       <Provider store={store}>
-        <AlphabeticalFilter onFilter={() => {}} value={"all"} />
+        <AlphabeticalFilter
+          onFilter={() => {}}
+          value={"all"}
+          orientation={"horizontal"}
+        />
       </Provider>
     </Router>
   );

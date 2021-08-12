@@ -4,9 +4,9 @@ import { BookTile } from "../components/Books/";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { viewState } from "../utils/crud";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { viewState } from "../declarations";
 
 beforeEach(() => {
   const initialStore = {
