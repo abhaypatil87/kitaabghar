@@ -3,10 +3,10 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { viewState } from "../utils/crud";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import BookDescription from "../components/Books/BookDescription";
+import { viewState } from "../declarations";
 
 const lengthyDescription =
   "How do computers and robots change the meaning of being human? " +

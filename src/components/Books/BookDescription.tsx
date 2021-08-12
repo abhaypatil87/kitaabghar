@@ -7,7 +7,7 @@ const BookDescription: React.FC<{ description: string }> = (props) => {
   const [text, setText] = useState("...view more");
 
   const toggleText = () => {
-    setExpanded((value) => !value);
+    setExpanded((oldValue) => !oldValue);
     setText(expanded ? "...view more" : "...view less");
   };
 
@@ -24,7 +24,6 @@ const BookDescription: React.FC<{ description: string }> = (props) => {
             underline={"none"}
             sx={{ fontWeight: "bold" }}
             onClick={toggleText}
-            onKeyPress={toggleText}
             aria-label={text}
           >
             {text}
